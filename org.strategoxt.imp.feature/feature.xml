@@ -2,7 +2,7 @@
 <feature
       id="org.strategoxt.imp"
       label="sdf2imp"
-      version="0.1.0.2131"
+      version="0.1.0.2161"
       plugin="org.strategoxt.imp.runtime">
 
    <description url="http://www.lclnet.nl/software/sdf2imp">
@@ -18,79 +18,12 @@
    </license>
 
    <url>
-      <update label="sdf2imp updates" url="http://www.lclnet.nl/update/"/>
+      <update label="sdf2imp updates" url="http://www.lclnet.nl/update/0.1.x"/>
       <discovery label="IMP project updates" url="http://download.eclipse.org/technology/imp/updates/"/>
       <discovery label="LPG updates" url="http://lpg.sourceforge.net/updates/"/>
       <discovery label="IMP project updates (sourceforge)" url="http://eclipse-imp.sourceforge.net/updates/"/>
       <discovery label="Spoofax updates" url="http://www.ii.uib.no/~karltk/spoofax/"/>
    </url>
-
-   <includes
-         id="lpg.runtime"
-         version="2.0.13"/>
-
-   <includes
-         id="org.eclipse.imp"
-         version="0.0.0"/>
-
-   <includes
-         id="sdf_eclipse_installer_feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.imp.runtime"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.imp.releng"
-         version="0.0.0"/>
-
-   <includes
-         id="org.spoofax.interpreter_feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.spoofax.jsglr_feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.spoofax.interpreter.core_feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.spoofax.interpreter.adapter.aterm_feature"
-         version="0.0.0"/>
-
-   <requires>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.core.resources"/>
-      <import plugin="org.eclipse.imp.runtime"/>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="lpg.runtime"/>
-      <import plugin="org.eclipse.jface.text"/>
-      <import plugin="org.eclipse.ui.editors"/>
-      <import plugin="org.eclipse.ui.workbench.texteditor"/>
-      <import plugin="org.spoofax.aterm"/>
-      <import plugin="org.spoofax.jsglr"/>
-      <import plugin="org.eclipse.osgi"/>
-      <import plugin="org.spoofax.interpreter.core"/>
-      <import plugin="org.spoofax.interpreter.adapter.aterm"/>
-      <import plugin="org.spoofax.interpreter.library.jsglr"/>
-      <import plugin="org.junit"/>
-      <import plugin="org.eclipse.swt"/>
-      <import plugin="org.eclipse.jface"/>
-      <import plugin="org.eclipse.ui.workbench"/>
-      <import plugin="org.spoofax.compiler"/>
-      <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="org.spoofax.compiler" match="greaterOrEqual"/>
-   </requires>
-
-   <plugin
-         id="org.strategoxt.imp.editorservice"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
          id="org.strategoxt.imp.metatooling"
@@ -100,6 +33,123 @@
 
    <plugin
          id="org.strategoxt.imp.runtime"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.spoofax.aterm"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.spoofax.compiler"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.spoofax.interpreter"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.spoofax.interpreter.adapter.aterm"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.spoofax.interpreter.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.spoofax.interpreter.library.jsglr"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.spoofax.jsglr"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.imp.lpg"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.imp.lpg.runtime"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.imp.runtime"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.ibm.icu"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="lpg.runtime"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.imp.smapi"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.imp.smapifier"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.imp.xform"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.strategoxt.imp.editors.editorservice"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.ibm.wala.shrike"
          download-size="0"
          install-size="0"
          version="0.0.0"

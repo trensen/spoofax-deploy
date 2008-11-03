@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description url="http://www.lclnet.nl/update/sdf2imp">
+   <description url="http://www.lclnet.nl/update/0.1.x">
       sdfimp update site
    </description>
-   <feature url="features/org.strategoxt.imp_0.1.0.2131.jar" id="org.strategoxt.imp" version="0.1.0.2131">
+   <feature url="features/org.strategoxt.imp_0.1.0.2161.jar" id="org.strategoxt.imp" version="0.1.0.2161">
       <category name="sdf2imp"/>
    </feature>
    <category-def name="sdf2imp" label="sdf2imp"/>
