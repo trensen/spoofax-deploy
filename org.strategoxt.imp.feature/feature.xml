@@ -5,11 +5,11 @@
       version="0.1.0.2161"
       plugin="org.strategoxt.imp.runtime">
 
-   <description url="http://www.lclnet.nl/software/sdf2imp">
+   <description url="http://www.lclnet.nl/software/sdf2imp/">
       sdfimp metatooling environment
    </description>
 
-   <copyright url="http://www.lclnet.nl/software/sdf2imp">
+   <copyright>
       [Copyright Description to be supplied.]
    </copyright>
 
@@ -18,93 +18,89 @@
    </license>
 
    <url>
-      <update label="sdf2imp updates" url="http://www.lclnet.nl/update/0.1.x"/>
-      <discovery label="IMP project updates" url="http://download.eclipse.org/technology/imp/updates/"/>
-      <discovery label="LPG updates" url="http://lpg.sourceforge.net/updates/"/>
-      <discovery label="IMP project updates (sourceforge)" url="http://eclipse-imp.sourceforge.net/updates/"/>
-      <discovery label="Spoofax updates" url="http://www.ii.uib.no/~karltk/spoofax/"/>
+      <update label="sdf2imp updates" url="http://www.lclnet.nl/update/0.1.x/"/>
    </url>
 
    <plugin
          id="org.strategoxt.imp.metatooling"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.1.0.2161"/>
 
    <plugin
          id="org.strategoxt.imp.runtime"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.1.0.2161"
          unpack="false"/>
 
    <plugin
          id="org.spoofax.aterm"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
+         version="0.1.0.2161"/>
 
    <plugin
          id="org.spoofax.compiler"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.1.0.2161"
          unpack="false"/>
 
    <plugin
          id="org.spoofax.interpreter"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.1.0.2161"
          unpack="false"/>
 
    <plugin
          id="org.spoofax.interpreter.adapter.aterm"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.1.0.2161"
          unpack="false"/>
 
    <plugin
          id="org.spoofax.interpreter.core"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.1.0.2161"
          unpack="false"/>
 
    <plugin
          id="org.spoofax.interpreter.library.jsglr"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.1.0.2161"
          unpack="false"/>
 
    <plugin
          id="org.spoofax.jsglr"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.1.0.2161"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.lpg"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.1.0.2161"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.lpg.runtime"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.1.0.2161"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.runtime"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.1.0.2161"
          unpack="false"/>
 
    <plugin
@@ -124,14 +120,14 @@
          id="org.eclipse.imp.smapi"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.1.0.2161"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.smapifier"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.1.0.2161"
          unpack="false"/>
 
    <plugin
@@ -145,7 +141,7 @@
          id="org.strategoxt.imp.editors.editorservice"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.1.0.2161"
          unpack="false"/>
 
    <plugin
