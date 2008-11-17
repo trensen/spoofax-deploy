@@ -2,7 +2,7 @@
 <feature
       id="org.strategoxt.imp"
       label="sdf2imp"
-      version="0.1.0.2161"
+      version="0.1.0.2209"
       plugin="org.strategoxt.imp.runtime">
 
    <description url="http://www.lclnet.nl/software/sdf2imp/">
