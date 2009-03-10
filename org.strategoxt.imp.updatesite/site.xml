@@ -3,7 +3,7 @@
    <description url="http://www.lclnet.nl/update/0.1.x">
       sdfimp update site
    </description>
-   <feature url="features/org.strategoxt.imp_0.1.0.2500.jar" id="org.strategoxt.imp" version="0.1.0.2500">
+   <feature url="features/org.strategoxt.imp_0.1.0.2505.jar" id="org.strategoxt.imp" version="0.1.0.2505">
       <category name="Spoofax/IMP"/>
    </feature>
    <category-def name="Spoofax/IMP" label="Spoofax/IMP"/>

@@ -2,7 +2,7 @@
 <feature
       id="org.strategoxt.imp"
       label="Spoofax/IMP"
-      version="0.1.0.2500"
+      version="0.1.0.2505"
       plugin="org.strategoxt.imp.runtime">
 
    <description url="http://www.lclnet.nl/software/sdf2imp/">
@@ -25,13 +25,13 @@
          id="org.strategoxt.imp.metatooling"
          download-size="0"
          install-size="0"
-         version="0.1.0.2500"/>
+         version="0.1.0.2505"/>
 
    <plugin
          id="org.strategoxt.imp.runtime"
          download-size="0"
          install-size="0"
-         version="0.1.0.2500"
+         version="0.1.0.2505"
          unpack="false"/>
 
    <plugin
@@ -134,7 +134,7 @@
          id="org.strategoxt.imp.editors.editorservice"
          download-size="0"
          install-size="0"
-         version="0.1.0.2500"
+         version="0.1.0.2505"
          unpack="false"/>
 
    <plugin
