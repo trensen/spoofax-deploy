@@ -180,10 +180,10 @@
          unpack="false"/>
 
    <plugin
-         id="org.strategoxt.strcjava"
+         id="org.strategoxt.strj"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.1.0"
          unpack="false"/>
 
 </feature>
