@@ -39,8 +39,7 @@
          id="org.spoofax.aterm"
          download-size="0"
          install-size="0"
-         version="0.2.2.qualifier"
-         unpack="false"/>
+         version="0.2.2.qualifier"/>
 
    <plugin
          id="org.spoofax.compiler"
@@ -186,8 +185,7 @@
          id="org.strategoxt.strj"
          download-size="0"
          install-size="0"
-         version="0.1.1"
-         unpack="false"/>
+         version="0.1.1"/>
 
    <plugin
          id="org.strategoxt.imp.generator"
