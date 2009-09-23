@@ -1,0 +1,13 @@
+Ways to Shoot Yourself in the Foot When Creating an Eclipse Update Site
+
+1.  DON'T strictly follow these steps; failure to do so at any point will result in various forms of fun unexplained or misleading failures at deployment time
+2.  DON'T update the versions of all involved plugins and the org.strategoxt.imp.feature project
+3.  DON'T open feature.xml in Eclipse and all versions to those in the projects using the "Versions" button
+4.  DON'T open site.xml in Eclipse and choose "Add Feature" and add the new feature (be sure you DON'T to put it in the category so it won't show up)
+5.  Or DON'T pick "Synchronize all" if you made an update site already
+6.  There is no number 6.
+7.  DON'T choose "Build All"; if you pick "Build" it will act like its building but won't build all plugins
+8.  Especially DON'T invoke your favorite deity through prayer and/or song at this point
+9.  When you upload the update site, be sure you DON'T skip artifacts.xml and content.xml so Eclipse will magically fail when updating
+10. If you're using a testing directory for updates, be sure you DON'T adapt site.xml with the new url
+11. Finally, to test it, DON'T use a clean Eclipse installation and DON'T use a clean workspace (Eclipse 3.4+ may do workspace-based caching!)
