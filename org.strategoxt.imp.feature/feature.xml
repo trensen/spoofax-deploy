@@ -2,7 +2,7 @@
 <feature
       id="org.strategoxt.imp"
       label="Spoofax/IMP"
-      version="0.1.0.2801"
+      version="0.1.0.2802"
       plugin="org.strategoxt.imp.runtime">
 
    <description url="http://strategoxt.org/Stratego/Spoofax-IMP">
@@ -32,14 +32,14 @@ components may be covered by different licences.
          id="org.strategoxt.imp.metatooling"
          download-size="0"
          install-size="0"
-         version="0.1.0.2800"
+         version="0.1.0.2802"
          unpack="false"/>
 
    <plugin
          id="org.strategoxt.imp.runtime"
          download-size="0"
          install-size="0"
-         version="0.1.0.2800"
+         version="0.1.0.2802"
          unpack="false"/>
 
    <plugin
@@ -143,7 +143,7 @@ components may be covered by different licences.
          id="org.strategoxt.imp.editors.editorservice"
          download-size="0"
          install-size="0"
-         version="0.1.0.2800"
+         version="0.1.0.2802"
          unpack="false"/>
 
    <plugin
@@ -192,26 +192,59 @@ components may be covered by different licences.
          id="org.strategoxt.strj"
          download-size="0"
          install-size="0"
-         version="0.2.1"/>
+         version="0.2.3"/>
 
    <plugin
          id="org.strategoxt.imp.generator"
          download-size="0"
          install-size="0"
-         version="0.1.0.2801"/>
+         version="0.1.0.2802"/>
 
    <plugin
          id="org.strategoxt.imp.editors.sdf"
          download-size="0"
          install-size="0"
-         version="0.1.0.2800"
+         version="0.1.0.2802"
          unpack="false"/>
 
    <plugin
          id="org.strategoxt.imp.editors.stratego"
          download-size="0"
          install-size="0"
-         version="0.1.0.2800"
+         version="0.1.0.2802"
          unpack="false"/>
+
+   <plugin
+         id="sdf_eclipse_installer"
+         download-size="0"
+         install-size="0"
+         version="1.0.10.42"/>
+
+   <plugin
+         id="sdf_eclipse_installer_win32_x86"
+         os="win32"
+         arch="x86"
+         download-size="0"
+         install-size="0"
+         version="1.0.10.42"
+         fragment="true"/>
+
+   <plugin
+         id="sdf_eclipse_installer_linux_x86"
+         os="linux"
+         arch="x86"
+         download-size="0"
+         install-size="0"
+         version="1.0.10.42"
+         fragment="true"/>
+
+   <plugin
+         id="sdf_eclipse_installer_macosx_x86"
+         os="macosx"
+         arch="x86"
+         download-size="0"
+         install-size="0"
+         version="1.0.10.42"
+         fragment="true"/>
 
 </feature>
