@@ -247,4 +247,11 @@ components may be covered by different licences.
          version="1.0.10.42"
          fragment="true"/>
 
+   <plugin
+         id="org.strategoxt.imp.editors.aterm"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>
