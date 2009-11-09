@@ -2,7 +2,7 @@
 <feature
       id="org.strategoxt.imp"
       label="Spoofax/IMP"
-      version="0.1.0.2802"
+      version="0.1.1"
       plugin="org.strategoxt.imp.runtime">
 
    <description url="http://strategoxt.org/Stratego/Spoofax-IMP">
@@ -25,21 +25,21 @@ components may be covered by different licences.
    </license>
 
    <url>
-      <update label="Spoofax/IMP updates" url="http://www.lclnet.nl/update/0.1.x/"/>
+      <update label="Spoofax/IMP updates" url="http://www.lclnet.nl/update/"/>
    </url>
 
    <plugin
          id="org.strategoxt.imp.metatooling"
          download-size="0"
          install-size="0"
-         version="0.1.0.2802"
+         version="0.1.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.strategoxt.imp.runtime"
          download-size="0"
          install-size="0"
-         version="0.1.0.2802"
+         version="0.1.1.qualifier"
          unpack="false"/>
 
    <plugin
@@ -143,7 +143,7 @@ components may be covered by different licences.
          id="org.strategoxt.imp.editors.editorservice"
          download-size="0"
          install-size="0"
-         version="0.1.0.2802"
+         version="0.1.1.qualifier"
          unpack="false"/>
 
    <plugin
@@ -192,26 +192,26 @@ components may be covered by different licences.
          id="org.strategoxt.strj"
          download-size="0"
          install-size="0"
-         version="0.2.3"/>
+         version="0.2.3.qualifier"/>
 
    <plugin
          id="org.strategoxt.imp.generator"
          download-size="0"
          install-size="0"
-         version="0.1.0.2802"/>
+         version="0.1.1.qualifier"/>
 
    <plugin
          id="org.strategoxt.imp.editors.sdf"
          download-size="0"
          install-size="0"
-         version="0.1.0.2802"
+         version="0.1.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.strategoxt.imp.editors.stratego"
          download-size="0"
          install-size="0"
-         version="0.1.0.2802"
+         version="0.1.1.qualifier"
          unpack="false"/>
 
    <plugin
@@ -251,7 +251,7 @@ components may be covered by different licences.
          id="org.strategoxt.imp.editors.aterm"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.1.1.qualifier"
          unpack="false"/>
 
 </feature>
