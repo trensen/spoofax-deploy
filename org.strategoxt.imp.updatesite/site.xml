@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description url="http://www.lclnet.nl/update/0.1.x">
+   <description url="http://www.lclnet.nl/update">
       Spoofax/IMP update site
    </description>
-   <feature url="features/org.strategoxt.imp_0.1.0.2802.jar" id="org.strategoxt.imp" version="0.1.0.2802">
+   <feature url="features/org.strategoxt.imp_0.1.1.3.jar" id="org.strategoxt.imp" version="0.1.1.3">
       <category name="Spoofax/IMP"/>
    </feature>
    <category-def name="Spoofax/IMP" label="Spoofax/IMP"/>
