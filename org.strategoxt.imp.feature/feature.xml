@@ -2,7 +2,7 @@
 <feature
       id="org.strategoxt.imp"
       label="Spoofax/IMP"
-      version="0.1.1.4"
+      version="0.1.1.5"
       plugin="org.strategoxt.imp.runtime">
 
    <description url="http://strategoxt.org/Stratego/Spoofax-IMP">
@@ -94,28 +94,28 @@ components may be covered by different licences.
          id="org.eclipse.imp.lpg"
          download-size="0"
          install-size="0"
-         version="0.1.79"
+         version="0.1.79.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.lpg.runtime"
          download-size="0"
          install-size="0"
-         version="0.1.79"
+         version="0.1.79.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.runtime"
          download-size="0"
          install-size="0"
-         version="0.1.88"
+         version="0.1.88.qualifier"
          unpack="false"/>
 
    <plugin
          id="lpg.runtime"
          download-size="0"
          install-size="0"
-         version="2.0.16"
+         version="2.0.16.qualifier"
          unpack="false"/>
 
    <plugin
@@ -157,21 +157,21 @@ components may be covered by different licences.
          id="org.eclipse.imp.lpg.metatooling"
          download-size="0"
          install-size="0"
-         version="0.1.79"
+         version="0.1.79.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.metatooling"
          download-size="0"
          install-size="0"
-         version="0.1.79"
+         version="0.1.79.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.preferences"
          download-size="0"
          install-size="0"
-         version="0.1.79"
+         version="0.1.79.qualifier"
          unpack="false"/>
 
    <plugin
@@ -185,7 +185,7 @@ components may be covered by different licences.
          id="org.eclipse.imp.presentation"
          download-size="0"
          install-size="0"
-         version="0.1.1"
+         version="0.1.1.qualifier"
          unpack="false"/>
 
    <plugin
