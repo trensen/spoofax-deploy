@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description url="http://www.lclnet.nl/update">
+   <description name="Spoofax/IMP" url="http://www.lclnet.nl/update">
       Spoofax/IMP update site
    </description>
    <feature url="features/org.strategoxt.imp_0.2.0.jar" id="org.strategoxt.imp" version="0.2">

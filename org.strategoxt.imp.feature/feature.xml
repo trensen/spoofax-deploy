@@ -39,8 +39,7 @@ components may be covered by different licences.
          id="org.strategoxt.imp.runtime"
          download-size="0"
          install-size="0"
-         version="0.1.1.qualifier"
-         unpack="false"/>
+         version="0.1.1.qualifier"/>
 
    <plugin
          id="org.spoofax.aterm"
