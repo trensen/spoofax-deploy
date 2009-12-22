@@ -9,5 +9,6 @@ Ways to Shoot Yourself in the Foot When Creating an Eclipse Update Site
 7.  DON'T choose "Build All"; if you pick "Build" it will act like its building but won't build all plugins
 8.  Especially DON'T invoke your favorite deity through prayer and/or song at this point
 9.  When you upload the update site, be sure you DON'T skip artifacts.xml and content.xml so Eclipse will magically fail when updating
-10. If you're using a testing directory for updates, be sure you DON'T adapt site.xml with the new url
-11. Finally, to test it, DON'T use a clean Eclipse installation and DON'T use a clean workspace (Eclipse 3.4+ may do workspace-based caching!)
+10. DON'T specify the "unpack" attribute in feature.xml; let Eclipse surprise you instead (the little checkbox won't tell you what happens)
+11. If you're using a testing directory for updates, be sure you DON'T adapt site.xml with the new url
+12. Finally, to test it, DON'T use a clean Eclipse installation and DON'T use a clean workspace (Eclipse 3.4+ may do workspace-based caching!)
