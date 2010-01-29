@@ -2,7 +2,7 @@
 <feature
       id="org.strategoxt.imp"
       label="Spoofax/IMP"
-      version="0.3.2.1"
+      version="0.3.2.2"
       plugin="org.strategoxt.imp.runtime">
 
    <description url="http://strategoxt.org/Stratego/Spoofax-IMP">
@@ -94,7 +94,7 @@ components may be covered by different licences.
          id="org.eclipse.imp.lpg"
          download-size="0"
          install-size="0"
-         version="0.1.84"
+         version="0.1.84.qualifier"
          unpack="false"/>
 
    <plugin
@@ -108,21 +108,21 @@ components may be covered by different licences.
          id="lpg.runtime"
          download-size="0"
          install-size="0"
-         version="2.0.17"
+         version="2.0.17.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.smapi"
          download-size="0"
          install-size="0"
-         version="0.1.89.2"
+         version="0.1.89.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.smapifier"
          download-size="0"
          install-size="0"
-         version="0.1.89.2"
+         version="0.1.89.qualifier"
          unpack="false"/>
 
    <plugin
@@ -143,21 +143,21 @@ components may be covered by different licences.
          id="org.eclipse.imp.metatooling"
          download-size="0"
          install-size="0"
-         version="0.1.92"
+         version="0.1.92.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.preferences"
          download-size="0"
          install-size="0"
-         version="0.1.86"
+         version="0.1.86.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.prefspecs"
          download-size="0"
          install-size="0"
-         version="0.1.89"
+         version="0.1.89.qualifier"
          unpack="false"/>
 
    <plugin
@@ -209,14 +209,14 @@ components may be covered by different licences.
          id="org.eclipse.imp.java.hosted"
          download-size="0"
          install-size="0"
-         version="0.1.2"
+         version="0.1.2.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.lpg.ide"
          download-size="0"
          install-size="0"
-         version="0.1.87"
+         version="0.1.87.qualifier"
          unpack="false"/>
 
    <plugin
