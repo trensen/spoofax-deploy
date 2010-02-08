@@ -28,6 +28,10 @@ components may be covered by different licences.
       <update label="Spoofax/IMP updates" url="http://www.lclnet.nl/update/"/>
    </url>
 
+   <includes
+         id="org.eclipse.pde"
+         version="0.0.0"/>
+
    <plugin
          id="org.strategoxt.imp.metatooling"
          download-size="0"
@@ -223,7 +227,7 @@ components may be covered by different licences.
          id="org.eclipse.imp.xform"
          download-size="0"
          install-size="0"
-         version="0.1.91"
+         version="0.1.91.qualifier"
          unpack="false"/>
 
 </feature>
