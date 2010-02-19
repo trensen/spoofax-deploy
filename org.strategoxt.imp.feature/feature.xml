@@ -2,7 +2,7 @@
 <feature
       id="org.strategoxt.imp"
       label="Spoofax/IMP"
-      version="0.3.2.3"
+      version="0.3.3"
       plugin="org.strategoxt.imp.runtime">
 
    <description url="http://strategoxt.org/Stratego/Spoofax-IMP">
@@ -27,10 +27,6 @@ components may be covered by different licences.
    <url>
       <update label="Spoofax/IMP updates" url="http://www.lclnet.nl/update/"/>
    </url>
-
-   <includes
-         id="org.eclipse.pde"
-         version="0.0.0"/>
 
    <requires>
       <import plugin="org.eclipse.core.runtime"/>
