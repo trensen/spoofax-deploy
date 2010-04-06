@@ -2,11 +2,14 @@
 <feature
       id="org.strategoxt.imp"
       label="Spoofax/IMP"
-      version="0.4.2.1"
+      version="0.4.3"
       plugin="org.strategoxt.imp.runtime">
 
    <description url="http://strategoxt.org/Stratego/Spoofax-IMP">
-      Spoofax/IMP metatooling environment
+      The Spoofax/IMP language workbench.
+
+Home page:  http://www.spoofax.org
+Change log: http://strategoxt.org/Spoofax/ChangeLog
    </description>
 
    <copyright url="http://www.lclnet.nl/software/spoofax-imp/">
