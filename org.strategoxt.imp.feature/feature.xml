@@ -212,7 +212,7 @@ components may be covered by different licences.
          id="org.strategoxt.strj"
          download-size="0"
          install-size="0"
-         version="0.2.3.qualifier"/>
+         version="0.17.9.qualifier"/>
 
    <plugin
          id="org.strategoxt.imp.generator"
