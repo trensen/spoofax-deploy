@@ -2,7 +2,7 @@
 <feature
       id="org.strategoxt.imp"
       label="Spoofax/IMP"
-      version="0.5.2.93"
+      version="0.5.3"
       plugin="org.strategoxt.imp.runtime">
 
    <description url="http://strategoxt.org/Stratego/Spoofax-IMP">
@@ -170,8 +170,7 @@ components may be covered by different licences.
          id="org.strategoxt.imp.editors.editorservice"
          download-size="0"
          install-size="0"
-         version="0.1.1.qualifier"
-         unpack="true"/>
+         version="0.1.1.qualifier"/>
 
    <plugin
          id="com.ibm.wala.shrike"
@@ -224,15 +223,13 @@ components may be covered by different licences.
          id="org.strategoxt.imp.editors.sdf"
          download-size="0"
          install-size="0"
-         version="0.1.1.qualifier"
-         unpack="true"/>
+         version="0.1.1.qualifier"/>
 
    <plugin
          id="org.strategoxt.imp.editors.stratego"
          download-size="0"
          install-size="0"
-         version="0.1.1.qualifier"
-         unpack="true"/>
+         version="0.1.1.qualifier"/>
 
    <plugin
          id="org.strategoxt.imp.editors.aterm"
@@ -245,8 +242,7 @@ components may be covered by different licences.
          id="org.strategoxt.imp.nativebundle"
          download-size="0"
          install-size="0"
-         version="0.1.1.qualifier"
-         unpack="true"/>
+         version="0.1.1.qualifier"/>
 
    <plugin
          id="org.eclipse.imp.java.hosted"
