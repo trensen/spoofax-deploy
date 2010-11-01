@@ -12,3 +12,4 @@ Ways to Shoot Yourself in the Foot When Creating an Eclipse Update Site
 10. Especially DON'T invoke your favorite deity through prayer and/or song at this point
 11. If you're using a testing directory for updates, be sure you DON'T adapt site.xml with the new url
 12. Finally, to test it, DON'T use a clean Eclipse installation and DON'T use a clean workspace (Eclipse 3.4+ may do workspace-based caching!)
+13. DON'T assume 1.0.10 comes after 1.0.9
