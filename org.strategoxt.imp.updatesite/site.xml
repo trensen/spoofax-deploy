@@ -3,7 +3,7 @@
    <description name="Spoofax/IMP" url="http://www.lclnet.nl/update/">
       Spoofax/IMP update site
    </description>
-   <feature url="features/org.strategoxt.imp_0.5.3.qualifier.jar" id="org.strategoxt.imp" version="0.5.3.qualifier">
+   <feature url="features/org.strategoxt.imp_0.53.95.201012081616.jar" id="org.strategoxt.imp" version="0.53.95.201012081616">
       <category name="Spoofax/IMP"/>
    </feature>
    <category-def name="Spoofax/IMP" label="Spoofax/IMP">
