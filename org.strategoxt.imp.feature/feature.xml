@@ -98,13 +98,6 @@ components may be covered by different licences.
          unpack="false"/>
 
    <plugin
-         id="org.spoofax.interpreter.adapter.aterm"
-         download-size="0"
-         install-size="0"
-         version="0.3.11.qualifier"
-         unpack="false"/>
-
-   <plugin
          id="org.spoofax.interpreter.core"
          download-size="0"
          install-size="0"
