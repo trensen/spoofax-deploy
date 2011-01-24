@@ -272,4 +272,10 @@ components may be covered by different licences.
          version="0.1.0.qualifier"
          unpack="false"/>
 
+   <plugin
+         id="org.strategoxt.imp.testing"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.qualifier"/>
+
 </feature>
