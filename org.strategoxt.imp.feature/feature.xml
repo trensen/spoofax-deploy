@@ -98,24 +98,10 @@ components may be covered by different licences.
          unpack="false"/>
 
    <plugin
-         id="org.spoofax.interpreter"
-         download-size="0"
-         install-size="0"
-         version="0.3.11.qualifier"
-         unpack="false"/>
-
-   <plugin
-         id="org.spoofax.interpreter.adapter.aterm"
-         download-size="0"
-         install-size="0"
-         version="0.3.11.qualifier"
-         unpack="false"/>
-
-   <plugin
          id="org.spoofax.interpreter.core"
          download-size="0"
          install-size="0"
-         version="0.3.13.qualifier"
+         version="0.4.0.qualifier"
          unpack="false"/>
 
    <plugin
@@ -129,7 +115,7 @@ components may be covered by different licences.
          id="org.spoofax.jsglr"
          download-size="0"
          install-size="0"
-         version="0.2.2.qualifier"
+         version="0.3.0.qualifier"
          unpack="false"/>
 
    <plugin
