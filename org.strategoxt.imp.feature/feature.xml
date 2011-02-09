@@ -2,7 +2,7 @@
 <feature
       id="org.strategoxt.imp"
       label="Spoofax/IMP"
-      version="0.6.1.0"
+      version="0.6.1.1"
       plugin="org.strategoxt.imp.runtime">
 
    <description url="http://strategoxt.org/Stratego/Spoofax-IMP">
@@ -277,5 +277,12 @@ components may be covered by different licences.
          download-size="0"
          install-size="0"
          version="1.0.0.qualifier"/>
+
+   <plugin
+         id="org.spoofax.terms"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.qualifier"
+         unpack="false"/>
 
 </feature>
