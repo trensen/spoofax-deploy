@@ -55,9 +55,9 @@ components may be covered by different licences.
       <import plugin="org.eclipse.ui.navigator"/>
       <import plugin="org.eclipse.ui.views"/>
       <import plugin="org.eclipse.ui.workbench.texteditor"/>
-      <import plugin="org.eclipse.jdt.core" version="3.5.2" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.core" version="3.5.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.osgi"/>
-      <import plugin="org.eclipse.jdt.ui" version="3.5.2" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.ui" version="3.5.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.pde.ui"/>
       <import plugin="org.eclipse.ui.forms"/>
       <import plugin="org.eclipse.search"/>
@@ -66,7 +66,7 @@ components may be covered by different licences.
       <import plugin="org.eclipse.pde.core"/>
       <import plugin="org.eclipse.help.ui"/>
       <import plugin="org.eclipse.jdt.debug" version="3.5.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.jdt.launching" version="3.5.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jdt.launching" version="3.5.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.variables"/>
    </requires>
 
@@ -309,14 +309,12 @@ components may be covered by different licences.
          id="strj_dbg_transformer"
          download-size="0"
          install-size="0"
-         version="1.0.0"
-         unpack="false"/>
+         version="1.0.0"/>
 
    <plugin
          id="strjdbgruntimelib"
          download-size="0"
          install-size="0"
-         version="1.0.0"
-         unpack="false"/>
+         version="1.0.0"/>
 
 </feature>
