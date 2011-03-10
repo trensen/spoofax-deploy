@@ -306,15 +306,15 @@ components may be covered by different licences.
          unpack="false"/>
 
    <plugin
-         id="strj_dbg_transformer"
+         id="org.strategoxt.imp.debug.stratego.runtime"
          download-size="0"
          install-size="0"
-         version="1.0.0"/>
+         version="0.1.0.qualifier"/>
 
    <plugin
-         id="strjdbgruntimelib"
+         id="org.strategoxt.imp.debug.stratego.transformer"
          download-size="0"
          install-size="0"
-         version="1.0.0"/>
+         version="0.1.0.qualifier"/>
 
 </feature>
