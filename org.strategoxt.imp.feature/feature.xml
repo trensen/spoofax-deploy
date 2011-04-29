@@ -317,4 +317,11 @@ components may be covered by different licences.
          install-size="0"
          version="0.1.0.qualifier"/>
 
+   <plugin
+         id="org.spoofax.interpreter.library.language"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>
