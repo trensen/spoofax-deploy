@@ -336,16 +336,17 @@ components may be covered by different licences.
          download-size="0"
          install-size="0"
          version="1.0.0.qualifier"/>
-   	
+
    <plugin
          id="org.strategoxt.imp.editors.spoofax.configuration"
          download-size="0"
          install-size="0"
-         version="1.0.0.qualifier"/>
-         
-	  <plugin
+         version="1.0.0"/>
+
+   <plugin
          id="org.strategoxt.imp.spoofax.generator"
          download-size="0"
          install-size="0"
-         version="1.0.0.qualifier"/>
+         version="0.1.2.qualifier"/>
+
 </feature>
