@@ -347,7 +347,12 @@ components may be covered by different licences.
          id="org.strategoxt.imp.spoofax.generator"
          download-size="0"
          install-size="0"
-         unpack="true"
          version="0.1.2.qualifier"/>
+
+   <plugin
+         id="org.strategoxt.imp.testing.ui"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.qualifier"/>
 
 </feature>
