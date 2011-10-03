@@ -276,7 +276,7 @@ components may be covered by different licences.
          id="org.strategoxt.imp.testing"
          download-size="0"
          install-size="0"
-         version="1.0.0.qualifier"/>
+         version="1.0.1.qualifier"/>
 
    <plugin
          id="org.spoofax.terms"
@@ -353,6 +353,6 @@ components may be covered by different licences.
          id="org.strategoxt.imp.testing.ui"
          download-size="0"
          install-size="0"
-         version="1.0.0.qualifier"/>
+         version="1.0.1.qualifier"/>
 
 </feature>
