@@ -2,7 +2,7 @@
 <feature
       id="org.strategoxt.imp"
       label="Spoofax/IMP"
-      version="0.6.1.4"
+      version="0.7"
       plugin="org.strategoxt.imp.runtime">
 
    <description url="http://strategoxt.org/Stratego/Spoofax-IMP">
@@ -20,11 +20,10 @@ Change log: http://strategoxt.org/Spoofax/ChangeLog
       This software is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-full license text for more details.
-Most Spoofax/IMP code is licensed under the Eclipse Public License.
-Some runtime components are licensed under the GNU Lesser General
-Public License or the GNU General Public License; external
-components may be covered by different licences.
+full license texts for more details.
+Most Spoofax/IMP code is licensed under the GNU Lesser General
+Public License (LGPL). Runtime components related to the IMP library are
+licensed under the Eclipse Public License (EPL).
    </license>
 
    <url>
