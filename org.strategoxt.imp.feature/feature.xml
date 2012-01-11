@@ -111,6 +111,13 @@ licensed under the Eclipse Public License (EPL).
          unpack="false"/>
 
    <plugin
+         id="org.spoofax.interpreter.ui"
+         download-size="0"
+         install-size="0"
+         version="0.4.1.qualifier"
+         unpack="false"/>
+
+   <plugin
          id="org.spoofax.interpreter.library.jline"
          download-size="0"
          install-size="0"
