@@ -177,7 +177,7 @@ licensed under the Eclipse Public License (EPL).
          id="lpg.runtime"
          download-size="0"
          install-size="0"
-         version="2.0.175900.qualifier"/>
+         version="2.0.17.qualifier"/>
 
    <plugin
          id="org.eclipse.imp.smapi"
