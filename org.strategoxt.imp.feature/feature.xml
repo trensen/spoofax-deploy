@@ -122,7 +122,7 @@ licensed under the Eclipse Public License (EPL).
          download-size="0"
          install-size="0"
          version="0.1.1.qualifier"
-         unpack="false"/>
+         unpack="true"/>
 
    <plugin
          id="org.spoofax.interpreter.library.eclipse"
