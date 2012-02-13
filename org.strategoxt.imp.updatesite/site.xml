@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description name="Spoofax/IMP" url="http://download.spoofax.org/update/stable/">
+   <description name="Spoofax/IMP" url="http://spoofax.org/update/stable/">
       Spoofax update site
    </description>
    <feature url="features/org.strategoxt.imp_1.0.1.0.jar" id="org.strategoxt.imp" version="1.0.1.0">
