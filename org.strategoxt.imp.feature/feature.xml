@@ -403,6 +403,13 @@ licensed under the Eclipse Public License (EPL).
          download-size="0"
          install-size="0"
          version="0.1.0.qualifier"/>
+         
+   <plugin
+         id="org.strategoxt.imp.names"
+         download-size="0"
+         install-size="0"
+         version="0.1.0.qualifier"
+         unpack="false"/>
 
    <plugin
          id="org.spoofax.interpreter.library.interpreter"
