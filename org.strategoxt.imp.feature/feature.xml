@@ -123,8 +123,7 @@ licensed under the Eclipse Public License (EPL).
          id="org.spoofax.interpreter.library.jline"
          download-size="0"
          install-size="0"
-         version="0.1.1.qualifier"
-         unpack="true"/>
+         version="0.1.1.qualifier"/>
 
    <plugin
          id="org.spoofax.interpreter.library.eclipse"
@@ -403,13 +402,12 @@ licensed under the Eclipse Public License (EPL).
          download-size="0"
          install-size="0"
          version="0.1.0.qualifier"/>
-         
+
    <plugin
          id="org.strategoxt.imp.names"
          download-size="0"
          install-size="0"
-         version="0.1.0.qualifier"
-         unpack="false"/>
+         version="0.1.0.qualifier"/>
 
    <plugin
          id="org.spoofax.interpreter.library.interpreter"
