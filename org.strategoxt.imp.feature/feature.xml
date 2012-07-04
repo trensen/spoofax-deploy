@@ -245,6 +245,7 @@ licensed under the Eclipse Public License (EPL).
          id="org.strategoxt.imp.generator"
          download-size="0"
          install-size="0"
+         unpack="true"
          version="0.1.2.qualifier"/>
 
    <plugin
