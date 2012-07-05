@@ -245,7 +245,6 @@ licensed under the Eclipse Public License (EPL).
          id="org.strategoxt.imp.generator"
          download-size="0"
          install-size="0"
-         unpack="true"
          version="0.1.2.qualifier"/>
 
    <plugin
@@ -415,6 +414,27 @@ licensed under the Eclipse Public License (EPL).
          download-size="0"
          install-size="0"
          version="0.1.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.strategoxt.imp.runtime.sidebyside.latest"
+         download-size="0"
+         install-size="0"
+         version="0.0.1.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.strategoxt.imp.runtime.sidebyside.legacy"
+         download-size="0"
+         install-size="0"
+         version="0.0.1.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.strategoxt.imp.runtime.sidebyside.main"
+         download-size="0"
+         install-size="0"
+         version="0.0.1.qualifier"
          unpack="false"/>
 
 </feature>
