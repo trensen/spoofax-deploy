@@ -2,7 +2,7 @@
 <feature
       id="org.strategoxt.imp"
       label="Spoofax/IMP"
-      version="1.0.2.0"
+      version="1.1.0"
       plugin="org.strategoxt.imp.runtime">
 
    <description url="http://strategoxt.org/Stratego/Spoofax-IMP">
@@ -17,7 +17,9 @@ Change log: http://strategoxt.org/Spoofax/ChangeLog
    </copyright>
 
    <license url="http://www.spoofax.org/">
-      This software is distributed in the hope that it will be useful,
+      Spoofax License Information
+
+This software is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 full license texts for more details.
@@ -80,7 +82,7 @@ licensed under the Eclipse Public License (EPL).
          id="org.strategoxt.imp.runtime"
          download-size="0"
          install-size="0"
-         version="0.1.1.qualifier"
+         version="0.1.2.qualifier"
          unpack="false"/>
 
    <plugin
@@ -104,6 +106,47 @@ licensed under the Eclipse Public License (EPL).
          unpack="false"/>
 
    <plugin
+         id="org.spoofax.interpreter"
+         download-size="0"
+         install-size="0"
+         version="0.4.1.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.spoofax.interpreter.ui"
+         download-size="0"
+         install-size="0"
+         version="0.4.2.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.spoofax.interpreter.library.jline"
+         download-size="0"
+         install-size="0"
+         version="0.1.1.qualifier"/>
+
+   <plugin
+         id="org.spoofax.interpreter.library.eclipse"
+         download-size="0"
+         install-size="0"
+         version="0.2.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.spoofax.interpreter.adapter.ecj"
+         download-size="0"
+         install-size="0"
+         version="0.2.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.spoofax.interpreter.library.java"
+         download-size="0"
+         install-size="0"
+         version="0.1.1.qualifier"
+         unpack="false"/>
+
+   <plugin
          id="org.spoofax.interpreter.library.jsglr"
          download-size="0"
          install-size="0"
@@ -121,14 +164,14 @@ licensed under the Eclipse Public License (EPL).
          id="org.eclipse.imp.lpg"
          download-size="0"
          install-size="0"
-         version="0.1.84.qualifier"
+         version="0.1.845900.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.runtime"
          download-size="0"
          install-size="0"
-         version="0.1.101.qualifier"
+         version="0.1.1015900.qualifier"
          unpack="false"/>
 
    <plugin
@@ -141,14 +184,14 @@ licensed under the Eclipse Public License (EPL).
          id="org.eclipse.imp.smapi"
          download-size="0"
          install-size="0"
-         version="0.1.89.qualifier"
+         version="0.1.895900.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.smapifier"
          download-size="0"
          install-size="0"
-         version="0.1.89.qualifier"
+         version="0.1.895900.qualifier"
          unpack="false"/>
 
    <plugin
@@ -168,28 +211,28 @@ licensed under the Eclipse Public License (EPL).
          id="org.eclipse.imp.metatooling"
          download-size="0"
          install-size="0"
-         version="0.1.92.qualifier"
+         version="0.1.925900.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.preferences"
          download-size="0"
          install-size="0"
-         version="0.1.86.qualifier"
+         version="0.1.865900.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.prefspecs"
          download-size="0"
          install-size="0"
-         version="0.1.89.qualifier"
+         version="0.1.895900.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.presentation"
          download-size="0"
          install-size="0"
-         version="0.1.7.qualifier"
+         version="0.1.75900.qualifier"
          unpack="false"/>
 
    <plugin
@@ -233,21 +276,21 @@ licensed under the Eclipse Public License (EPL).
          id="org.eclipse.imp.java.hosted"
          download-size="0"
          install-size="0"
-         version="0.1.2.qualifier"
+         version="0.1.25900.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.lpg.ide"
          download-size="0"
          install-size="0"
-         version="0.1.87.qualifier"
+         version="0.1.875900.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.xform"
          download-size="0"
          install-size="0"
-         version="0.1.91.qualifier"
+         version="0.1.915900.qualifier"
          unpack="false"/>
 
    <plugin
@@ -317,6 +360,13 @@ licensed under the Eclipse Public License (EPL).
          version="0.1.0.qualifier"/>
 
    <plugin
+         id="org.spoofax.interpreter.library.index"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.qualifier"
+         unpack="false"/>
+
+   <plugin
          id="org.spoofax.interpreter.library.language"
          download-size="0"
          install-size="0"
@@ -353,5 +403,45 @@ licensed under the Eclipse Public License (EPL).
          download-size="0"
          install-size="0"
          version="1.0.1.qualifier"/>
+
+   <plugin
+         id="org.strategoxt.imp.editors.template"
+         download-size="0"
+         install-size="0"
+         version="0.1.0.qualifier"/>
+
+   <plugin
+         id="org.strategoxt.imp.names"
+         download-size="0"
+         install-size="0"
+         version="0.1.0.qualifier"/>
+
+   <plugin
+         id="org.spoofax.interpreter.library.interpreter"
+         download-size="0"
+         install-size="0"
+         version="0.1.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.strategoxt.imp.runtime.sidebyside.latest"
+         download-size="0"
+         install-size="0"
+         version="0.0.1.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.strategoxt.imp.runtime.sidebyside.legacy"
+         download-size="0"
+         install-size="0"
+         version="0.0.1.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.strategoxt.imp.runtime.sidebyside.main"
+         download-size="0"
+         install-size="0"
+         version="0.0.1.qualifier"
+         unpack="false"/>
 
 </feature>
