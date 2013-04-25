@@ -381,6 +381,13 @@ licensed under the Eclipse Public License (EPL).
          unpack="false"/>
 
    <plugin
+         id="org.spoofax.interpreter.externaldeps"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.qualifier"
+         unpack="false"/>
+
+   <plugin
          id="org.spoofax.interpreter.library.xml"
          download-size="0"
          install-size="0"
