@@ -456,7 +456,6 @@ licensed under the Eclipse Public License (EPL).
          id="org.metaborg.meta.lang.nabl"
          download-size="0"
          install-size="0"
-         version="0.1.0.qualifier"
-         unpack="false"/>
+         version="0.1.0.qualifier"/>
 
 </feature>
