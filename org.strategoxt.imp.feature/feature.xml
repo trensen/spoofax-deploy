@@ -425,7 +425,7 @@ licensed under the Eclipse Public License (EPL).
          version="0.1.0.qualifier"/>
 
    <plugin
-         id="org.strategoxt.imp.names"
+         id="org.metaborg.meta.lang.nabl"
          download-size="0"
          install-size="0"
          version="0.1.0.qualifier"/>
