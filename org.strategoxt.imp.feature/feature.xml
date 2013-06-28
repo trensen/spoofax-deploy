@@ -239,7 +239,7 @@ licensed under the Eclipse Public License (EPL).
          id="org.strategoxt.strj"
          download-size="0"
          install-size="0"
-         version="0.17.92.qualifier"/>
+         version="0.18.00.qualifier"/>
 
    <plugin
          id="org.strategoxt.imp.generator"
