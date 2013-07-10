@@ -46,7 +46,6 @@ licensed under the Eclipse Public License (EPL).
       <import plugin="org.eclipse.ant.core"/>
       <import plugin="org.eclipse.ui.console"/>
       <import plugin="org.eclipse.debug.ui"/>
-      <import plugin="org.junit4"/>
       <import plugin="org.eclipse.compare"/>
       <import plugin="org.eclipse.core.filesystem"/>
       <import plugin="org.eclipse.debug.core"/>
