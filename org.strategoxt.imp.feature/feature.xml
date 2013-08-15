@@ -6,29 +6,29 @@
 	plugin="org.strategoxt.imp.runtime">
 
 	<description url="http://strategoxt.org/Stratego/Spoofax-IMP">
-		The Spoofax/IMP language workbench.
+The Spoofax/IMP language workbench.
 
-		Home page: http://www.spoofax.org
-		Change log:
-		http://strategoxt.org/Spoofax/ChangeLog
+Home page: http://www.spoofax.org
+Change log:
+http://strategoxt.org/Spoofax/ChangeLog
 	</description>
 
 	<copyright url="http://www.spoofax.org/">
-		Copyright (c) Lennart C. L. Kats 2010
+Copyright (c) Lennart C. L. Kats 2010
 	</copyright>
 
 	<license url="http://www.spoofax.org/">
-		Spoofax License Information
+Spoofax License Information
 
-		This software is distributed in the hope that it will be useful,
-		but
-		WITHOUT ANY WARRANTY; without even the implied warranty of
-		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-		full license texts for more details.
-		Most Spoofax/IMP code is licensed under the GNU Lesser General
-		Public License
-		(LGPL). Runtime components related to the IMP library are
-		licensed under the Eclipse Public License (EPL).
+This software is distributed in the hope that it will be useful,
+but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+full license texts for more details.
+Most Spoofax/IMP code is licensed under the GNU Lesser General
+Public License
+(LGPL). Runtime components related to the IMP library are
+licensed under the Eclipse Public License (EPL).
 	</license>
 
 	<url>
