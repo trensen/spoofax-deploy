@@ -40,7 +40,7 @@ licensed under the Eclipse Public License (EPL).
 	<requires>
 		<import
 			plugin="org.eclipse.core.runtime"
-			version="3.5.0"
+			version="3.8.0"
 			match="greaterOrEqual" />
 		<import plugin="org.eclipse.core.resources" />
 		<import plugin="org.junit" />
@@ -65,7 +65,7 @@ licensed under the Eclipse Public License (EPL).
 		<import plugin="org.eclipse.ui.workbench.texteditor" />
 		<import
 			plugin="org.eclipse.jdt.core"
-			version="3.5.0"
+			version="3.8.0"
 			match="greaterOrEqual" />
 		<import plugin="org.eclipse.osgi" />
 		<import plugin="org.eclipse.jdt.ui" />
