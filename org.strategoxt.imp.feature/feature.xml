@@ -362,13 +362,6 @@ licensed under the Eclipse Public License (EPL).
 		unpack="false" />
 
 	<plugin
-		id="org.strategoxt.imp.runtime.sidebyside.legacy"
-		download-size="0"
-		install-size="0"
-		version="1.2.0.qualifier"
-		unpack="false" />
-
-	<plugin
 		id="org.strategoxt.imp.runtime.sidebyside.main"
 		download-size="0"
 		install-size="0"
