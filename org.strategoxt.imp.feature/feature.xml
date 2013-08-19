@@ -106,12 +106,14 @@ licensed under the Eclipse Public License (EPL).
 
 	<!-- mb-exec -->
 
+	<!--
 	<plugin
 		id="org.spoofax.compiler"
 		download-size="0"
 		install-size="0"
 		version="1.2.0.qualifier"
 		unpack="false" />
+	-->
 
 	<plugin
 		id="org.spoofax.interpreter.core"
@@ -299,7 +301,8 @@ licensed under the Eclipse Public License (EPL).
 
 
 	<!-- spoofaxlang -->
-
+	
+	<!-- 
 	<plugin
 		id="org.spoofax.interpreter.library.language"
 		download-size="0"
@@ -324,7 +327,8 @@ licensed under the Eclipse Public License (EPL).
 		download-size="0"
 		install-size="0"
 		version="1.2.0.qualifier" />
-
+	-->
+	
 
 	<!-- spoofax -->
 
