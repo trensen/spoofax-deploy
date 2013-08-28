@@ -262,8 +262,7 @@ licensed under the Eclipse Public License (EPL).
          id="org.strategoxt.imp.editors.aterm"
          download-size="0"
          install-size="0"
-         version="0.1.1.qualifier"
-         unpack="false"/>
+         version="0.1.1.qualifier"/>
 
    <plugin
          id="org.strategoxt.imp.nativebundle"
