@@ -14,8 +14,8 @@ done
 
 rm -rf 'META-INF'
 
-cd ..
 echo 'Jarring spoofax-libs.jar'
-$JAR cf spoofax-libs.jar jartmp
+$JAR cf ../spoofax-libs.jar .
+cd ..
 
 rm -rf jartmp
