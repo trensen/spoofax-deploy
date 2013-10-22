@@ -248,6 +248,12 @@ licensed under the Eclipse Public License (EPL).
 		version="1.2.0.qualifier" />
 		
 	<plugin
+		id="org.metaborg.meta.lang.ts"
+		download-size="0"
+		install-size="0"
+		version="1.2.0.qualifier" />
+		
+	<plugin
 		id="org.metaborg.meta.lang.analysis"
 		download-size="0"
 		install-size="0"
