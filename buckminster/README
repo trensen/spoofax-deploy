@@ -11,6 +11,7 @@ Build a headless Eclipse installation:
 Build the Spoofax libraries jar file:
 
     cd spoofax-libs
+    sh clone.sh
     sh build.sh
 
 The Spoofax libraries jar file is created as `spoofax-libs.jar`.
