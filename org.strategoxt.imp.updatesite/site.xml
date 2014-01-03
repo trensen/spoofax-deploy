@@ -4,9 +4,12 @@
       Spoofax update site
    </description>
    <feature url="features/org.strategoxt.imp_1.2.0.0.jar" id="org.strategoxt.imp" version="1.2.0.0">
-      <category name="Spoofax/IMP"/>
+      <category name="Spoofax"/>
    </feature>
-   <category-def name="Spoofax/IMP" label="Spoofax/IMP">
+   <feature url="features/org.spoofax.modelware.feature_1.0.0.qualifier.jar" id="org.spoofax.modelware.feature" version="1.0.0.qualifier">
+      <category name="Spoofax"/>
+   </feature>
+   <category-def name="Spoofax" label="Spoofax">
       <description>
          The Spoofax language workbench.
       </description>
