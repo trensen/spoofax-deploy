@@ -2,7 +2,7 @@
 <feature
       id="org.spoofax.modelware.feature"
       label="Spoofax Modelware"
-      version="1.0.0.qualifier">
+      version="1.2.0.0">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]

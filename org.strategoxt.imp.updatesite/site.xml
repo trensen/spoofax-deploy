@@ -6,7 +6,7 @@
    <feature url="features/org.strategoxt.imp_1.2.0.0.jar" id="org.strategoxt.imp" version="1.2.0.0">
       <category name="Spoofax"/>
    </feature>
-   <feature url="features/org.spoofax.modelware.feature_1.0.0.qualifier.jar" id="org.spoofax.modelware.feature" version="1.0.0.qualifier">
+   <feature url="features/org.spoofax.modelware.feature_1.2.0.0.jar" id="org.spoofax.modelware.feature" version="1.2.0.0">
       <category name="Spoofax"/>
    </feature>
    <category-def name="Spoofax" label="Spoofax">
