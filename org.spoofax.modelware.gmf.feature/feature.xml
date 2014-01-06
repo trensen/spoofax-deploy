@@ -16,62 +16,6 @@
       [Enter License Description here.]
    </license>
 
-   <includes
-         id="org.eclipse.gmf"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.gmf.doc"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.gmf.examples.runtime.ui.pde"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.gmf.runtime.notation"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.gmf.runtime.notation.sdk"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.gmf.runtime.notation.source"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.gmf.runtime.sdk"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.gmf.runtime.thirdparty"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.gmf.runtime.thirdparty.source"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.gmf.source"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.gmf.tooling"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.gmf.tooling.runtime"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.gmf.tooling.runtime.source"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.gmf.tooling.source"
-         version="0.0.0"/>
-
    <requires>
       <import feature="org.spoofax.modelware.emf.feature" version="1.2.0.0" match="greaterOrEqual"/>
    </requires>
