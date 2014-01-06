@@ -21,10 +21,6 @@
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.gmf.doc"
-         version="0.0.0"/>
-
-   <includes
          id="org.eclipse.gmf.examples.runtime.ui.pde"
          version="0.0.0"/>
 
