@@ -9,9 +9,6 @@
    <feature url="features/org.spoofax.modelware.emf.feature_1.2.0.0.jar" id="org.spoofax.modelware.emf.feature" version="1.2.0.0">
       <category name="Spoofax Modelware"/>
    </feature>
-   <feature url="features/org.spoofax.modelware.gmf.feature_1.2.0.0.jar" id="org.spoofax.modelware.gmf.feature" version="1.2.0.0">
-      <category name="Spoofax Modelware"/>
-   </feature>
    <category-def name="Spoofax Core" label="Spoofax Core">
       <description>
          The Spoofax Language Workbench.
