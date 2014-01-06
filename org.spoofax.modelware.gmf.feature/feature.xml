@@ -49,10 +49,6 @@
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.gmf.sdk"
-         version="0.0.0"/>
-
-   <includes
          id="org.eclipse.gmf.source"
          version="0.0.0"/>
 
