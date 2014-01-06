@@ -4,14 +4,22 @@
       Spoofax update site
    </description>
    <feature url="features/org.strategoxt.imp_1.2.0.0.jar" id="org.strategoxt.imp" version="1.2.0.0">
-      <category name="Spoofax"/>
+      <category name="Spoofax Core"/>
    </feature>
-   <feature url="features/org.spoofax.modelware.feature_1.2.0.0.jar" id="org.spoofax.modelware.feature" version="1.2.0.0">
-      <category name="Spoofax"/>
+   <feature url="features/org.spoofax.modelware.emf.feature_1.2.0.0.jar" id="org.spoofax.modelware.emf.feature" version="1.2.0.0">
+      <category name="Spoofax Modelware"/>
    </feature>
-   <category-def name="Spoofax" label="Spoofax">
+   <feature url="features/org.spoofax.modelware.gmf.feature_1.2.0.0.jar" id="org.spoofax.modelware.gmf.feature" version="1.2.0.0">
+      <category name="Spoofax Modelware"/>
+   </feature>
+   <category-def name="Spoofax Core" label="Spoofax Core">
       <description>
-         The Spoofax language workbench.
+         The Spoofax Language Workbench.
+      </description>
+   </category-def>
+   <category-def name="Spoofax Modelware" label="Spoofax Modelware">
+      <description>
+         Spoofax EMF/GMF Integration.
       </description>
    </category-def>
 </site>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.strategoxt.imp"
-      label="Spoofax"
+      label="Spoofax Core"
       version="1.2.0.0"
       plugin="org.strategoxt.imp.runtime">
 
