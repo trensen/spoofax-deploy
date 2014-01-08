@@ -16,9 +16,10 @@
       [Enter License Description here.]
    </license>
 
-   <requires>
-      <import feature="org.strategoxt.imp" version="1.2.0.0" match="greaterOrEqual"/>
-   </requires>
+   <includes
+         id="org.strategoxt.imp"
+         version="0.0.0"
+         search-location="both"/>
 
    <plugin
          id="org.spoofax.modelware.emf"

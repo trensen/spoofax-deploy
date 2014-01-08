@@ -16,9 +16,10 @@
       [Enter License Description here.]
    </license>
 
-   <requires>
-      <import feature="org.spoofax.modelware.emf.feature" version="1.2.0.0" match="greaterOrEqual"/>
-   </requires>
+   <includes
+         id="org.spoofax.modelware.emf.feature"
+         version="0.0.0"
+         search-location="both"/>
 
    <plugin
          id="org.spoofax.modelware.gmf"
