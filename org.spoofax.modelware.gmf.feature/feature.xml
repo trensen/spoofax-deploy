@@ -21,6 +21,24 @@
          version="0.0.0"
          search-location="both"/>
 
+   <requires>
+      <import feature="org.eclipse.gmf" version="1.7.0.201306111432" match="greaterOrEqual"/>
+      <import feature="org.eclipse.gmf.doc" version="1.4.0.201306121424" match="greaterOrEqual"/>
+      <import feature="org.eclipse.gmf.examples.runtime.ui.pde" version="1.7.0.201306111432" match="greaterOrEqual"/>
+      <import feature="org.eclipse.gmf.runtime.notation" version="1.7.0.201306101425" match="greaterOrEqual"/>
+      <import feature="org.eclipse.gmf.runtime.notation.sdk" version="1.7.0.201306101425" match="greaterOrEqual"/>
+      <import feature="org.eclipse.gmf.runtime.notation.source" version="1.7.0.201306101425" match="greaterOrEqual"/>
+      <import feature="org.eclipse.gmf.runtime.sdk" version="1.7.0.201306111432" match="greaterOrEqual"/>
+      <import feature="org.eclipse.gmf.runtime.thirdparty" version="1.7.0.201306111432" match="greaterOrEqual"/>
+      <import feature="org.eclipse.gmf.runtime.thirdparty.source" version="1.7.0.201306111432" match="greaterOrEqual"/>
+      <import feature="org.eclipse.gmf.sdk" version="3.1.0.201306121424" match="greaterOrEqual"/>
+      <import feature="org.eclipse.gmf.source" version="1.7.0.201306111432" match="greaterOrEqual"/>
+      <import feature="org.eclipse.gmf.tooling" version="3.1.0.201306121424" match="greaterOrEqual"/>
+      <import feature="org.eclipse.gmf.tooling.runtime" version="3.1.0.201306121424" match="greaterOrEqual"/>
+      <import feature="org.eclipse.gmf.tooling.runtime.source" version="3.1.0.201306121424" match="greaterOrEqual"/>
+      <import feature="org.eclipse.gmf.tooling.source" version="3.1.0.201306121424" match="greaterOrEqual"/>
+   </requires>
+
    <plugin
          id="org.spoofax.modelware.gmf"
          download-size="0"
