@@ -21,6 +21,11 @@
          version="0.0.0"
          search-location="both"/>
 
+   <includes
+         id="org.eclipse.gmf.sdk"
+         version="3.0.1"
+         search-location="both"/>
+
    <plugin
          id="org.spoofax.modelware.gmf"
          download-size="0"
