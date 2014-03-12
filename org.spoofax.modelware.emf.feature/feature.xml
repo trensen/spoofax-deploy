@@ -13,12 +13,17 @@
    </copyright>
 
    <license url="http://metaborg.org/wiki/spoofax/">
-This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the full license texts for more details.
+      This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the full license texts for more details.
 Most Spoofax/IMP code is licensed under the GNU Lesser General Public License (LGPL). Runtime components related to the IMP, EMF and GMF libraries are licensed under the Eclipse Public License (EPL).
    </license>
 
    <includes
          id="org.strategoxt.imp"
+         version="0.0.0"
+         search-location="both"/>
+
+   <includes
+         id="org.eclipse.emf.sdk"
          version="0.0.0"
          search-location="both"/>
 
