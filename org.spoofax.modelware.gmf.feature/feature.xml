@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.spoofax.modelware.gmf"
+      id="org.spoofax.modelware.gmf.feature"
       label="Spoofax GMF Integration"
       version="1.2.0.0">
 
