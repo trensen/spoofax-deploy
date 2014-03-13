@@ -17,18 +17,9 @@ http://strategoxt.org/Spoofax/ChangeLog
       Copyright (c) Lennart C. L. Kats 2010
    </copyright>
 
-   <license url="http://www.spoofax.org/">
-      Spoofax License Information
-
-This software is distributed in the hope that it will be useful,
-but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-full license texts for more details.
-Most Spoofax/IMP code is licensed under the GNU Lesser General
-Public License
-(LGPL). Runtime components related to the IMP library are
-licensed under the Eclipse Public License (EPL).
+   <license url="http://metaborg.org/">
+      This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the full license texts for more details.
+Most Spoofax/IMP code is licensed under the GNU Lesser General Public License (LGPL). Runtime components related to the IMP, EMF and GMF libraries are licensed under the Eclipse Public License (EPL).
    </license>
 
    <url>
