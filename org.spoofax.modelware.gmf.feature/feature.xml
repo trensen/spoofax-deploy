@@ -25,6 +25,7 @@ Most Spoofax/IMP code is licensed under the GNU Lesser General Public License (L
    <includes
          id="org.eclipse.gmf.sdk"
          version="0.0.0"
+         optional="true"
          search-location="both"/>
 
    <plugin
