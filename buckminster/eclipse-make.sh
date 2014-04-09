@@ -3,14 +3,17 @@
 ECLIPSE_REPO="http://download.eclipse.org/eclipse/updates/4.3"
 SPOOFAX_REPO="http://download.spoofax.org/update/unstable/"
 
-function create-eclipse-installation {
+function eclipse {
+
   # 1. os
   # 2. ws
   # 3. arch
   # 4. ini path
 
+  echo "Creating Eclipse installation for $1 $2 $3"
+
   INSTALL_PATH="spoofax-$1-$3"
-  INSTALL_ZIP="spoofax-$1-$3.zip"
+  INSTALL_ZIP="spoofax-$1-$3.tar.gz"
   INI_PATH="$INSTALL_PATH/$4"
 
   # Delete old stuff
@@ -46,14 +49,19 @@ function create-eclipse-installation {
   echo "-Xss16m" >> $INI_PATH
   echo "-XX:MaxPermSize=256m" >> $INI_PATH
   echo "-server" >> $INI_PATH
+
+  # Zip it
+  tar -cf $INSTALL_ZIP $INSTALL_PATH
+  rm -rf $INSTALL_PATH
+
 }
 
 
-create-eclipse-installation "macosx" "cocoa" "x86" "Eclipse.app/Contents/MacOS/eclipse.ini"
-create-eclipse-installation "macosx" "cocoa" "x86_64" "Eclipse.app/Contents/MacOS/eclipse.ini"
+eclipse "macosx" "cocoa" "x86" "Eclipse.app/Contents/MacOS/eclipse.ini"
+eclipse "macosx" "cocoa" "x86_64" "Eclipse.app/Contents/MacOS/eclipse.ini"
 
-create-eclipse-installation "win32" "win32" "x86" "eclipse.ini"
-create-eclipse-installation "win32" "win32" "x86_64" "eclipse.ini"
+eclipse "win32" "win32" "x86" "eclipse.ini"
+eclipse "win32" "win32" "x86_64" "eclipse.ini"
 
-create-eclipse-installation "linux" "gtk" "x86" "Eclipse.app/Contents/MacOS/eclipse.ini"
-create-eclipse-installation "linux" "gtk" "x86_64" "Eclipse.app/Contents/MacOS/eclipse.ini"
+eclipse "linux" "gtk" "x86" "Eclipse.app/Contents/MacOS/eclipse.ini"
+eclipse "linux" "gtk" "x86_64" "Eclipse.app/Contents/MacOS/eclipse.ini"
