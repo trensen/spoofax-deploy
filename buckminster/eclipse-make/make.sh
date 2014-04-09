@@ -25,7 +25,7 @@ function eclipse {
   rm -rf $INSTALL_ZIP
 
   # Create eclipse installation
-  ./director/director \
+  ../director/director \
     -repository $ECLIPSE_REPO,$SPOOFAX_REPO \
     -destination $INSTALL_PATH \
     -bundlepool $INSTALL_PATH \
