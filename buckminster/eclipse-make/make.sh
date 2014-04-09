@@ -1,7 +1,11 @@
 #! /bin/bash
 
-ECLIPSE_REPO="http://download.eclipse.org/eclipse/updates/4.3"
-SPOOFAX_REPO="http://download.spoofax.org/update/unstable/"
+#ECLIPSE_REPO="http://download.eclipse.org/eclipse/updates/4.3"
+#SPOOFAX_REPO="http://download.spoofax.org/update/unstable/"
+
+PWD=`pwd`
+ECLIPSE_REPO="file://$PWD/mirror-eclipse/"
+SPOOFAX_REPO="file://$PWD/mirror-spoofax/"
 
 function eclipse {
 
@@ -13,7 +17,7 @@ function eclipse {
   echo "Creating Eclipse installation for $1 $2 $3"
 
   INSTALL_PATH="spoofax-$1-$3"
-  INSTALL_ZIP="spoofax-$1-$3.tar.gz"
+  INSTALL_ZIP="spoofax-$1-$3.zip"
   INI_PATH="$INSTALL_PATH/$4"
 
   # Delete old stuff
@@ -39,9 +43,9 @@ function eclipse {
   sed -i '' -e 's|-Xss[0-9]*m||' $INI_PATH
   sed -i '' -e 's|-Xmx[0-9]*m||' $INI_PATH
   sed -i '' -e 's|-XX:MaxPermSize=[0-9]*m||' $INI_PATH
+  perl -pi -0 -w -e "s/-install\n.+//g" $INI_PATH
   sed -i '' -e '/^$/d' $INI_PATH
   perl -pi -e "s/^\r\n//" $INI_PATH
-  # TODO: Remove -install argument
 
   # Add own VM arguments
   echo "-Xms512m" >> $INI_PATH
@@ -51,17 +55,14 @@ function eclipse {
   echo "-server" >> $INI_PATH
 
   # Zip it
-  tar -cf $INSTALL_ZIP $INSTALL_PATH
+  zip -q -r $INSTALL_ZIP $INSTALL_PATH
   rm -rf $INSTALL_PATH
 
 }
 
-
 eclipse "macosx" "cocoa" "x86" "Eclipse.app/Contents/MacOS/eclipse.ini"
 eclipse "macosx" "cocoa" "x86_64" "Eclipse.app/Contents/MacOS/eclipse.ini"
-
 eclipse "win32" "win32" "x86" "eclipse.ini"
 eclipse "win32" "win32" "x86_64" "eclipse.ini"
-
-eclipse "linux" "gtk" "x86" "Eclipse.app/Contents/MacOS/eclipse.ini"
-eclipse "linux" "gtk" "x86_64" "Eclipse.app/Contents/MacOS/eclipse.ini"
+eclipse "linux" "gtk" "x86" "eclipse.ini"
+eclipse "linux" "gtk" "x86_64" "eclipse.ini"
