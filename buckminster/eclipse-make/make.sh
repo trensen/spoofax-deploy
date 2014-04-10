@@ -13,15 +13,20 @@ function eclipse {
   # 2. ws
   # 3. arch
   # 4. ini path
+  # 5. JRE path relative to ini file
 
   echo "Creating Eclipse installation for $1 $2 $3"
 
   INSTALL_PATH="spoofax-$1-$3"
+  INSTALL_NOJAVA_ZIP="spoofax-$1-$3-nojre.zip"
   INSTALL_ZIP="spoofax-$1-$3.zip"
   INI_PATH="$INSTALL_PATH/$4"
+  JRE_PATH="$INSTALL_PATH/jre"
+  JRE_RELATIVE_TO_INI_PATH="$5"
 
   # Delete old stuff
   rm -rf $INSTALL_PATH
+  rm -rf $INSTALL_NOJAVA_ZIP
   rm -rf $INSTALL_ZIP
 
   # Create eclipse installation
@@ -54,15 +59,30 @@ function eclipse {
   echo "-XX:MaxPermSize=256m" >> $INI_PATH
   echo "-server" >> $INI_PATH
 
-  # Zip it
+  # Zip it without JRE
+  zip -q -r $INSTALL_NOJAVA_ZIP $INSTALL_PATH
+
+
+  # Copy JRE into Eclipse directory
+  mkdir -p $JRE_PATH
+  cp -R "jre/$1_$3/." $JRE_PATH
+
+  # Prepend VM argument
+  sed -i '' -e "1s;^;-vm@$JRE_RELATIVE_TO_INI_PATH@;" $INI_PATH
+  tr "@" "\n" < $INI_PATH > "$INI_PATH.tmp"
+  rm $INI_PATH
+  mv "$INI_PATH.tmp" $INI_PATH
+
+  # Zip it with JRE
   zip -q -r $INSTALL_ZIP $INSTALL_PATH
+
+  # Delete installation folder
   rm -rf $INSTALL_PATH
 
 }
 
-eclipse "macosx" "cocoa" "x86" "Eclipse.app/Contents/MacOS/eclipse.ini"
-eclipse "macosx" "cocoa" "x86_64" "Eclipse.app/Contents/MacOS/eclipse.ini"
-eclipse "win32" "win32" "x86" "eclipse.ini"
-eclipse "win32" "win32" "x86_64" "eclipse.ini"
-eclipse "linux" "gtk" "x86" "eclipse.ini"
-eclipse "linux" "gtk" "x86_64" "eclipse.ini"
+eclipse "macosx" "cocoa" "x86_64" "Eclipse.app/Contents/MacOS/eclipse.ini" "../../../jre/bin/java"
+eclipse "win32" "win32" "x86" "eclipse.ini" "jre\\\bin\\\javaw.exe"
+eclipse "win32" "win32" "x86_64" "eclipse.ini" "jre\\\bin\\\javaw.exe"
+eclipse "linux" "gtk" "x86" "eclipse.ini" "jre/bin/java"
+eclipse "linux" "gtk" "x86_64" "eclipse.ini" "jre/bin/java"
