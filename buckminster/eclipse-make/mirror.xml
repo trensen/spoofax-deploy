@@ -3,8 +3,17 @@
 	<target name="all">
 		<p2.mirror source="http://download.eclipse.org/eclipse/updates/4.3">
 			<destination location="${basedir}/mirror-eclipse" />
-			<!-- <iu id="org.eclipse.sdk.feature.group" /> -->
 			<iu id="org.eclipse.sdk.ide" />
+			<iu id="org.eclipse.jdt.feature.group" />
+			<iu id="org.eclipse.jdt.source.feature.group" />
+			<iu id="org.eclipse.pde.feature.group" />
+			<iu id="org.eclipse.pde.source.feature.group" />
+		</p2.mirror>
+
+		<p2.mirror source="http://download.eclipse.org/egit/updates">
+			<destination location="${basedir}/mirror-egit" />
+			<iu id="org.eclipse.egit.feature.group" />
+			<iu id="org.eclipse.jgit.feature.group" />
 		</p2.mirror>
 
 		<p2.mirror source="http://download.spoofax.org/update/unstable">

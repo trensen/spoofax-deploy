@@ -1,7 +1,7 @@
 #! /bin/bash
 
-# Exit on interruption
-terminate() { exit $? }
+# Exit on interruption.
+function terminate() { exit $?; }
 trap terminate SIGINT
 
 
@@ -14,6 +14,14 @@ if [ -d "$PWD/mirror-eclipse/" ]; then
 else
   ECLIPSE_REPO="http://download.eclipse.org/eclipse/updates/4.3";
   echo "Using online Eclipse repository: $ECLIPSE_REPO";
+fi
+
+if [ -d "$PWD/mirror-egit/" ]; then
+  EGIT_REPO="file://$PWD/mirror-egit/";
+  echo "Using mirrored EGit repository: $EGIT_REPO";
+else
+  EGIT_REPO="http://download.eclipse.org/egit/updates";
+  echo "Using online Eclipse repository: $EGIT_REPO";
 fi
 
 if [ -d "$PWD/mirror-spoofax/" ]; then
@@ -48,12 +56,18 @@ function eclipse {
 
   # Create eclipse installation
   ../director/director \
-    -repository $ECLIPSE_REPO,$SPOOFAX_REPO \
+    -repository $ECLIPSE_REPO,$SPOOFAX_REPO,$EGIT_REPO \
     -destination $INSTALL_PATH \
     -bundlepool $INSTALL_PATH \
     -profile SDKProfile \
     -profileProperties org.eclipse.update.install.features=true \
     -installIU org.eclipse.sdk.ide \
+    -installIU org.eclipse.jdt.feature.group \
+    -installIU org.eclipse.jdt.source.feature.group \
+    -installIU org.eclipse.pde.feature.group \
+    -installIU org.eclipse.pde.source.feature.group \
+    -installIU org.eclipse.jgit.feature.group \
+    -installIU org.eclipse.egit.feature.group \
     -installIU org.strategoxt.imp.feature.group \
     -p2.os $1 \
     -p2.ws $2 \
