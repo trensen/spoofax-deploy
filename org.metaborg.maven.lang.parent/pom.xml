@@ -1,0 +1,115 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>org.metaborg.maven.lang.parent</artifactId>
+	<version>1.2.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>org.metaborg</groupId>
+		<artifactId>org.metaborg.maven.plugin.parent</artifactId>
+		<version>1.2.0-SNAPSHOT</version>
+		<relativePath>../org.metaborg.maven.plugin.parent</relativePath>
+	</parent>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<dependencies>
+					<dependency>
+						<groupId>local</groupId>
+						<artifactId>aster</artifactId>
+						<version>1.0</version>
+						<scope>system</scope>
+						<systemPath>''${basedir}/../org.strategoxt.imp.generator/dist/aster.jar</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>local</groupId>
+						<artifactId>strategoxt</artifactId>
+						<version>1.0</version>
+						<scope>system</scope>
+						<systemPath>''${basedir}/../org.strategoxt.strj/java/strategoxt.jar</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>local</groupId>
+						<artifactId>sdf2imp</artifactId>
+						<version>1.0</version>
+						<scope>system</scope>
+						<systemPath>''${basedir}/../org.strategoxt.imp.generator/dist/sdf2imp.jar</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>local</groupId>
+						<artifactId>make_permissive.jar</artifactId>
+						<version>1.0</version>
+						<scope>system</scope>
+						<systemPath>''${basedir}/../org.strategoxt.imp.generator/dist/make_permissive.jar</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>com.sun</groupId>
+						<artifactId>tools</artifactId>
+						<version>1.4.2</version>
+						<scope>system</scope>
+						<systemPath>''${java.home}/../lib/tools.jar</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>ecj</groupId>
+						<artifactId>ecj</artifactId>
+						<version>1.0</version>
+						<scope>system</scope>
+						<systemPath>${pkgs.ecj}/share/java/ecj.jar</systemPath>
+					</dependency>
+					<dependency>
+						<groupId>jline</groupId>
+						<artifactId>jline</artifactId>
+						<version>1.0</version>
+						<scope>system</scope>
+						<systemPath>''${basedir}/../org.spoofax.interpreter.library.jline/lib/jline-1.0.jar</systemPath>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>generate-sources</id>
+						<phase>generate-sources</phase>
+						<configuration>
+							<tasks>
+								<echo>Running ant script</echo>
+								<property name="externaljarx" refid="maven.compile.classpath" />
+								<property name="eclipse.spoofaximp.jars" value="''${basedir}/../org.strategoxt.imp.generator/dist/" />
+								<property name="eclipse.spoofaximp.strategojar" value="''${basedir}/../org.strategoxt.strj/java/strategoxt.jar" />
+								<property name="eclipse.home" value="${eclipse}/eclipse" />
+								<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
+								<ant antfile="build.main.xml" inheritRefs="true">
+								</ant>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>process-classes</id>
+						<phase>process-classes</phase>
+						<configuration>
+							<tasks>
+								<echo>Running ant script</echo>
+								<property name="eclipse.spoofaximp.jars" value="''${basedir}/../org.strategoxt.imp.generator/dist/" />
+								<property name="eclipse.spoofaximp.strategojar" value="''${basedir}/../org.strategoxt.strj/java/strategoxt.jar" />
+								<property name="eclipse.home" value="${eclipse}/eclipse" />
+								<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
+								<ant antfile="build.main.xml" inheritRefs="true">
+									<target name="java.jar" />
+								</ant>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
