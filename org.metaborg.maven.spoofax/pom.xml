@@ -8,7 +8,7 @@
 
 	<modules>
 		<!-- Representation -->
-		<module>../../../../mb-rep/org.spoofax.aterm</module>
+		<module>../../mb-rep/org.spoofax.aterm</module>
 		<module>../../mb-rep/org.spoofax.interpreter.library.index</module>
 		<module>../../mb-rep/org.spoofax.terms</module>
 

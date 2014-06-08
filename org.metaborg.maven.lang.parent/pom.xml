@@ -24,41 +24,43 @@
 						<artifactId>aster</artifactId>
 						<version>1.0</version>
 						<scope>system</scope>
-						<systemPath>''${basedir}/../org.strategoxt.imp.generator/dist/aster.jar</systemPath>
+						<systemPath>$${basedir}/../org.strategoxt.imp.generator/dist/aster.jar</systemPath>
 					</dependency>
 					<dependency>
 						<groupId>local</groupId>
 						<artifactId>strategoxt</artifactId>
 						<version>1.0</version>
 						<scope>system</scope>
-						<systemPath>''${basedir}/../org.strategoxt.strj/java/strategoxt.jar</systemPath>
+						<systemPath>$${basedir}/../org.strategoxt.strj/java/strategoxt.jar</systemPath>
 					</dependency>
 					<dependency>
 						<groupId>local</groupId>
 						<artifactId>sdf2imp</artifactId>
 						<version>1.0</version>
 						<scope>system</scope>
-						<systemPath>''${basedir}/../org.strategoxt.imp.generator/dist/sdf2imp.jar</systemPath>
+						<systemPath>$${basedir}/../org.strategoxt.imp.generator/dist/sdf2imp.jar</systemPath>
 					</dependency>
 					<dependency>
 						<groupId>local</groupId>
 						<artifactId>make_permissive.jar</artifactId>
 						<version>1.0</version>
 						<scope>system</scope>
-						<systemPath>''${basedir}/../org.strategoxt.imp.generator/dist/make_permissive.jar</systemPath>
+						<systemPath>$${basedir}/../org.strategoxt.imp.generator/dist/make_permissive.jar</systemPath>
 					</dependency>
 					<dependency>
 						<groupId>com.sun</groupId>
 						<artifactId>tools</artifactId>
 						<version>1.4.2</version>
 						<scope>system</scope>
-						<systemPath>''${java.home}/../lib/tools.jar</systemPath>
+						<!-- TODO: java.home is nix value -->
+						<systemPath>${java.home}/../lib/tools.jar</systemPath>
 					</dependency>
 					<dependency>
 						<groupId>ecj</groupId>
 						<artifactId>ecj</artifactId>
 						<version>1.0</version>
 						<scope>system</scope>
+						<!-- TODO: pkgs.ecj is nix value -->
 						<systemPath>${pkgs.ecj}/share/java/ecj.jar</systemPath>
 					</dependency>
 					<dependency>
@@ -66,43 +68,42 @@
 						<artifactId>jline</artifactId>
 						<version>1.0</version>
 						<scope>system</scope>
-						<systemPath>''${basedir}/../org.spoofax.interpreter.library.jline/lib/jline-1.0.jar</systemPath>
+						<systemPath>$${basedir}/../org.spoofax.interpreter.library.jline/lib/jline-1.0.jar</systemPath>
 					</dependency>
 				</dependencies>
 				<executions>
 					<execution>
-						<id>generate-sources</id>
+						<id>build-spoofax-language</id>
 						<phase>generate-sources</phase>
 						<configuration>
-							<tasks>
-								<echo>Running ant script</echo>
+							<target>
 								<property name="externaljarx" refid="maven.compile.classpath" />
-								<property name="eclipse.spoofaximp.jars" value="''${basedir}/../org.strategoxt.imp.generator/dist/" />
-								<property name="eclipse.spoofaximp.strategojar" value="''${basedir}/../org.strategoxt.strj/java/strategoxt.jar" />
+								<property name="eclipse.spoofaximp.jars" value="$${basedir}/../org.strategoxt.imp.generator/dist/" />
+								<property name="eclipse.spoofaximp.strategojar" value="$${basedir}/../org.strategoxt.strj/java/strategoxt.jar" />
+								<!-- TODO: eclipse is nix value -->
 								<property name="eclipse.home" value="${eclipse}/eclipse" />
 								<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
-								<ant antfile="build.main.xml" inheritRefs="true">
-								</ant>
-							</tasks>
+								<ant antfile="build.main.xml" inheritRefs="true" />
+							</target>
 						</configuration>
 						<goals>
 							<goal>run</goal>
 						</goals>
 					</execution>
 					<execution>
-						<id>process-classes</id>
+						<id>build-spoofax-language-jar</id>
 						<phase>process-classes</phase>
 						<configuration>
-							<tasks>
-								<echo>Running ant script</echo>
-								<property name="eclipse.spoofaximp.jars" value="''${basedir}/../org.strategoxt.imp.generator/dist/" />
-								<property name="eclipse.spoofaximp.strategojar" value="''${basedir}/../org.strategoxt.strj/java/strategoxt.jar" />
+							<target>
+								<property name="eclipse.spoofaximp.jars" value="$${basedir}/../org.strategoxt.imp.generator/dist/" />
+								<property name="eclipse.spoofaximp.strategojar" value="$${basedir}/../org.strategoxt.strj/java/strategoxt.jar" />
+								<!-- TODO: eclipse is nix value -->
 								<property name="eclipse.home" value="${eclipse}/eclipse" />
 								<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
 								<ant antfile="build.main.xml" inheritRefs="true">
 									<target name="java.jar" />
 								</ant>
-							</tasks>
+							</target>
 						</configuration>
 						<goals>
 							<goal>run</goal>
