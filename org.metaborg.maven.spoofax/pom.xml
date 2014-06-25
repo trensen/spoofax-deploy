@@ -6,6 +6,8 @@
 	<version>1.2.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
+
+
 	<modules>
 		<!-- Representation -->
 		<module>../../mb-rep/org.spoofax.aterm</module>
@@ -89,5 +91,8 @@
 		<module>../../imp-patched/org.eclipse.imp.smapi</module>
 		<module>../../imp-patched/org.eclipse.imp.smapifier</module>
 		<module>../../imp-patched/org.eclipse.imp.xform</module>
+		
+		<module>../../lpg-runtime</module>
+		<module>../../shrike</module>
 	</modules>
 </project>
