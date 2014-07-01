@@ -13,6 +13,7 @@
 	</parent>
 
 	<build>
+		<sourceDirectory>editor/java</sourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -88,27 +89,28 @@
 					</dependency>
 				</dependencies>
 				<executions>
-          <execution>
-            <id>clean-spoofax-language</id>
-            <phase>clean</phase>
-            <configuration>
-              <target>
-                <property name="eclipse.spoofaximp.jars" value="${dist-loc}" />
-                <property name="eclipse.spoofaximp.strategojar" value="${strategoxt-jar}" />
-                <property name="build.strategoxt.sdf" value="${native-loc}" />
-                <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
-                <ant antfile="build.main.xml" inheritRefs="true">
-                  <target name="clean" />
-                </ant>
-              </target>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-          
 					<execution>
-						<id>build-spoofax-language</id>
+						<id>spoofax-clean</id>
+						<phase>clean</phase>
+						<configuration>
+							<target>
+								<property name="externaljarx" refid="maven.compile.classpath" />
+								<property name="eclipse.spoofaximp.jars" value="${dist-loc}" />
+								<property name="eclipse.spoofaximp.strategojar" value="${strategoxt-jar}" />
+								<property name="build.strategoxt.sdf" value="${native-loc}" />
+								<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
+								<ant antfile="build.main.xml" inheritRefs="true">
+									<target name="clean" />
+								</ant>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+
+					<execution>
+						<id>spoofax-generate-sources</id>
 						<phase>generate-sources</phase>
 						<configuration>
 							<target>
@@ -117,25 +119,28 @@
 								<property name="eclipse.spoofaximp.strategojar" value="${strategoxt-jar}" />
 								<property name="build.strategoxt.sdf" value="${native-loc}" />
 								<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
-								<ant antfile="build.main.xml" inheritRefs="true" />
+								<ant antfile="build.main.xml" inheritRefs="true">
+									<target name="generate-sources" />
+								</ant>
 							</target>
 						</configuration>
 						<goals>
 							<goal>run</goal>
 						</goals>
 					</execution>
-					
+
 					<execution>
-						<id>build-spoofax-language-jar</id>
-						<phase>process-classes</phase>
+						<id>spoofax-package</id>
+						<phase>prepare-package</phase>
 						<configuration>
 							<target>
+								<property name="externaljarx" refid="maven.compile.classpath" />
 								<property name="eclipse.spoofaximp.jars" value="${dist-loc}" />
 								<property name="eclipse.spoofaximp.strategojar" value="${strategoxt-jar}" />
 								<property name="build.strategoxt.sdf" value="${native-loc}" />
 								<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
 								<ant antfile="build.main.xml" inheritRefs="true">
-									<target name="java.jar" />
+									<target name="package" />
 								</ant>
 							</target>
 						</configuration>
