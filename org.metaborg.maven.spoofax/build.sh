@@ -3,36 +3,108 @@
 set -e
 set -u
 
+
+# Parse input
+while getopts ":gjpq:m:" opt; do
+  case $opt in
+    g)
+      NO_GENERATOR="true"
+      ;;
+    j)
+      NO_JAVA_PROJECTS="true"
+      ;;
+    p)
+      NO_PLUGIN_PROJECTS="true"
+      ;;
+    q)
+      INPUT_QUALIFIER=$OPTARG
+      ;;
+    m)
+      INPUT_MAVEN_EXTRA_ARGS=$OPTARG
+      ;;
+    \?)
+      echo "Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      exit 2
+      ;;
+  esac
+done
+
+
 # Set build vars
-MVN_EXTRA_ARGS=${1:-""}
+QUALIFIER=${INPUT_QUALIFIER:-$(date +%Y%m%d%H%M)}
+MVN_EXTRA_ARGS=${INPUT_MAVEN_EXTRA_ARGS:-""}
+
 DIR=$(pwd)
 ROOT="$DIR/../../"
+
 STRATEGOXT_DISTRIB="$DIR/strategoxt-distrib"
 STRATEGOXT_JAR="$STRATEGOXT_DISTRIB/share/strategoxt/strategoxt/strategoxt.jar"
-NATIVE_LOC="$ROOT/spoofax/org.strategoxt.imp.nativebundle/native/macosx/"
 GEN_LOC="$ROOT/spoofax/org.strategoxt.imp.generator/"
 
+case $OSTYPE in
+  linux-gnu)
+    NATIVE_LOC="$ROOT/spoofax/org.strategoxt.imp.nativebundle/native/linux/"
+    ;;
+  darwin*)
+    NATIVE_LOC="$ROOT/spoofax/org.strategoxt.imp.nativebundle/native/macosx/"
+    ;;
+  cygwin)
+    NATIVE_LOC="$ROOT/spoofax/org.strategoxt.imp.nativebundle/native/cygwin/"
+    ;;
+  *)
+    echo "Unsupported platform: $OSTYPE" >&2
+    exit 3
+    ;;
+esac
+
+
 # Build the generator
-cp -R $STRATEGOXT_DISTRIB "$GEN_LOC/strategoxt-distrib"
-cd $GEN_LOC
-./build.sh
-cd $DIR
+if [ -z ${NO_GENERATOR+x} ]; then
+  cp -R $STRATEGOXT_DISTRIB "$GEN_LOC/strategoxt-distrib"
+  cd $GEN_LOC
+  ./build.sh
+  cd $DIR
+fi
 
 GEN_DIST_LOC="$GEN_LOC/dist/"
 ASTER_JAR="$GEN_DIST_LOC/aster.jar"
 SDF2IMP_JAR="$GEN_DIST_LOC/sdf2imp.jar"
 MAKE_PERMISSIVE_JAR="$GEN_DIST_LOC/make_permissive.jar"
 
+
 # Copy strategoxt.jar into java-backend
 cp $STRATEGOXT_JAR "$ROOT/strategoxt/strategoxt/stratego-libraries/java-backend/java/strategoxt.jar"
 
+
+# Build and install Java projects
+if [ -z ${NO_JAVA_PROJECTS+x} ]; then
+  MAVEN_OPTS="-Xmx1024m -Xms1024m -Xss32m -server -XX:+UseParallelGC" JAVA_HOME=$(/usr/libexec/java_home) mvn \
+    -f "$ROOT/mb-rep/org.spoofax.terms/pom.xml" \
+    -DforceContextQualifier=$QUALIFIER \
+    -Ddist-loc=$GEN_DIST_LOC \
+    -Dnative-loc=$NATIVE_LOC \
+    -Daster-jar=$ASTER_JAR \
+    -Dsdf2imp-jar=$SDF2IMP_JAR \
+    -Dmakepermissive-jar=$MAKE_PERMISSIVE_JAR \
+    -Dstrategoxt-jar=$STRATEGOXT_JAR \
+    clean install \
+    $MVN_EXTRA_ARGS
+fi
+
 # Build Spoofax
-MAVEN_OPTS="-Xmx1024m -Xms1024m -Xss32m -server -XX:+UseParallelGC" JAVA_HOME=$(/usr/libexec/java_home) mvn \
-  -Ddist-loc=$GEN_DIST_LOC \
-  -Dnative-loc=$NATIVE_LOC \
-  -Daster-jar=$ASTER_JAR \
-  -Dsdf2imp-jar=$SDF2IMP_JAR \
-  -Dmakepermissive-jar=$MAKE_PERMISSIVE_JAR \
-  -Dstrategoxt-jar=$STRATEGOXT_JAR \
-  clean verify \
-  $MVN_EXTRA_ARGS
+if [ -z ${NO_PLUGIN_PROJECTS+x} ]; then
+  MAVEN_OPTS="-Xmx1024m -Xms1024m -Xss32m -server -XX:+UseParallelGC" JAVA_HOME=$(/usr/libexec/java_home) mvn \
+    -DforceContextQualifier=$QUALIFIER \
+    -Ddist-loc=$GEN_DIST_LOC \
+    -Dnative-loc=$NATIVE_LOC \
+    -Daster-jar=$ASTER_JAR \
+    -Dsdf2imp-jar=$SDF2IMP_JAR \
+    -Dmakepermissive-jar=$MAKE_PERMISSIVE_JAR \
+    -Dstrategoxt-jar=$STRATEGOXT_JAR \
+    clean verify \
+    $MVN_EXTRA_ARGS
+fi
