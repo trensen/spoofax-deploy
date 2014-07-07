@@ -1,15 +1,79 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.metaborg</groupId>
 	<artifactId>org.metaborg.maven.java.parent</artifactId>
 	<version>1.2.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<!-- Act as Eclipse plugin project for now. -->
-	<parent>
-		<groupId>org.metaborg</groupId>
-		<artifactId>org.metaborg.maven.plugin.parent</artifactId>
-		<version>1.2.0-SNAPSHOT</version>
-		<relativePath>../org.metaborg.maven.plugin.parent</relativePath>
-	</parent>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<java-version>1.7</java-version>
+		<maven-compiler-version>3.1</maven-compiler-version>
+		<maven-bundle-version>2.3.7</maven-bundle-version>
+		<maven-jar-version>2.3.1</maven-jar-version>
+		
+		<junit-version>4.11</junit-version>
+
+		<manifest-location>META-INF</manifest-location>
+		<forceContextQualifier>qualifier</forceContextQualifier>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-version}</version>
+				<configuration>
+					<source>${java-version}</source>
+					<target>${java-version}</target>
+					<debug>true</debug>
+				</configuration>
+			</plugin>
+
+			<!-- Generate MANIFEST.MF from project, to make project available to Eclipse
+				plugins. -->
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>${maven-bundle-version}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<manifestLocation>${manifest-location}</manifestLocation>
+					<instructions>
+						<!-- Fix names not to include the groupId. -->
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Name>${project.artifactId}</Bundle-Name>
+						<!-- Replace SNAPSHOT in the manifest version with given qualifier. -->
+						<Bundle-Version>$(replace;${project.version};-SNAPSHOT;.${forceContextQualifier})</Bundle-Version>
+						<Export-Package>*</Export-Package>
+					</instructions>
+				</configuration>
+				<!-- Hook in manifest generation into the process-classes phase, because
+					this is not automatically done for projects with 'jar' packaging. -->
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>manifest</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Make sure that the generated MANIFEST.MF is used in the resulting
+				JAR file. -->
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${maven-jar-version}</version>
+				<configuration>
+					<archive>
+						<manifestFile>${manifest-location}/MANIFEST.MF</manifestFile>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
