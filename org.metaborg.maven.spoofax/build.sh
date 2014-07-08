@@ -82,7 +82,7 @@ cp $STRATEGOXT_JAR "$ROOT/strategoxt/strategoxt/stratego-libraries/java-backend/
 
 function maven {
   MVN_ARGS=$1
-  MVN_FILE=${2:-"pom.xml"}
+  MVN_FILE=$2
 
   MAVEN_OPTS="-Xmx1024m -Xms1024m -Xss32m -server -XX:+UseParallelGC" JAVA_HOME=$(/usr/libexec/java_home) mvn \
     -f $MVN_FILE \
@@ -100,10 +100,10 @@ function maven {
 
 # Build and install Java projects
 if [ -z ${NO_JAVA_PROJECTS+x} ]; then
-  maven "clean install" "$ROOT/mb-rep/org.spoofax.terms/pom.xml"
+  maven "clean install" "java/pom.xml"
 fi
 
 # Build Spoofax
 if [ -z ${NO_PLUGIN_PROJECTS+x} ]; then
-  maven "clean verify"
+  maven "clean verify" "plugin/pom.xml"
 fi

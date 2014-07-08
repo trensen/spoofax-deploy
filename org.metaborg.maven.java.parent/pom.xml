@@ -13,7 +13,7 @@
 		<maven-compiler-version>3.1</maven-compiler-version>
 		<maven-bundle-version>2.3.7</maven-bundle-version>
 		<maven-jar-version>2.3.1</maven-jar-version>
-		
+
 		<junit-version>4.11</junit-version>
 
 		<manifest-location>META-INF</manifest-location>
@@ -29,6 +29,7 @@
 					<source>${java-version}</source>
 					<target>${java-version}</target>
 					<debug>true</debug>
+
 				</configuration>
 			</plugin>
 
@@ -48,6 +49,11 @@
 						<!-- Replace SNAPSHOT in the manifest version with given qualifier. -->
 						<Bundle-Version>$(replace;${project.version};-SNAPSHOT;.${forceContextQualifier})</Bundle-Version>
 						<Export-Package>*</Export-Package>
+						<Import-Package>
+							!sun.misc,
+							!sun.nio.cs,
+							*
+						</Import-Package>
 					</instructions>
 				</configuration>
 				<!-- Hook in manifest generation into the process-classes phase, because
