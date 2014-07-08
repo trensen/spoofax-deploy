@@ -2,91 +2,90 @@
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.metaborg</groupId>
-	<artifactId>org.metaborg.maven.plugin.parent</artifactId>
-	<version>1.2.0-SNAPSHOT</version>
+	<artifactId>org.metaborg.maven.parent.plugin</artifactId>
 	<packaging>pom</packaging>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<parent>
+		<groupId>org.metaborg</groupId>
+		<artifactId>org.metaborg.maven.parent</artifactId>
+		<version>1.2.0-SNAPSHOT</version>
+		<relativePath>../org.metaborg.maven.parent</relativePath>
+	</parent>
 
-		<java-version>1.7</java-version>
-		<maven-compiler-version>3.1</maven-compiler-version>
+	<properties>
 		<tycho-version>0.20.0</tycho-version>
 	</properties>
 
 	<dependencies>
+		<!-- Depend on all Java projects, so that they are findable by Tycho. -->
 		<!-- Representation -->
 		<dependency>
 			<groupId>org.metaborg</groupId>
 			<artifactId>org.spoofax.terms</artifactId>
-			<version>1.2.0-SNAPSHOT</version>
+			<version>${metaborg-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.metaborg</groupId>
 			<artifactId>org.spoofax.aterm</artifactId>
-			<version>1.2.0-SNAPSHOT</version>
+			<version>${metaborg-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.metaborg</groupId>
 			<artifactId>org.spoofax.interpreter.library.index</artifactId>
-			<version>1.2.0-SNAPSHOT</version>
+			<version>${metaborg-version}</version>
 		</dependency>
-
 		<!-- Execution -->
 		<dependency>
 			<groupId>org.metaborg</groupId>
 			<artifactId>org.spoofax.interpreter</artifactId>
-			<version>1.2.0-SNAPSHOT</version>
+			<version>${metaborg-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.metaborg</groupId>
 			<artifactId>org.spoofax.interpreter.core</artifactId>
-			<version>1.2.0-SNAPSHOT</version>
+			<version>${metaborg-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.metaborg</groupId>
 			<artifactId>org.spoofax.interpreter.library.interpreter</artifactId>
-			<version>1.2.0-SNAPSHOT</version>
+			<version>${metaborg-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.metaborg</groupId>
 			<artifactId>org.spoofax.interpreter.library.java</artifactId>
-			<version>1.2.0-SNAPSHOT</version>
+			<version>${metaborg-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.metaborg</groupId>
 			<artifactId>org.spoofax.interpreter.library.jline</artifactId>
-			<version>1.2.0-SNAPSHOT</version>
+			<version>${metaborg-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.metaborg</groupId>
 			<artifactId>org.spoofax.interpreter.library.xml</artifactId>
-			<version>1.2.0-SNAPSHOT</version>
+			<version>${metaborg-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.metaborg</groupId>
 			<artifactId>org.metaborg.runtime.task</artifactId>
-			<version>1.2.0-SNAPSHOT</version>
+			<version>${metaborg-version}</version>
 		</dependency>
-
 		<!-- Parser -->
 		<dependency>
 			<groupId>org.metaborg</groupId>
 			<artifactId>org.spoofax.jsglr</artifactId>
-			<version>1.2.0-SNAPSHOT</version>
+			<version>${metaborg-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.metaborg</groupId>
 			<artifactId>org.spoofax.interpreter.library.jsglr</artifactId>
-			<version>1.2.0-SNAPSHOT</version>
+			<version>${metaborg-version}</version>
 		</dependency>
-
 		<!-- External dependencies -->
 		<dependency>
 			<groupId>org.metaborg</groupId>
 			<artifactId>org.spoofax.interpreter.externaldeps</artifactId>
-			<version>1.2.0-SNAPSHOT</version>
+			<version>${metaborg-version}</version>
 		</dependency>
 	</dependencies>
 
@@ -156,6 +155,7 @@
 					<configuration>
 						<source>${java-version}</source>
 						<target>${java-version}</target>
+						<debug>true</debug>
 					</configuration>
 				</plugin>
 			</plugins>

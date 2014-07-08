@@ -26,7 +26,8 @@
 		<module>../../../jsglr/org.spoofax.interpreter.library.jsglr</module>
 		
 		<!-- Deployment -->
-		<module>../../org.metaborg.maven.java.parent</module>
+		<module>../../org.metaborg.maven.parent</module>
+		<module>../../org.metaborg.maven.parent.java</module>
 
 		<!-- External dependencies -->
 		<module>../../../mb-exec-deps/org.spoofax.interpreter.externaldeps</module>

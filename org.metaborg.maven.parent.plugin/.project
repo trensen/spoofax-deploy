@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.metaborg.maven.java.parent</name>
+	<name>org.metaborg.maven.parent.plugin</name>
 	<comment></comment>
 	<projects>
 	</projects>
