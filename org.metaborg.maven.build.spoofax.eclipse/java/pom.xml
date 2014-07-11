@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.metaborg</groupId>
-	<artifactId>org.metaborg.maven.spoofax.java</artifactId>
+	<artifactId>org.metaborg.maven.build.spoofax.java</artifactId>
 	<version>1.2.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
@@ -21,10 +21,16 @@
 		<module>../../../mb-exec/org.spoofax.interpreter.library.xml</module>
 		<module>../../../runtime-libraries/org.metaborg.runtime.task</module>
 
+		<!-- Spoofax -->
+		<module>../../../spoofax/org.strategoxt.imp.generator</module>
+
 		<!-- Parser -->
 		<module>../../../jsglr/org.spoofax.jsglr</module>
 		<module>../../../jsglr/org.spoofax.interpreter.library.jsglr</module>
-		
+
+		<!-- StrategoXT -->
+		<module>../../../strategoxt/strategoxt/stratego-libraries/java-backend</module>
+
 		<!-- Deployment -->
 		<module>../../org.metaborg.maven.parent</module>
 		<module>../../org.metaborg.maven.parent.java</module>

@@ -20,6 +20,7 @@
 		<maven-antrun-version>1.7</maven-antrun-version>
 		<maven-bundle-version>2.5.0</maven-bundle-version>
 		<maven-build-helper-version>1.9</maven-build-helper-version>
+		<maven-eclipse-compiler-version>2.3</maven-eclipse-compiler-version>
 
 		<metaborg-version>1.2.0-SNAPSHOT</metaborg-version>
 

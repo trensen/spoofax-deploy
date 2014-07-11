@@ -70,6 +70,12 @@
 			<artifactId>org.metaborg.runtime.task</artifactId>
 			<version>${metaborg-version}</version>
 		</dependency>
+		<!-- Spoofax -->
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.strategoxt.imp.generator</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
 		<!-- Parser -->
 		<dependency>
 			<groupId>org.metaborg</groupId>
@@ -79,6 +85,12 @@
 		<dependency>
 			<groupId>org.metaborg</groupId>
 			<artifactId>org.spoofax.interpreter.library.jsglr</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
+		<!-- Strategoxt -->
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.strategoxt.strj</artifactId>
 			<version>${metaborg-version}</version>
 		</dependency>
 		<!-- External dependencies -->
@@ -97,7 +109,6 @@
 				<version>${tycho-version}</version>
 				<extensions>true</extensions>
 			</plugin>
-
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-compiler-plugin</artifactId>
@@ -110,7 +121,6 @@
 					<debug>true</debug>
 				</configuration>
 			</plugin>
-
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-packaging-plugin</artifactId>
@@ -119,7 +129,6 @@
 					<strictBinIncludes>false</strictBinIncludes>
 				</configuration>
 			</plugin>
-
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>target-platform-configuration</artifactId>

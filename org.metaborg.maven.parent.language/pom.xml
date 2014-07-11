@@ -20,51 +20,25 @@
 				<version>${maven-antrun-version}</version>
 				<dependencies>
 					<dependency>
-						<groupId>local</groupId>
-						<artifactId>aster</artifactId>
-						<version>1.0</version>
-						<scope>system</scope>
-						<systemPath>${aster-jar}</systemPath>
+						<groupId>org.metaborg</groupId>
+						<artifactId>aster-jar</artifactId>
+						<version>${metaborg-version}</version>
 					</dependency>
 					<dependency>
-						<groupId>local</groupId>
-						<artifactId>strategoxt</artifactId>
-						<version>1.0</version>
-						<scope>system</scope>
-						<systemPath>${strategoxt-jar}</systemPath>
+						<groupId>org.metaborg</groupId>
+						<artifactId>strategoxt-jar</artifactId>
+						<version>${metaborg-version}</version>
 					</dependency>
 					<dependency>
-						<groupId>local</groupId>
-						<artifactId>sdf2imp</artifactId>
-						<version>1.0</version>
-						<scope>system</scope>
-						<systemPath>${sdf2imp-jar}</systemPath>
+						<groupId>org.metaborg</groupId>
+						<artifactId>sdf2imp-jar</artifactId>
+						<version>${metaborg-version}</version>
 					</dependency>
 					<dependency>
-						<groupId>local</groupId>
-						<artifactId>make_permissive.jar</artifactId>
-						<version>1.0</version>
-						<scope>system</scope>
-						<systemPath>${makepermissive-jar}</systemPath>
+						<groupId>org.metaborg</groupId>
+						<artifactId>make-permissive-jar</artifactId>
+						<version>${metaborg-version}</version>
 					</dependency>
-					<!--
-						<dependency>
-						<groupId>com.sun</groupId>
-						<artifactId>tools</artifactId>
-						<version>1.4.2</version>
-						<scope>system</scope>
-						<systemPath>${java.home}/../lib/tools.jar</systemPath>
-						</dependency>
-					-->
-					<!--
-						<dependency>
-						<groupId>com.sun</groupId>
-						<artifactId>tools</artifactId>
-						<version>${java.version}.0</version>
-						<scope>system</scope>
-						<systemPath>${jdk.home}/tools.jar</systemPath>
-						</dependency>
-					-->
 					<dependency>
 						<groupId>ant-contrib</groupId>
 						<artifactId>ant-contrib</artifactId>
@@ -107,7 +81,6 @@
 							<goal>run</goal>
 						</goals>
 					</execution>
-
 					<execution>
 						<id>spoofax-generate-sources</id>
 						<phase>generate-sources</phase>
@@ -127,7 +100,6 @@
 							<goal>run</goal>
 						</goals>
 					</execution>
-
 					<execution>
 						<id>spoofax-package</id>
 						<phase>prepare-package</phase>

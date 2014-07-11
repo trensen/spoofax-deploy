@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.metaborg</groupId>
-	<artifactId>org.metaborg.maven.spoofax.plugin</artifactId>
+	<artifactId>org.metaborg.maven.build.spoofax.plugin</artifactId>
 	<version>1.2.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
@@ -13,7 +13,6 @@
 		<module>../../../mb-exec/org.spoofax.interpreter.ui</module>
 
 		<!-- Spoofax -->
-		<module>../../../spoofax/org.strategoxt.imp.generator</module>
 		<module>../../../spoofax/org.strategoxt.imp.metatooling</module>
 		<module>../../../spoofax/org.strategoxt.imp.nativebundle</module>
 		<module>../../../spoofax/org.strategoxt.imp.runtime</module>
@@ -48,8 +47,8 @@
 		<module>../../../stratego/org.strategoxt.imp.editors.stratego</module>
 		<module>../../../ts/org.metaborg.meta.lang.ts</module>
 
-		<!-- StrategoXT -->
-		<module>../../../strategoxt/strategoxt/stratego-libraries/java-backend</module>
+		<!-- Strategoxt -->
+		<module>../../../strategoxt/strategoxt/stratego-libraries/jarprovider</module>
 
 		<!-- Deployment -->
 		<module>../../../spoofax-deploy/org.spoofax.modelware.emf.feature</module>
