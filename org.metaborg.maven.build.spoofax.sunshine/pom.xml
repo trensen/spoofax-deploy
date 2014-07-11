@@ -7,38 +7,6 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<!-- Representation -->
-		<module>../../mb-rep/org.spoofax.terms</module>
-		<module>../../mb-rep/org.spoofax.aterm</module>
-		<module>../../mb-rep/org.spoofax.interpreter.library.index</module>
-
-		<!-- Execution -->
-		<module>../../mb-exec/org.spoofax.interpreter</module>
-		<module>../../mb-exec/org.spoofax.interpreter.core</module>
-		<module>../../mb-exec/org.spoofax.interpreter.library.interpreter</module>
-		<module>../../mb-exec/org.spoofax.interpreter.library.java</module>
-		<module>../../mb-exec/org.spoofax.interpreter.library.jline</module>
-		<module>../../mb-exec/org.spoofax.interpreter.library.xml</module>
-		<module>../../runtime-libraries/org.metaborg.runtime.task</module>
-
-		<!-- Spoofax -->
-		<module>../../spoofax/org.strategoxt.imp.generator</module>
-
-		<!-- Parser -->
-		<module>../../jsglr/org.spoofax.jsglr</module>
-		<module>../../jsglr/org.spoofax.interpreter.library.jsglr</module>
-
-		<!-- StrategoXT -->
-		<module>../../strategoxt/strategoxt/stratego-libraries/java-backend</module>
-
-		<!-- Deployment -->
-		<module>../org.metaborg.maven.parent</module>
-		<module>../org.metaborg.maven.parent.java</module>
-
-		<!-- External dependencies -->
-		<module>../../mb-exec-deps/org.spoofax.interpreter.externaldeps</module>
-		
-		<!-- Sunshine -->
 		<module>../../spoofax-sunshine/org.spoofax.sunshine</module>
 	</modules>
 </project>
