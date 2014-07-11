@@ -21,6 +21,7 @@
 		<maven-bundle-version>2.5.0</maven-bundle-version>
 		<maven-build-helper-version>1.9</maven-build-helper-version>
 		<maven-eclipse-compiler-version>2.3</maven-eclipse-compiler-version>
+		<maven-shade-version>2.3</maven-shade-version>
 
 		<metaborg-version>1.2.0-SNAPSHOT</metaborg-version>
 
