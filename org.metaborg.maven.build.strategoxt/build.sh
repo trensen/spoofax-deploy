@@ -64,7 +64,7 @@ rm -rf strategoxt-min
 
 
 # Install strategoxt JARs and distribution into local maven repository
-JAVA_HOME=$(/usr/libexec/java_home) mvn clean install
+mvn clean install
 
 
 # Clean up

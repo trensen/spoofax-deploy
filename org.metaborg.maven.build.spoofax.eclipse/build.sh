@@ -50,7 +50,7 @@ case $OSTYPE in
 esac
 
 
-MAVEN_OPTS="-Xmx1024m -Xms1024m -Xss32m -server -XX:+UseParallelGC" JAVA_HOME=$(/usr/libexec/java_home) mvn \
+MAVEN_OPTS="-Xmx1024m -Xms1024m -Xss32m -server -XX:+UseParallelGC" mvn \
   -DforceContextQualifier=$QUALIFIER \
   -Dstrategoxt-jar=$STRATEGOXT_JAR \
   -Ddist-loc=$GEN_DIST_LOC \

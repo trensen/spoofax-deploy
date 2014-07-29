@@ -36,7 +36,7 @@ GEN_DIST_LOC="$GEN_LOC/dist/"
 
 # Copy strategoxt JAR and distribution from (local) Maven repository
 function maven-get {
-  JAVA_HOME=$(/usr/libexec/java_home) mvn org.apache.maven.plugins:maven-dependency-plugin:2.8:get \
+  mvn org.apache.maven.plugins:maven-dependency-plugin:2.8:get \
     -Dartifact=$1 \
     -Ddest=$2 \
     -Dtransitive=false \
@@ -69,7 +69,7 @@ cp strategoxt.jar ../../strategoxt/strategoxt/stratego-libraries/java-backend/ja
 
 
 # Build and install Java projects
-MAVEN_OPTS="-Xmx1024m -Xms1024m -Xss32m -server -XX:+UseParallelGC" JAVA_HOME=$(/usr/libexec/java_home) mvn \
+MAVEN_OPTS="-Xmx1024m -Xms1024m -Xss32m -server -XX:+UseParallelGC" mvn \
   -DforceContextQualifier=$QUALIFIER \
   clean install
 
