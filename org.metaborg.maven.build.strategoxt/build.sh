@@ -42,7 +42,7 @@ fi
 # Create minified strategoxt JAR
 rm -rf strategoxt-min
 mkdir -p strategoxt-min
-tar xf strategoxt-distrib/share/strategoxt/strategoxt/strategoxt.jar -C strategoxt-min
+unzip -qq -o -d strategoxt-min/ strategoxt-distrib/share/strategoxt/strategoxt/strategoxt.jar
 rm strategoxt-min/run.class
 rm strategoxt-min/start.class
 rm strategoxt-min/COPYING
