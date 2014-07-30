@@ -34,6 +34,7 @@ if [ -n "${UPDATE_DISTRIB+1}" ] || [ ! -f $STRATEGOXT_JAR ]; then
 	wget http://hydra.nixos.org/job/strategoxt-java/strategoxt-java-bootstrap/bootstrap3/latest/download-by-type/file/tar -O strategoxt-distrib.tar
 	tar -xf strategoxt-distrib.tar
 	chmod a+x share/strategoxt/macosx/*
+  chmod a+x share/strategoxt/linux/*
 	rm strategoxt-distrib.tar
 	cd ..
 fi

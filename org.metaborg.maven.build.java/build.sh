@@ -50,6 +50,7 @@ maven-get org.metaborg:strategoxt-distrib:1.2.0-SNAPSHOT:tar:bin strategoxt-dist
 cd strategoxt-distrib
 tar -xf distrib.tar
 chmod a+x share/strategoxt/macosx/*
+chmod a+x share/strategoxt/linux/*
 rm distrib.tar
 cd ..
 
