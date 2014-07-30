@@ -56,9 +56,11 @@ rm -rf strategoxt-min/jline
 rm -rf strategoxt-min/org/metaborg
 rm -rf strategoxt-min/org/spoofax
 rm -rf strategoxt-min/org/strategoxt/*.class
-rm -rf strategoxt-min/org/strategoxt/lang
-rm -rf strategoxt-min/org/strategoxt/strj
-rm -rf strategoxt-min/org/strategoxt/tools
+rm -rf strategoxt-min/org/strategoxt/lang/*.class
+rm -rf strategoxt-min/org/strategoxt/lang/compat/*.class
+rm -rf strategoxt-min/org/strategoxt/lang/compat/override/*.class
+rm -rf strategoxt-min/org/strategoxt/lang/compat/stratego_rtg_compat
+rm -rf strategoxt-min/org/strategoxt/lang/compat/strc_compat
 rm -f strategoxt-min.jar
 jar cf strategoxt-min.jar -C strategoxt-min .
 rm -rf strategoxt-min
