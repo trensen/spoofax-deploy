@@ -17,7 +17,7 @@ while getopts ":gq:a:e:" opt; do
       INPUT_MAVEN_ARGS=$OPTARG
       ;;
     e)
-      export MAVEN_OPTS=$OPTARG
+      INPUT_MAVEN_ENV=$OPTARG
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -37,6 +37,8 @@ QUALIFIER=${INPUT_QUALIFIER:-$(date +%Y%m%d%H%M)}
 MAVEN_ARGS=${INPUT_MAVEN_ARGS:-""}
 if [ -z ${INPUT_MAVEN_ENV+x} ]; then
   export MAVEN_OPTS="-Xmx512m -Xms512m -Xss16m"
+else
+  export MAVEN_OPTS="$INPUT_MAVEN_ENV"
 fi
 
 DIR=$(pwd)
@@ -82,7 +84,7 @@ cp strategoxt.jar ../../strategoxt/strategoxt/stratego-libraries/java-backend/ja
 
 
 # Build and install Java projects
-MAVEN_ENV mvn \
+mvn \
   -DforceContextQualifier=$QUALIFIER \
   clean install \
   $MAVEN_ARGS

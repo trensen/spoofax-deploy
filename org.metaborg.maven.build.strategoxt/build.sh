@@ -14,7 +14,7 @@ while getopts ":ua:e:" opt; do
       INPUT_MAVEN_ARGS=$OPTARG
       ;;
     e)
-      export MAVEN_OPTS=$OPTARG
+      INPUT_MAVEN_ENV=$OPTARG
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -32,6 +32,8 @@ done
 MAVEN_ARGS=${INPUT_MAVEN_ARGS:-""}
 if [ -z ${INPUT_MAVEN_ENV+x} ]; then
   export MAVEN_OPTS="-Xmx512m -Xms512m -Xss16m"
+else
+  export MAVEN_OPTS="$INPUT_MAVEN_ENV"
 fi
 
 STRATEGOXT_JAR="strategoxt-distrib/share/strategoxt/strategoxt/strategoxt.jar"
