@@ -5,10 +5,16 @@ set -u
 
 
 # Parse input
-while getopts "u" opt; do
+while getopts ":ua:e:" opt; do
   case $opt in
     u)
       UPDATE_DISTRIB="true"
+      ;;
+    a)
+      INPUT_MAVEN_ARGS=$OPTARG
+      ;;
+    e)
+      export MAVEN_OPTS=$OPTARG
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -23,6 +29,11 @@ done
 
 
 # Set build variables
+MAVEN_ARGS=${INPUT_MAVEN_ARGS:-""}
+if [ -z ${INPUT_MAVEN_ENV+x} ]; then
+  export MAVEN_OPTS="-Xmx512m -Xms512m -Xss16m"
+fi
+
 STRATEGOXT_JAR="strategoxt-distrib/share/strategoxt/strategoxt/strategoxt.jar"
 
 
@@ -67,7 +78,7 @@ rm -rf strategoxt-min
 
 
 # Install strategoxt JARs and distribution into local maven repository
-mvn clean install
+mvn clean install $MAVEN_ARGS
 
 
 # Clean up

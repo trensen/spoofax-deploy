@@ -5,13 +5,19 @@ set -u
 
 
 # Parse input
-while getopts ":gq:" opt; do
+while getopts ":gq:a:e:" opt; do
   case $opt in
     g)
       NO_GENERATOR="true"
       ;;
     q)
       INPUT_QUALIFIER=$OPTARG
+      ;;
+    a)
+      INPUT_MAVEN_ARGS=$OPTARG
+      ;;
+    e)
+      export MAVEN_OPTS=$OPTARG
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -28,6 +34,11 @@ done
 # Set build vars
 QUALIFIER=${INPUT_QUALIFIER:-$(date +%Y%m%d%H%M)}
 
+MAVEN_ARGS=${INPUT_MAVEN_ARGS:-""}
+if [ -z ${INPUT_MAVEN_ENV+x} ]; then
+  export MAVEN_OPTS="-Xmx512m -Xms512m -Xss16m"
+fi
+
 DIR=$(pwd)
 ROOT="$DIR/../../"
 GEN_LOC="$ROOT/spoofax/org.strategoxt.imp.generator/"
@@ -40,7 +51,8 @@ function maven-get {
     -Dartifact=$1 \
     -Ddest=$2 \
     -Dtransitive=false \
-    -q
+    -q \
+    $MAVEN_ARGS
 }
 
 maven-get org.metaborg:strategoxt-jar:1.2.0-SNAPSHOT strategoxt.jar
@@ -70,9 +82,10 @@ cp strategoxt.jar ../../strategoxt/strategoxt/stratego-libraries/java-backend/ja
 
 
 # Build and install Java projects
-MAVEN_OPTS="-Xmx1024m -Xms1024m -Xss32m -server -XX:+UseParallelGC" mvn \
+MAVEN_ENV mvn \
   -DforceContextQualifier=$QUALIFIER \
-  clean install
+  clean install \
+  $MAVEN_ARGS
 
 
 # Clean up
