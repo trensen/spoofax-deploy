@@ -22,6 +22,8 @@ http://strategoxt.org/Spoofax/ChangeLog
       
       This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the full license texts for more details.
 Most Spoofax/IMP code is licensed under the GNU Lesser General Public License (LGPL). Runtime components related to the IMP, EMF and GMF libraries are licensed under the Eclipse Public License (EPL).
+
+			This product includes software developed by the Ant-Contrib project (http://sourceforge.net/projects/ant-contrib).
    </license>
 
    <url>
