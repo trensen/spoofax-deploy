@@ -42,7 +42,7 @@ let
     ts.revCount
   ]);
   
-  pkgs = import nixpkgs { config.allowUnfree = true; system = "i686-linux"; };
+  pkgs = import nixpkgs { config.allowUnfree = true; };
   
   jobs = with pkgs.lib; {
     build = pkgs.stdenv.mkDerivation {
