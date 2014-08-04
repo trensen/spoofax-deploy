@@ -127,6 +127,7 @@ let
         echo "file tar ''$SPOOFAX_SITE_FILE" >> $out/nix-support/hydra-build-products
         echo "file jar ''$SUNSHINE_JAR" >> $out/nix-support/hydra-build-products
       '';
+      __noChroot = true;
     };
   };
 in jobs
