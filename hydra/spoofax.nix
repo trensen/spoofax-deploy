@@ -86,7 +86,11 @@ let
 	cd org.metaborg.maven.build.strategoxt
 	mkdir strategoxt-distrib
 	cd strategoxt-distrib
-	tar -xf ${strategoxtDistrib}
+        if [[ -d ${strategoxtDistrib} ]]; then
+	  tar -xf ${strategoxtDistrib}/strategoxt-distrib.tar
+        else
+	  tar -xf ${strategoxtDistrib}
+        fi
 	chmod a+x share/strategoxt/macosx/*
 	chmod a+x share/strategoxt/linux/*
 	cd ..
