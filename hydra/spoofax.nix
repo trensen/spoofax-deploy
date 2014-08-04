@@ -80,6 +80,7 @@ let
 	
 	chmod -R +w .
         
+        patchShebangs ./
         
         cd spoofax-deploy
 
@@ -94,6 +95,7 @@ let
 	chmod a+x share/strategoxt/macosx/*
 	chmod a+x share/strategoxt/linux/*
 	cd ..
+
 	./build.sh -e ${mavenEnv} -a ${mavenArgs}
 	cd ..
 
