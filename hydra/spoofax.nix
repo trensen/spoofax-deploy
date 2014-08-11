@@ -51,7 +51,7 @@ let
       buildInputs = with pkgs; [ stdenv git openjdk gnutar gzip bash maven3 wget unzip ant ];
       
       buildCommand = ''
-        mkdir -p $out
+        ensureDir $out
         cd $out
         
       	cp -R ${aster}/. $out/aster
@@ -84,7 +84,7 @@ let
 
 
       	cd spoofax-deploy/org.metaborg.maven.build.strategoxt
-      	mkdir -p strategoxt-distrib
+      	mkdir strategoxt-distrib
       	cd strategoxt-distrib
         if [[ -d ${strategoxtDistrib} ]]; then
           tar -xf ${strategoxtDistrib}/strategoxt-distrib.tar
@@ -109,7 +109,7 @@ let
         SUNSHINE_JAR_ARRAY=("$out/spoofax-sunshine/org.spoofax.sunshine/target/org.metaborg.sunshine"*".jar")
         SUNSHINE_JAR="''${SUNSHINE_JAR_ARRAY[0]}"
         
-        mkdir -p $out/nix-support
+        ensureDir $out/nix-support
         echo "file site ''$SPOOFAX_SITE_LOC" >> $out/nix-support/hydra-build-products
         echo "file tar ''$SPOOFAX_SITE_FILE" >> $out/nix-support/hydra-build-products
         echo "file jar ''$SUNSHINE_JAR" >> $out/nix-support/hydra-build-products
@@ -118,4 +118,3 @@ let
     };
   };
 in jobs
-
