@@ -41,7 +41,7 @@ else
   export MAVEN_OPTS="$INPUT_MAVEN_ENV"
 fi
 
-DIR=$(pwd)
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT="$DIR/../../"
 GEN_LOC="$ROOT/spoofax/org.strategoxt.imp.generator/"
 GEN_DIST_LOC="$GEN_LOC/dist/"
@@ -85,6 +85,7 @@ cp strategoxt.jar ../../strategoxt/strategoxt/stratego-libraries/java-backend/ja
 
 # Build and install Java projects
 mvn \
+  -f "$DIR/pom.xml" \
   -DforceContextQualifier=$QUALIFIER \
   clean install \
   $MAVEN_ARGS

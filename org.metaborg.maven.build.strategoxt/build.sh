@@ -28,13 +28,15 @@ while getopts ":ua:e:" opt; do
 done
 
 
-# Set build variables
+# Set build vars
 MAVEN_ARGS=${INPUT_MAVEN_ARGS:-""}
 if [ -z ${INPUT_MAVEN_ENV+x} ]; then
   export MAVEN_OPTS="-Xmx512m -Xms512m -Xss16m"
 else
   export MAVEN_OPTS="$INPUT_MAVEN_ENV"
 fi
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 STRATEGOXT_JAR="strategoxt-distrib/share/strategoxt/strategoxt/strategoxt.jar"
 
@@ -80,7 +82,10 @@ rm -rf strategoxt-min
 
 
 # Install strategoxt JARs and distribution into local maven repository
-mvn clean install $MAVEN_ARGS
+mvn \
+  -f "$DIR/pom.xml" \
+  clean install \
+  $MAVEN_ARGS
 
 
 # Clean up

@@ -24,6 +24,7 @@ while getopts ":a:e:" opt; do
 done
 
 
+# Set build vars
 MAVEN_ARGS=${INPUT_MAVEN_ARGS:-""}
 if [ -z ${INPUT_MAVEN_ENV+x} ]; then
   export MAVEN_OPTS="-Xmx512m -Xms512m -Xss16m"
@@ -31,5 +32,10 @@ else
   export MAVEN_OPTS="$INPUT_MAVEN_ENV"
 fi
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-mvn clean verify $MAVEN_ARGS
+
+mvn \
+  -f "$DIR/pom.xml" \
+  clean verify \ 
+  $MAVEN_ARGS
