@@ -54,68 +54,55 @@ let
         ensureDir $out
         cd $out
         
-	cp -R ${aster}/. $out/aster
-	cp -R ${box}/. $out/box
-	cp -R ${esv}/. $out/esv
-	cp -R ${impPatched}/. $out/imp-patched
-	cp -R ${jsglr}/. $out/jsglr
-	cp -R ${lpgRuntime}/. $out/lpg-runtime
-	cp -R ${mbExec}/. $out/mb-exec
-	cp -R ${mbExecDeps}/. $out/mb-exec-deps
-	cp -R ${mbRep}/. $out/mb-rep
-	cp -R ${modelware}/. $out/modelware
-	cp -R ${nabl}/. $out/nabl
-	cp -R ${rtg}/. $out/rtg
-	cp -R ${runtimeLibraries}/. $out/runtime-libraries
-	cp -R ${sdf}/. $out/sdf
-	cp -R ${shrike}/. $out/shrike
-	cp -R ${spoofax}/. $out/spoofax
-	cp -R ${spoofaxDebug}/. $out/spoofax-debug
-	cp -R ${spoofaxDeploy}/. $out/spoofax-deploy
-	cp -R ${spoofaxSunshine}/. $out/spoofax-sunshine
-	cp -R ${spt}/. $out/spt
-	cp -R ${stratego}/. $out/stratego
-	cp -R ${strategoxt}/. $out/strategoxt
-	cp -R ${ts}/. $out/ts
-	
-	chmod -R +w .
+      	cp -R ${aster}/. $out/aster
+      	cp -R ${box}/. $out/box
+      	cp -R ${esv}/. $out/esv
+      	cp -R ${impPatched}/. $out/imp-patched
+      	cp -R ${jsglr}/. $out/jsglr
+      	cp -R ${lpgRuntime}/. $out/lpg-runtime
+      	cp -R ${mbExec}/. $out/mb-exec
+      	cp -R ${mbExecDeps}/. $out/mb-exec-deps
+      	cp -R ${mbRep}/. $out/mb-rep
+      	cp -R ${modelware}/. $out/modelware
+      	cp -R ${nabl}/. $out/nabl
+      	cp -R ${rtg}/. $out/rtg
+      	cp -R ${runtimeLibraries}/. $out/runtime-libraries
+      	cp -R ${sdf}/. $out/sdf
+      	cp -R ${shrike}/. $out/shrike
+      	cp -R ${spoofax}/. $out/spoofax
+      	cp -R ${spoofaxDebug}/. $out/spoofax-debug
+      	cp -R ${spoofaxDeploy}/. $out/spoofax-deploy
+      	cp -R ${spoofaxSunshine}/. $out/spoofax-sunshine
+      	cp -R ${spt}/. $out/spt
+      	cp -R ${stratego}/. $out/stratego
+      	cp -R ${strategoxt}/. $out/strategoxt
+      	cp -R ${ts}/. $out/ts
+      	
+      	chmod -R +w .
         
         patchShebangs ./
-        
-        cd spoofax-deploy
 
-	cd org.metaborg.maven.build.strategoxt
-	mkdir strategoxt-distrib
-	cd strategoxt-distrib
+
+      	cd spoofax-deploy/org.metaborg.maven.build.strategoxt
+      	mkdir strategoxt-distrib
+      	cd strategoxt-distrib
         if [[ -d ${strategoxtDistrib} ]]; then
-	  tar -xf ${strategoxtDistrib}/strategoxt-distrib.tar
+          tar -xf ${strategoxtDistrib}/strategoxt-distrib.tar
         else
-	  tar -xf ${strategoxtDistrib}
+          tar -xf ${strategoxtDistrib}
         fi
-	chmod a+x share/strategoxt/macosx/*
-	chmod a+x share/strategoxt/linux/*
-	cd ..
+      	chmod a+x share/strategoxt/macosx/*
+      	chmod a+x share/strategoxt/linux/*
+      	cd $out
+      
+      	./spoofax-deploy/org.metaborg.maven.build.strategoxt/build.sh -e ${mavenEnv} -a ${mavenArgs}
+      	./spoofax-deploy/org.metaborg.maven.build.java/build.sh -e ${mavenEnv} -a ${mavenArgs}
+      	./spoofax-deploy/org.metaborg.maven.build.spoofax.eclipse/build.sh -e ${mavenEnv} -a ${mavenArgs}
+      	./spoofax-deploy/org.metaborg.maven.build.spoofax.sunshine/build.sh -e ${mavenEnv} -a ${mavenArgs}
 
-	./build.sh -e ${mavenEnv} -a ${mavenArgs}
-	cd ..
-
-	cd org.metaborg.maven.build.java
-	./build.sh -e ${mavenEnv} -a ${mavenArgs}
-	cd ..
-
-	cd org.metaborg.maven.build.spoofax.eclipse
-	./build.sh -e ${mavenEnv} -a ${mavenArgs}
-	cd ..
-
-	cd org.metaborg.maven.build.spoofax.sunshine
-	./build.sh -e ${mavenEnv} -a ${mavenArgs}
-	cd ..
-
-
-	cd $out
-
-	SPOOFAX_SITE_LOC="$out/spoofax-deploy/org.strategoxt.imp.updatesite/target/site"
-	SPOOFAX_SITE_FILE="$out/spoofax-deploy/org.strategoxt.imp.updatesite/target/spoofax-${spoofaxRev}.tar.gz"
+      
+      	SPOOFAX_SITE_LOC="$out/spoofax-deploy/org.strategoxt.imp.updatesite/target/site"
+      	SPOOFAX_SITE_FILE="$out/spoofax-deploy/org.strategoxt.imp.updatesite/target/spoofax-${spoofaxRev}.tar.gz"
         touch "''$SPOOFAX_SITE_LOC/index.html"
         tar cvzf ''$SPOOFAX_SITE_FILE ''$SPOOFAX_SITE_LOC
         
@@ -131,4 +118,3 @@ let
     };
   };
 in jobs
-

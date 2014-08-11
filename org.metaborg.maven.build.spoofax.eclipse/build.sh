@@ -38,7 +38,7 @@ else
   export MAVEN_OPTS="$INPUT_MAVEN_ENV"
 fi
 
-DIR=$(pwd)
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT="$DIR/../../"
 
 STRATEGOXT_JAR="$ROOT/strategoxt/strategoxt/stratego-libraries/java-backend/java/strategoxt.jar"
@@ -64,6 +64,7 @@ esac
 
 
 mvn \
+  -f "$DIR/pom.xml" \
   -DforceContextQualifier=$QUALIFIER \
   -Dstrategoxt-jar=$STRATEGOXT_JAR \
   -Ddist-loc=$GEN_DIST_LOC \

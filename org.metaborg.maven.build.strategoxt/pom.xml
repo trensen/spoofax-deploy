@@ -46,7 +46,7 @@
 							<artifactId>strategoxt-jar</artifactId>
 							<version>${metaborg-version}</version>
 							<packaging>jar</packaging>
-							<file>strategoxt-distrib/share/strategoxt/strategoxt/strategoxt.jar</file>
+							<file>${basedir}/strategoxt-distrib/share/strategoxt/strategoxt/strategoxt.jar</file>
 						</configuration>
 					</execution>
 					<execution>
@@ -60,7 +60,7 @@
 							<artifactId>strategoxt-min-jar</artifactId>
 							<version>${metaborg-version}</version>
 							<packaging>jar</packaging>
-							<file>strategoxt-min.jar</file>
+							<file>${basedir}/strategoxt-min.jar</file>
 						</configuration>
 					</execution>
 				</executions>
