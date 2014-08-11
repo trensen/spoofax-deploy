@@ -38,7 +38,7 @@ fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-STRATEGOXT_JAR="strategoxt-distrib/share/strategoxt/strategoxt/strategoxt.jar"
+STRATEGOXT_JAR="$DIR/strategoxt-distrib/share/strategoxt/strategoxt/strategoxt.jar"
 
 
 # Update strategoxt distribution if it does not exist, or if requested
