@@ -46,6 +46,10 @@ ROOT="$DIR/../../"
 GEN_LOC="$ROOT/spoofax/org.strategoxt.imp.generator/"
 GEN_DIST_LOC="$GEN_LOC/dist/"
 
+STRATEGOXT_JAR="$DIR/strategoxt.jar"
+STRATEGOXT_DISTRIB="$DIR/strategoxt-distrib"
+STRATEGOXT_DISTRIB_TAR="$DIR/strategoxt-distrib.tar"
+
 
 # Copy strategoxt JAR and distribution from (local) Maven repository
 function maven-get {
@@ -57,22 +61,20 @@ function maven-get {
     $MAVEN_ARGS
 }
 
-maven-get org.metaborg:strategoxt-jar:1.2.0-SNAPSHOT strategoxt.jar
-rm -rf strategoxt-distrib
-mkdir -p strategoxt-distrib
-maven-get org.metaborg:strategoxt-distrib:1.2.0-SNAPSHOT:tar:bin strategoxt-distrib/distrib.tar
-cd strategoxt-distrib
-tar -xf distrib.tar
-chmod a+x share/strategoxt/macosx/*
-chmod a+x share/strategoxt/linux/*
-rm distrib.tar
-cd ..
+maven-get org.metaborg:strategoxt-jar:1.2.0-SNAPSHOT $STRATEGOXT_JAR
+rm -rf $STRATEGOXT_DISTRIB
+mkdir -p $STRATEGOXT_DISTRIB
+maven-get org.metaborg:strategoxt-distrib:1.2.0-SNAPSHOT:tar:bin $STRATEGOXT_DISTRIB_TAR
+tar -xf $STRATEGOXT_DISTRIB_TAR -C $STRATEGOXT_DISTRIB
+chmod a+x "$STRATEGOXT_DISTRIB/share/strategoxt/macosx/"*
+chmod a+x "$STRATEGOXT_DISTRIB/share/strategoxt/linux/"*
+rm $STRATEGOXT_DISTRIB_TAR
 
 
 # Build the generator
 if [ -z ${NO_GENERATOR+x} ]; then
   rm -rf "$GEN_LOC/strategoxt-distrib"
-  cp -r strategoxt-distrib "$GEN_LOC/strategoxt-distrib"
+  cp -r $STRATEGOXT_DISTRIB "$GEN_LOC/strategoxt-distrib"
   cd "$GEN_LOC"
   ./build.sh
   cd "$DIR"
@@ -80,7 +82,7 @@ fi
 
 
 # Copy strategoxt jar into strategoxt java backend
-cp strategoxt.jar ../../strategoxt/strategoxt/stratego-libraries/java-backend/java/strategoxt.jar
+cp $STRATEGOXT_JAR "$ROOT/strategoxt/strategoxt/stratego-libraries/java-backend/java/strategoxt.jar"
 
 
 # Build and install Java projects
@@ -92,5 +94,5 @@ mvn \
 
 
 # Clean up
-rm strategoxt.jar
-rm -rf strategoxt-distrib
+rm STRATEGOXT_JAR
+rm -rf $STRATEGOXT_DISTRIB
