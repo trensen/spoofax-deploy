@@ -38,47 +38,51 @@ fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-STRATEGOXT_JAR="$DIR/strategoxt-distrib/share/strategoxt/strategoxt/strategoxt.jar"
+STRATEGOXT_DISTRIB_TAR="$DIR/strategoxt-distrib.tar"
+STRATEGOXT_DISTRIB="$DIR/strategoxt-distrib/"
+STRATEGOXT_JAR="$STRATEGOXT_DISTRIB/share/strategoxt/strategoxt/strategoxt.jar"
+STRATEGOXT_MIN="$DIR/strategoxt-min"
+STRATEGOXT_MIN_JAR="$DIR/strategoxt-min.jar"
 
 
 # Update strategoxt distribution if it does not exist, or if requested
 if [ -n "${UPDATE_DISTRIB+1}" ] || [ ! -f $STRATEGOXT_JAR ]; then
-	rm -rf strategoxt-distrib
-	mkdir strategoxt-distrib
-	cd strategoxt-distrib
-	wget http://hydra.nixos.org/job/strategoxt-java/strategoxt-java-bootstrap/bootstrap3/latest/download-by-type/file/tar -O strategoxt-distrib.tar
-	tar -xf strategoxt-distrib.tar
-	chmod a+x share/strategoxt/macosx/*
-  chmod a+x share/strategoxt/linux/*
-	rm strategoxt-distrib.tar
+	rm -rf $STRATEGOXT_DISTRIB
+  rm -f $STRATEGOXT_DISTRIB_TAR
+	mkdir -p $STRATEGOXT_DISTRIB
+	wget http://hydra.nixos.org/job/strategoxt-java/strategoxt-java-bootstrap/bootstrap3/latest/download-by-type/file/tar -O $STRATEGOXT_DISTRIB_TAR
+	tar -xf $STRATEGOXT_DISTRIB_TAR -C $STRATEGOXT_DISTRIB
+	chmod a+x "$STRATEGOXT_DISTRIB/share/strategoxt/macosx/"*
+  chmod a+x "$STRATEGOXT_DISTRIB/share/strategoxt/linux/"*
+	rm $STRATEGOXT_DISTRIB_TAR
 	cd ..
 fi
 
 
 # Create minified strategoxt JAR
-rm -rf strategoxt-min
-mkdir -p strategoxt-min
-unzip -qq -o -d strategoxt-min/ strategoxt-distrib/share/strategoxt/strategoxt/strategoxt.jar
-rm strategoxt-min/run.class
-rm strategoxt-min/start.class
-rm strategoxt-min/COPYING
-rm strategoxt-min/build.xml
-rm -rf strategoxt-min/META-INF
-rm -rf strategoxt-min/com
-rm -rf strategoxt-min/fj
-rm -rf strategoxt-min/jdbm
-rm -rf strategoxt-min/jline
-rm -rf strategoxt-min/org/metaborg
-rm -rf strategoxt-min/org/spoofax
-rm -rf strategoxt-min/org/strategoxt/*.class
-rm -rf strategoxt-min/org/strategoxt/lang/*.class
-rm -rf strategoxt-min/org/strategoxt/lang/compat/*.class
-rm -rf strategoxt-min/org/strategoxt/lang/compat/override/*.class
-rm -rf strategoxt-min/org/strategoxt/lang/compat/stratego_rtg_compat
-rm -rf strategoxt-min/org/strategoxt/lang/compat/strc_compat
-rm -f strategoxt-min.jar
-jar cf strategoxt-min.jar -C strategoxt-min .
-rm -rf strategoxt-min
+rm -rf $STRATEGOXT_MIN
+mkdir -p $STRATEGOXT_MIN
+unzip -qq -o -d $STRATEGOXT_MIN $STRATEGOXT_JAR
+rm "$STRATEGOXT_MIN/run.class"
+rm "$STRATEGOXT_MIN/start.class"
+rm "$STRATEGOXT_MIN/COPYING"
+rm "$STRATEGOXT_MIN/build.xml"
+rm -rf "$STRATEGOXT_MIN/META-INF"
+rm -rf "$STRATEGOXT_MIN/com"
+rm -rf "$STRATEGOXT_MIN/fj"
+rm -rf "$STRATEGOXT_MIN/jdbm"
+rm -rf "$STRATEGOXT_MIN/jline"
+rm -rf "$STRATEGOXT_MIN/org/metaborg"
+rm -rf "$STRATEGOXT_MIN/org/spoofax"
+rm -rf "$STRATEGOXT_MIN/org/strategoxt/*.class"
+rm -rf "$STRATEGOXT_MIN/org/strategoxt/lang/*.class"
+rm -rf "$STRATEGOXT_MIN/org/strategoxt/lang/compat/*.class"
+rm -rf "$STRATEGOXT_MIN/org/strategoxt/lang/compat/override/*.class"
+rm -rf "$STRATEGOXT_MIN/org/strategoxt/lang/compat/stratego_rtg_compat"
+rm -rf "$STRATEGOXT_MIN/org/strategoxt/lang/compat/strc_compat"
+rm -f $STRATEGOXT_MIN_JAR
+jar cf $STRATEGOXT_MIN_JAR -C $STRATEGOXT_MIN .
+rm -rf $STRATEGOXT_MIN
 
 
 # Install strategoxt JARs and distribution into local maven repository
@@ -89,4 +93,4 @@ mvn \
 
 
 # Clean up
-rm strategoxt-min.jar
+rm $STRATEGOXT_MIN_JAR
