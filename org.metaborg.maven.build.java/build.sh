@@ -94,5 +94,5 @@ mvn \
 
 
 # Clean up
-rm STRATEGOXT_JAR
+rm $STRATEGOXT_JAR
 rm -rf $STRATEGOXT_DISTRIB
