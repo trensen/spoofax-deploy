@@ -98,20 +98,25 @@ let
       	./spoofax-deploy/org.metaborg.maven.build.strategoxt/build.sh -e ${mavenEnv} -a ${mavenArgs}
       	./spoofax-deploy/org.metaborg.maven.build.java/build.sh -e ${mavenEnv} -a ${mavenArgs}
       	./spoofax-deploy/org.metaborg.maven.build.spoofax.eclipse/build.sh -e ${mavenEnv} -a ${mavenArgs}
+      	./spoofax-deploy/org.metaborg.maven.build.spoofax.libs/build.sh -e ${mavenEnv} -a ${mavenArgs}
       	./spoofax-deploy/org.metaborg.maven.build.spoofax.sunshine/build.sh -e ${mavenEnv} -a ${mavenArgs}
 
       
       	SPOOFAX_SITE_LOC="$out/spoofax-deploy/org.strategoxt.imp.updatesite/target/site"
-      	SPOOFAX_SITE_FILE="$out/spoofax-deploy/org.strategoxt.imp.updatesite/target/spoofax-${spoofaxRev}.tar.gz"
+      	SPOOFAX_SITE_FILE="$out/spoofax-eclipse-${spoofaxRev}.tar.gz"
         touch "''$SPOOFAX_SITE_LOC/index.html"
         tar cvzf ''$SPOOFAX_SITE_FILE ''$SPOOFAX_SITE_LOC
         
-        SUNSHINE_JAR_ARRAY=("$out/spoofax-sunshine/org.spoofax.sunshine/target/org.metaborg.sunshine"*".jar")
-        SUNSHINE_JAR="''${SUNSHINE_JAR_ARRAY[0]}"
+        SPOOFAX_LIBS_JAR="$out/spoofax-libs-${spoofaxRev}.jar"
+        cp "$out/spoofax-deploy/org.metaborg.maven.build.spoofax.libs/target/spoofax-libs.jar" ''$SPOOFAX_LIBS_JAR
+        
+        SUNSHINE_JAR="$out/spoofax-sunshine-${spoofaxRev}.jar"
+        cp "$out/spoofax-sunshine/org.spoofax.sunshine/target/org.metaborg.sunshine"*".jar" ''$SUNSHINE_JAR
         
         ensureDir $out/nix-support
         echo "file site ''$SPOOFAX_SITE_LOC" >> $out/nix-support/hydra-build-products
         echo "file tar ''$SPOOFAX_SITE_FILE" >> $out/nix-support/hydra-build-products
+        echo "file jar ''$SPOOFAX_LIBS_JAR" >> $out/nix-support/hydra-build-products
         echo "file jar ''$SUNSHINE_JAR" >> $out/nix-support/hydra-build-products
       '';
       __noChroot = true;
