@@ -107,7 +107,7 @@ let
         tar cvzf ''$SPOOFAX_SITE_FILE ''$SPOOFAX_SITE_LOC
         
         SPOOFAX_LIBS_JAR="$out/spoofax-libs-${spoofaxRev}.jar"
-        cp "$out/spoofax-deploy/org.metaborg.maven.build.spoofax.libs/target/spoofax-libs.jar" ''$SPOOFAX_LIBS_JAR
+        cp "$out/spoofax-deploy/org.metaborg.maven.build.spoofax.libs/target/org.metaborg.maven.build.spoofax.libs"*".jar" ''$SPOOFAX_LIBS_JAR
         
         SUNSHINE_JAR="$out/spoofax-sunshine-${spoofaxRev}.jar"
         cp "$out/spoofax-sunshine/org.spoofax.sunshine/target/org.metaborg.sunshine"*".jar" ''$SUNSHINE_JAR
