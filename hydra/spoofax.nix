@@ -28,7 +28,7 @@
 , strategoxtDistrib ? ../../strategoxt-distrib.tar
 
 , mavenEnv  ? "\"-Xmx512m -Xms512m -Xss16m\""
-, mavenArgs ? "-Dmaven.repo.local=/tmp/m2"
+, mavenArgs ? "-Dmaven.repo.local=./m2"
 }:
 let
   plus = a : b : ( builtins.add a b );
