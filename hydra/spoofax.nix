@@ -28,7 +28,6 @@
 , strategoxtDistrib ? ../../strategoxt-distrib.tar
 
 , mavenEnv  ? "\"-Xmx512m -Xms512m -Xss16m\""
-, mavenArgs ? "-Dmaven.repo.local=./m2"
 }:
 let
   plus = a : b : ( builtins.add a b );
@@ -95,11 +94,11 @@ let
       	chmod a+x share/strategoxt/linux/*
       	cd $out
       
-      	./spoofax-deploy/org.metaborg.maven.build.strategoxt/build.sh -e ${mavenEnv} -a ${mavenArgs}
-      	./spoofax-deploy/org.metaborg.maven.build.java/build.sh -e ${mavenEnv} -a ${mavenArgs}
-      	./spoofax-deploy/org.metaborg.maven.build.spoofax.eclipse/build.sh -e ${mavenEnv} -a ${mavenArgs}
-      	./spoofax-deploy/org.metaborg.maven.build.spoofax.libs/build.sh -e ${mavenEnv} -a ${mavenArgs}
-      	./spoofax-deploy/org.metaborg.maven.build.spoofax.sunshine/build.sh -e ${mavenEnv} -a ${mavenArgs}
+      	./spoofax-deploy/org.metaborg.maven.build.strategoxt/build.sh -e ${mavenEnv} -a "-Dmaven.repo.local=$out/.m2"
+      	./spoofax-deploy/org.metaborg.maven.build.java/build.sh -e ${mavenEnv} -a "-Dmaven.repo.local=$out/.m2"
+      	./spoofax-deploy/org.metaborg.maven.build.spoofax.eclipse/build.sh -e ${mavenEnv} -a "-Dmaven.repo.local=$out/.m2"
+      	./spoofax-deploy/org.metaborg.maven.build.spoofax.libs/build.sh -e ${mavenEnv} -a "-Dmaven.repo.local=$out/.m2"
+      	./spoofax-deploy/org.metaborg.maven.build.spoofax.sunshine/build.sh -e ${mavenEnv} -a "-Dmaven.repo.local=$out/.m2"
 
       
       	SPOOFAX_SITE_LOC="$out/spoofax-deploy/org.strategoxt.imp.updatesite/target/site"
