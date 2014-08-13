@@ -40,8 +40,3 @@ mvn \
   -f "$DIR/pom.xml" \
   clean verify \
   $MAVEN_ARGS
-
-
-# Copy
-rm -f "$DIR/spoofax-libs.jar"
-cp "$DIR/target/org.metaborg.maven.build.spoofax.libs-"*".jar" "$DIR/spoofax-libs.jar"
