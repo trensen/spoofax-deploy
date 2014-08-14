@@ -5,10 +5,13 @@ set -u
 
 
 # Parse input
-while getopts ":ua:e:" opt; do
+while getopts ":uda:e:" opt; do
   case $opt in
     u)
       UPDATE_DISTRIB="true"
+      ;;
+    d)
+      INPUT_MAVEN_DEPLOY="deploy"
       ;;
     a)
       INPUT_MAVEN_ARGS=$OPTARG
@@ -35,6 +38,7 @@ if [ -z ${INPUT_MAVEN_ENV+x} ]; then
 else
   export MAVEN_OPTS="$INPUT_MAVEN_ENV"
 fi
+MAVEN_DEPLOY=${INPUT_MAVEN_DEPLOY:-""}
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -89,6 +93,7 @@ rm -rf $STRATEGOXT_MIN
 mvn \
   -f "$DIR/pom.xml" \
   clean install \
+  $MAVEN_DEPLOY \
   $MAVEN_ARGS
 
 
