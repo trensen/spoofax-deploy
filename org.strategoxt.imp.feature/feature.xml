@@ -2,7 +2,7 @@
 <feature
       id="org.strategoxt.imp"
       label="Spoofax Core"
-      version="1.2.0.0"
+      version="1.2.0.qualifier"
       plugin="org.strategoxt.imp.runtime">
 
    <description url="http://strategoxt.org/Stratego/Spoofax-IMP">
