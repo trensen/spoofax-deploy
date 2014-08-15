@@ -97,10 +97,10 @@ let
 
 
         # Set hydra build products.
-      	SPOOFAX_SITE_LOC="$out/spoofax-deploy/org.strategoxt.imp.updatesite/target/site"
+      	SPOOFAX_SITE_LOC="$out/spoofax-deploy/org.strategoxt.imp.updatesite/target"
       	SPOOFAX_SITE_FILE="$out/spoofax-eclipse-${QUALIFIER}.tar.gz"
         touch "''$SPOOFAX_SITE_LOC/index.html"
-        tar cvzf ''$SPOOFAX_SITE_FILE ''$SPOOFAX_SITE_LOC
+        tar -C ''$SPOOFAX_SITE_LOC -cvzf ''$SPOOFAX_SITE_FILE site
         
         SPOOFAX_LIBS_JAR="$out/spoofax-libs-${QUALIFIER}.jar"
         cp "$out/spoofax-deploy/org.metaborg.maven.build.spoofax.libs/target/org.metaborg.maven.build.spoofax.libs"*".jar" ''$SPOOFAX_LIBS_JAR
