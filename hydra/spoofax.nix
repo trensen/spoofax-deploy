@@ -95,8 +95,8 @@ let
       	cd $out
       
       	./spoofax-deploy/org.metaborg.maven.build.strategoxt/build.sh -e ${mavenEnv} -a "-Dmaven.repo.local=$out/.m2"
-      	./spoofax-deploy/org.metaborg.maven.build.java/build.sh -e ${mavenEnv} -a "-Dmaven.repo.local=$out/.m2"
-      	./spoofax-deploy/org.metaborg.maven.build.spoofax.eclipse/build.sh -e ${mavenEnv} -a "-Dmaven.repo.local=$out/.m2"
+      	./spoofax-deploy/org.metaborg.maven.build.java/build.sh -e ${mavenEnv} -a "-Dmaven.repo.local=$out/.m2" -q ${spoofaxRev}
+      	./spoofax-deploy/org.metaborg.maven.build.spoofax.eclipse/build.sh -e ${mavenEnv} -a "-Dmaven.repo.local=$out/.m2" -q ${spoofaxRev}
       	./spoofax-deploy/org.metaborg.maven.build.spoofax.libs/build.sh -e ${mavenEnv} -a "-Dmaven.repo.local=$out/.m2"
       	./spoofax-deploy/org.metaborg.maven.build.spoofax.sunshine/build.sh -e ${mavenEnv} -a "-Dmaven.repo.local=$out/.m2"
 
