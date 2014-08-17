@@ -1,29 +1,30 @@
 {
   nixpkgs ? ../../nixpkgs
     
-, aster            ? { outPath = ../../aster ; revCount = 9999; }
-, box              ? { outPath = ../../box ; revCount = 9999; }
-, esv              ? { outPath = ../../esv ; revCount = 9999; }
-, impPatched       ? { outPath = ../../imp-patched ; revCount = 9999; }
-, jsglr            ? { outPath = ../../jsglr ; revCount = 9999; }
-, lpgRuntime       ? { outPath = ../../lpg-runtime ; revCount = 9999; }
-, mbExec           ? { outPath = ../../mb-exec ; revCount = 9999; }
-, mbExecDeps       ? { outPath = ../../mb-exec-deps ; revCount = 9999; }
-, mbRep            ? { outPath = ../../mb-rep ; revCount = 9999; }
-, modelware        ? { outPath = ../../modelware ; revCount = 9999; }
-, nabl             ? { outPath = ../../nabl ; revCount = 9999; }
-, rtg              ? { outPath = ../../rtg ; revCount = 9999; }
-, runtimeLibraries ? { outPath = ../../runtime-libraries ; revCount = 9999; }
-, sdf              ? { outPath = ../../sdf ; revCount = 9999; }
-, shrike           ? { outPath = ../../shrike ; revCount = 9999; }
-, spoofax          ? { outPath = ../../spoofax ; revCount = 9999; }
-, spoofaxDebug     ? { outPath = ../../spoofax-debug ; revCount = 9999; }
-, spoofaxDeploy    ? { outPath = ../../spoofax-deploy ; revCount = 9999; }
-, spoofaxSunshine  ? { outPath = ../../spoofax-sunshine ; revCount = 9999; }
-, spt              ? { outPath = ../../spt ; revCount = 9999; }
-, stratego         ? { outPath = ../../stratego ; revCount = 9999; }
-, strategoxt       ? { outPath = ../../strategoxt ; revCount = 9999; }
-, ts               ? { outPath = ../../ts ; revCount = 9999; }
+, aster            ? { outPath = ../../aster }
+, box              ? { outPath = ../../box }
+, esv              ? { outPath = ../../esv }
+, impPatched       ? { outPath = ../../imp-patched }
+, jsglr            ? { outPath = ../../jsglr }
+, lpgRuntime       ? { outPath = ../../lpg-runtime }
+, mbExec           ? { outPath = ../../mb-exec }
+, mbExecDeps       ? { outPath = ../../mb-exec-deps }
+, mbRep            ? { outPath = ../../mb-rep }
+, modelware        ? { outPath = ../../modelware }
+, nabl             ? { outPath = ../../nabl }
+, rtg              ? { outPath = ../../rtg }
+, runtimeLibraries ? { outPath = ../../runtime-libraries }
+, sdf              ? { outPath = ../../sdf }
+, shrike           ? { outPath = ../../shrike }
+, spoofax          ? { outPath = ../../spoofax }
+, spoofaxDebug     ? { outPath = ../../spoofax-debug }
+, spoofaxDeploy    ? { outPath = ../../spoofax-deploy }
+, spoofaxSunshine  ? { outPath = ../../spoofax-sunshine }
+, spoofaxReleng    ? { outPath = ../../spoofax-releng }
+, spt              ? { outPath = ../../spt }
+, stratego         ? { outPath = ../../stratego }
+, strategoxt       ? { outPath = ../../strategoxt }
+, ts               ? { outPath = ../../ts }
 
 , strategoxtDistrib ? ../../strategoxt-distrib.tar
 
@@ -62,6 +63,7 @@ let
       	cp -R ${spoofaxDebug}/. $out/spoofax-debug
       	cp -R ${spoofaxDeploy}/. $out/spoofax-deploy
       	cp -R ${spoofaxSunshine}/. $out/spoofax-sunshine
+      	cp ${spoofaxReleng}/latest-timestamp.sh $out/latest-timestamp.sh
       	cp -R ${spt}/. $out/spt
       	cp -R ${stratego}/. $out/stratego
       	cp -R ${strategoxt}/. $out/strategoxt
