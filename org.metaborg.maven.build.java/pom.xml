@@ -3,6 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>org.metaborg.maven.build.java</artifactId>
 	<packaging>pom</packaging>
+	<description>Maven build for MetaBorg Java components</description>
+	<url>https://github.com/metaborg/spoofax-deploy</url>
 
 	<parent>
 		<groupId>org.metaborg</groupId>
@@ -43,4 +45,19 @@
 		<!-- External dependencies -->
 		<module>../../mb-exec-deps/org.spoofax.interpreter.externaldeps</module>
 	</modules>
+
+	<developers>
+		<developer>
+			<name>Gabriël Konat</name>
+			<email>g.d.p.konat@tudelft.nl</email>
+			<organization>Delft University of Technology</organization>
+			<organizationUrl>http://www.ewi.tudelft.nl/en</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git@github.com:metaborg/spoofax-deploy.git</connection>
+		<developerConnection>scm:git:git@github.com:metaborg/spoofax-deploy.git</developerConnection>
+		<url>https://github.com/metaborg/spoofax-deploy</url>
+	</scm>
 </project>
