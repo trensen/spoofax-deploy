@@ -3,8 +3,9 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>org.spoofax.modelware.emf.feature</artifactId>
-	<version>1.2.0.0</version>
 	<packaging>eclipse-feature</packaging>
+	<description>Eclipse feature for Spoofax EMF integration</description>
+	<url>https://github.com/metaborg/spoofax-deploy</url>
 
 	<parent>
 		<groupId>org.metaborg</groupId>
@@ -12,4 +13,19 @@
 		<version>1.2.0-SNAPSHOT</version>
 		<relativePath>../org.metaborg.maven.parent.plugin</relativePath>
 	</parent>
+
+	<developers>
+		<developer>
+			<name>Oskar van Rest</name>
+			<email>oskar.van.rest@oracle.com</email>
+			<organization>Oracle Labs</organization>
+			<organizationUrl>https://labs.oracle.com</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git@github.com:metaborg/spoofax-deploy.git</connection>
+		<developerConnection>scm:git:git@github.com:metaborg/spoofax-deploy.git</developerConnection>
+		<url>https://github.com/metaborg/spoofax-deploy</url>
+	</scm>
 </project>

@@ -3,6 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>org.metaborg.maven.build.spoofax.libs</artifactId>
 	<packaging>jar</packaging>
+	<description>Maven build for library JAR required by Stratego/XT</description>
+	<url>https://github.com/metaborg/spoofax-deploy</url>
 
 	<parent>
 		<groupId>org.metaborg</groupId>
@@ -80,4 +82,19 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<developers>
+		<developer>
+			<name>Gabriël Konat</name>
+			<email>g.d.p.konat@tudelft.nl</email>
+			<organization>Delft University of Technology</organization>
+			<organizationUrl>http://www.ewi.tudelft.nl/en</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git@github.com:metaborg/spoofax-deploy.git</connection>
+		<developerConnection>scm:git:git@github.com:metaborg/spoofax-deploy.git</developerConnection>
+		<url>https://github.com/metaborg/spoofax-deploy</url>
+	</scm>
 </project>

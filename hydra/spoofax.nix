@@ -1,57 +1,47 @@
 {
   nixpkgs ? ../../nixpkgs
     
-, aster            ? { outPath = ../../aster ; revCount = 9999; }
-, box              ? { outPath = ../../box ; revCount = 9999; }
-, esv              ? { outPath = ../../esv ; revCount = 9999; }
-, impPatched       ? { outPath = ../../imp-patched ; revCount = 9999; }
-, jsglr            ? { outPath = ../../jsglr ; revCount = 9999; }
-, lpgRuntime       ? { outPath = ../../lpg-runtime ; revCount = 9999; }
-, mbExec           ? { outPath = ../../mb-exec ; revCount = 9999; }
-, mbExecDeps       ? { outPath = ../../mb-exec-deps ; revCount = 9999; }
-, mbRep            ? { outPath = ../../mb-rep ; revCount = 9999; }
-, modelware        ? { outPath = ../../modelware ; revCount = 9999; }
-, nabl             ? { outPath = ../../nabl ; revCount = 9999; }
-, rtg              ? { outPath = ../../rtg ; revCount = 9999; }
-, runtimeLibraries ? { outPath = ../../runtime-libraries ; revCount = 9999; }
-, sdf              ? { outPath = ../../sdf ; revCount = 9999; }
-, shrike           ? { outPath = ../../shrike ; revCount = 9999; }
-, spoofax          ? { outPath = ../../spoofax ; revCount = 9999; }
-, spoofaxDebug     ? { outPath = ../../spoofax-debug ; revCount = 9999; }
-, spoofaxDeploy    ? { outPath = ../../spoofax-deploy ; revCount = 9999; }
-, spoofaxSunshine  ? { outPath = ../../spoofax-sunshine ; revCount = 9999; }
-, spt              ? { outPath = ../../spt ; revCount = 9999; }
-, stratego         ? { outPath = ../../stratego ; revCount = 9999; }
-, strategoxt       ? { outPath = ../../strategoxt ; revCount = 9999; }
-, ts               ? { outPath = ../../ts ; revCount = 9999; }
+, aster            ? { outPath = ../../aster }
+, box              ? { outPath = ../../box }
+, esv              ? { outPath = ../../esv }
+, impPatched       ? { outPath = ../../imp-patched }
+, jsglr            ? { outPath = ../../jsglr }
+, lpgRuntime       ? { outPath = ../../lpg-runtime }
+, mbExec           ? { outPath = ../../mb-exec }
+, mbExecDeps       ? { outPath = ../../mb-exec-deps }
+, mbRep            ? { outPath = ../../mb-rep }
+, modelware        ? { outPath = ../../modelware }
+, nabl             ? { outPath = ../../nabl }
+, rtg              ? { outPath = ../../rtg }
+, runtimeLibraries ? { outPath = ../../runtime-libraries }
+, sdf              ? { outPath = ../../sdf }
+, shrike           ? { outPath = ../../shrike }
+, spoofax          ? { outPath = ../../spoofax }
+, spoofaxDebug     ? { outPath = ../../spoofax-debug }
+, spoofaxDeploy    ? { outPath = ../../spoofax-deploy }
+, spoofaxSunshine  ? { outPath = ../../spoofax-sunshine }
+, spoofaxReleng    ? { outPath = ../../spoofax-releng }
+, spt              ? { outPath = ../../spt }
+, stratego         ? { outPath = ../../stratego }
+, strategoxt       ? { outPath = ../../strategoxt }
+, ts               ? { outPath = ../../ts }
 
 , strategoxtDistrib ? ../../strategoxt-distrib.tar
 
 , mavenEnv  ? "\"-Xmx512m -Xms512m -Xss16m\""
-, mavenArgs ? "-Dmaven.repo.local=/tmp/m2"
 }:
 let
-  plus = a : b : ( builtins.add a b );
-  sumrev = xs : pkgs.lib.foldl plus 0 xs;
-  
-  spoofaxRev = toString (sumrev [
-    aster.revCount box.revCount esv.revCount impPatched.revCount jsglr.revCount lpgRuntime.revCount
-    mbExec.revCount mbExecDeps.revCount mbRep.revCount modelware.revCount nabl.revCount rtg.revCount 
-    runtimeLibraries.revCount sdf.revCount shrike.revCount spoofax.revCount spoofaxDebug.revCount
-    spoofaxDeploy.revCount spoofaxSunshine.revCount spt.revCount stratego.revCount strategoxt.revCount 
-    ts.revCount
-  ]);
-  
   pkgs = import nixpkgs { config.allowUnfree = true; };
   
   jobs = with pkgs.lib; {
     build = pkgs.stdenv.mkDerivation {
-      name = "spoofax-${spoofaxRev}";
+      name = "spoofax";
       
       buildInputs = with pkgs; [ stdenv git openjdk gnutar gzip bash maven3 wget unzip ant ];
       
       buildCommand = ''
-        ensureDir $out
+        # Copy source code to build environment, and set write permissions.
+        mkdir -p $out
         cd $out
         
       	cp -R ${aster}/. $out/aster
@@ -73,16 +63,20 @@ let
       	cp -R ${spoofaxDebug}/. $out/spoofax-debug
       	cp -R ${spoofaxDeploy}/. $out/spoofax-deploy
       	cp -R ${spoofaxSunshine}/. $out/spoofax-sunshine
+      	cp ${spoofaxReleng}/latest-timestamp.sh $out/latest-timestamp.sh
       	cp -R ${spt}/. $out/spt
       	cp -R ${stratego}/. $out/stratego
       	cp -R ${strategoxt}/. $out/strategoxt
       	cp -R ${ts}/. $out/ts
       	
       	chmod -R +w .
-        
+
+
+        # Patch shebangs in scripts to work with nix.        
         patchShebangs ./
 
 
+        # Build everything
       	cd spoofax-deploy/org.metaborg.maven.build.strategoxt
       	mkdir strategoxt-distrib
       	cd strategoxt-distrib
@@ -95,30 +89,36 @@ let
       	chmod a+x share/strategoxt/linux/*
       	cd $out
       
-      	./spoofax-deploy/org.metaborg.maven.build.strategoxt/build.sh -e ${mavenEnv} -a ${mavenArgs}
-      	./spoofax-deploy/org.metaborg.maven.build.java/build.sh -e ${mavenEnv} -a ${mavenArgs}
-      	./spoofax-deploy/org.metaborg.maven.build.spoofax.eclipse/build.sh -e ${mavenEnv} -a ${mavenArgs}
-      	./spoofax-deploy/org.metaborg.maven.build.spoofax.libs/build.sh -e ${mavenEnv} -a ${mavenArgs}
-      	./spoofax-deploy/org.metaborg.maven.build.spoofax.sunshine/build.sh -e ${mavenEnv} -a ${mavenArgs}
-
+        QUALIFIER=$(./latest-timestamp.sh)
       
-      	SPOOFAX_SITE_LOC="$out/spoofax-deploy/org.strategoxt.imp.updatesite/target/site"
-      	SPOOFAX_SITE_FILE="$out/spoofax-eclipse-${spoofaxRev}.tar.gz"
-        touch "''$SPOOFAX_SITE_LOC/index.html"
-        tar cvzf ''$SPOOFAX_SITE_FILE ''$SPOOFAX_SITE_LOC
+      	./spoofax-deploy/org.metaborg.maven.build.strategoxt/build.sh -e ${mavenEnv} -a "-Dmaven.repo.local=$out/.m2"
+      	./spoofax-deploy/org.metaborg.maven.build.java/build.sh -e ${mavenEnv} -a "-Dmaven.repo.local=$out/.m2" -q $QUALIFIER
+      	./spoofax-deploy/org.metaborg.maven.build.spoofax.eclipse/build.sh -e ${mavenEnv} -a "-Dmaven.repo.local=$out/.m2" -q $QUALIFIER
+      	./spoofax-deploy/org.metaborg.maven.build.spoofax.libs/build.sh -e ${mavenEnv} -a "-Dmaven.repo.local=$out/.m2"
+      	./spoofax-deploy/org.metaborg.maven.build.spoofax.sunshine/build.sh -e ${mavenEnv} -a "-Dmaven.repo.local=$out/.m2"
+
+
+        # Set hydra build products.
+      	SPOOFAX_SITE_LOC="$out/spoofax-deploy/org.strategoxt.imp.updatesite/target"
+      	SPOOFAX_SITE_FILE="$out/spoofax-eclipse-$QUALIFIER.tar.gz"
+        touch "$SPOOFAX_SITE_LOC/index.html"
+        tar -C $SPOOFAX_SITE_LOC -cvzf $SPOOFAX_SITE_FILE site
         
-        SPOOFAX_LIBS_JAR="$out/spoofax-libs-${spoofaxRev}.jar"
-        cp "$out/spoofax-deploy/org.metaborg.maven.build.spoofax.libs/target/spoofax-libs.jar" ''$SPOOFAX_LIBS_JAR
+        SPOOFAX_LIBS_JAR="$out/spoofax-libs-$QUALIFIER.jar"
+        cp "$out/spoofax-deploy/org.metaborg.maven.build.spoofax.libs/target/org.metaborg.maven.build.spoofax.libs"*".jar" $SPOOFAX_LIBS_JAR
         
-        SUNSHINE_JAR="$out/spoofax-sunshine-${spoofaxRev}.jar"
-        cp "$out/spoofax-sunshine/org.spoofax.sunshine/target/org.metaborg.sunshine"*".jar" ''$SUNSHINE_JAR
+        SUNSHINE_JAR="$out/spoofax-sunshine-$QUALIFIER.jar"
+        cp "$out/spoofax-sunshine/org.spoofax.sunshine/target/org.metaborg.sunshine"*".jar" $SUNSHINE_JAR
         
-        ensureDir $out/nix-support
-        echo "file site ''$SPOOFAX_SITE_LOC" >> $out/nix-support/hydra-build-products
-        echo "file tar ''$SPOOFAX_SITE_FILE" >> $out/nix-support/hydra-build-products
-        echo "file jar ''$SPOOFAX_LIBS_JAR" >> $out/nix-support/hydra-build-products
-        echo "file jar ''$SUNSHINE_JAR" >> $out/nix-support/hydra-build-products
+        mkdir -p $out/nix-support
+        echo "file site $SPOOFAX_SITE_LOC" >> $out/nix-support/hydra-build-products
+        echo "file tar $SPOOFAX_SITE_FILE" >> $out/nix-support/hydra-build-products
+        echo "file jar $SPOOFAX_LIBS_JAR" >> $out/nix-support/hydra-build-products
+        echo "file jar $SUNSHINE_JAR" >> $out/nix-support/hydra-build-products
       '';
+      
+      
+      # Allow access to the internet for Maven.
       __noChroot = true;
     };
   };

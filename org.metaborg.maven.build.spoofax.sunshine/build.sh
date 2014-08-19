@@ -37,5 +37,5 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 mvn \
   -f "$DIR/pom.xml" \
-  clean verify \ 
+  clean verify \
   $MAVEN_ARGS

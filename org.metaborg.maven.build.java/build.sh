@@ -5,10 +5,13 @@ set -u
 
 
 # Parse input
-while getopts ":gq:a:e:" opt; do
+while getopts ":gdq:a:e:" opt; do
   case $opt in
     g)
       NO_GENERATOR="true"
+      ;;
+    d)
+      INPUT_MAVEN_DEPLOY="deploy"
       ;;
     q)
       INPUT_QUALIFIER=$OPTARG
@@ -40,6 +43,7 @@ if [ -z ${INPUT_MAVEN_ENV+x} ]; then
 else
   export MAVEN_OPTS="$INPUT_MAVEN_ENV"
 fi
+MAVEN_DEPLOY=${INPUT_MAVEN_DEPLOY:-""}
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ROOT="$DIR/../../"
@@ -90,6 +94,7 @@ mvn \
   -f "$DIR/pom.xml" \
   -DforceContextQualifier=$QUALIFIER \
   clean install \
+  $MAVEN_DEPLOY \
   $MAVEN_ARGS
 
 
