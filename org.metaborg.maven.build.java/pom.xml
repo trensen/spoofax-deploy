@@ -30,6 +30,9 @@
 
 		<!-- Spoofax -->
 		<module>../../spoofax/org.strategoxt.imp.generator</module>
+		<module>../../spoofax/org.strategoxt.imp.generator/aster-jar-pom.xml</module>
+		<module>../../spoofax/org.strategoxt.imp.generator/make-permissive-jar-pom.xml</module>
+		<module>../../spoofax/org.strategoxt.imp.generator/sdf2imp-jar-pom.xml</module>
 
 		<!-- Parser -->
 		<module>../../jsglr/org.spoofax.jsglr</module>

@@ -14,6 +14,8 @@
 
 		<manifest-location>META-INF</manifest-location>
 		<forceContextQualifier>qualifier</forceContextQualifier>
+		<deployFileUrl>${project.distributionManagement.snapshotRepository.url}</deployFileUrl>
+		<deployRepositoryId>ossrh</deployRepositoryId>
 
 		<java-version>1.7</java-version>
 		<maven-eclipse-compiler-version>2.3</maven-eclipse-compiler-version>
@@ -197,11 +199,21 @@
 					<version>2.8.1</version>
 					<configuration>
 						<retryFailedDeploymentCount>10</retryFailedDeploymentCount>
+						<releaseProfiles>release</releaseProfiles>
 					</configuration>
 				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>release</id>
+			<properties>
+				<deployFileUrl>${project.distributionManagement.repository.url}</deployFileUrl>
+			</properties>
+		</profile>
+	</profiles>
 
 	<developers>
 		<developer>
@@ -220,11 +232,11 @@
 
 	<distributionManagement>
 		<snapshotRepository>
-			<id>ossrh</id>
+			<id>${deployRepositoryId}</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 		</snapshotRepository>
 		<repository>
-			<id>ossrh</id>
+			<id>${deployRepositoryId}</id>
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
 		</repository>
 	</distributionManagement>
