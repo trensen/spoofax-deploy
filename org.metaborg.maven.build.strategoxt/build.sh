@@ -94,10 +94,23 @@ rm -rf $STRATEGOXT_MIN
 
 # Install strategoxt JARs and distribution into local maven repository
 mvn \
-  -f "$DIR/pom.xml" \
+  -f "$DIR/strategoxt-distrib-pom.xml" \
   clean install \
   $MAVEN_DEPLOY \
   $MAVEN_ARGS
+  
+mvn \
+  -f "$DIR/strategoxt-jar-pom.xml" \
+  clean install \
+  $MAVEN_DEPLOY \
+  $MAVEN_ARGS
+
+mvn \
+  -f "$DIR/strategoxt-min-jar-pom.xml" \
+  clean install \
+  $MAVEN_DEPLOY \
+  $MAVEN_ARGS
+
 
 
 # Clean up
