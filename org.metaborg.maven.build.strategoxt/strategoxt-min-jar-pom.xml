@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>strategoxt-min-jar</artifactId>
-	<packaging>pom</packaging>
+	<packaging>jar</packaging>
 	<description>Minified Stratego/XT JAR file</description>
 	<url>https://github.com/metaborg/strategoxt</url>
 
@@ -18,6 +18,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-install-plugin</artifactId>
+				<configuration>
+					<!-- Skip default installation -->
+					<skip>true</skip>
+				</configuration>
 				<executions>
 					<execution>
 						<phase>install</phase>
@@ -34,6 +38,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<!-- Skip default deployment -->
+					<skip>true</skip>
+				</configuration>
 				<executions>
 					<execution>
 						<phase>deploy</phase>
