@@ -1,30 +1,30 @@
 {
   nixpkgs ? ../../nixpkgs
     
-, aster            ? { outPath = ../../aster }
-, box              ? { outPath = ../../box }
-, esv              ? { outPath = ../../esv }
-, impPatched       ? { outPath = ../../imp-patched }
-, jsglr            ? { outPath = ../../jsglr }
-, lpgRuntime       ? { outPath = ../../lpg-runtime }
-, mbExec           ? { outPath = ../../mb-exec }
-, mbExecDeps       ? { outPath = ../../mb-exec-deps }
-, mbRep            ? { outPath = ../../mb-rep }
-, modelware        ? { outPath = ../../modelware }
-, nabl             ? { outPath = ../../nabl }
-, rtg              ? { outPath = ../../rtg }
-, runtimeLibraries ? { outPath = ../../runtime-libraries }
-, sdf              ? { outPath = ../../sdf }
-, shrike           ? { outPath = ../../shrike }
-, spoofax          ? { outPath = ../../spoofax }
-, spoofaxDebug     ? { outPath = ../../spoofax-debug }
-, spoofaxDeploy    ? { outPath = ../../spoofax-deploy }
-, spoofaxSunshine  ? { outPath = ../../spoofax-sunshine }
-, spoofaxReleng    ? { outPath = ../../spoofax-releng }
-, spt              ? { outPath = ../../spt }
-, stratego         ? { outPath = ../../stratego }
-, strategoxt       ? { outPath = ../../strategoxt }
-, ts               ? { outPath = ../../ts }
+, aster            ? { outPath = ../../aster; }
+, box              ? { outPath = ../../box; }
+, esv              ? { outPath = ../../esv; }
+, impPatched       ? { outPath = ../../imp-patched; }
+, jsglr            ? { outPath = ../../jsglr; }
+, lpgRuntime       ? { outPath = ../../lpg-runtime; }
+, mbExec           ? { outPath = ../../mb-exec; }
+, mbExecDeps       ? { outPath = ../../mb-exec-deps; }
+, mbRep            ? { outPath = ../../mb-rep; }
+, modelware        ? { outPath = ../../modelware; }
+, nabl             ? { outPath = ../../nabl; }
+, rtg              ? { outPath = ../../rtg; }
+, runtimeLibraries ? { outPath = ../../runtime-libraries; }
+, sdf              ? { outPath = ../../sdf; }
+, shrike           ? { outPath = ../../shrike; }
+, spoofax          ? { outPath = ../../spoofax; }
+, spoofaxDebug     ? { outPath = ../../spoofax-debug; }
+, spoofaxDeploy    ? { outPath = ../../spoofax-deploy; }
+, spoofaxSunshine  ? { outPath = ../../spoofax-sunshine; }
+, spoofaxReleng    ? { outPath = ../../spoofax-releng; }
+, spt              ? { outPath = ../../spt; }
+, stratego         ? { outPath = ../../stratego; }
+, strategoxt       ? { outPath = ../../strategoxt; }
+, ts               ? { outPath = ../../ts; }
 
 , strategoxtDistrib ? ../../strategoxt-distrib.tar
 
