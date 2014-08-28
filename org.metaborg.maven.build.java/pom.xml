@@ -20,6 +20,7 @@
 		<module>../../mb-rep/org.spoofax.interpreter.library.index</module>
 
 		<!-- Execution -->
+		<module>../../mb-exec/org.metaborg.util</module>
 		<module>../../mb-exec/org.spoofax.interpreter</module>
 		<module>../../mb-exec/org.spoofax.interpreter.core</module>
 		<module>../../mb-exec/org.spoofax.interpreter.library.interpreter</module>
@@ -29,6 +30,7 @@
 		<module>../../runtime-libraries/org.metaborg.runtime.task</module>
 
 		<!-- Spoofax -->
+		<module>../../spoofax/org.metaborg.spoofax.core</module>
 		<module>../../spoofax/org.strategoxt.imp.generator</module>
 		<module>../../spoofax/org.strategoxt.imp.generator/aster-jar-pom.xml</module>
 		<module>../../spoofax/org.strategoxt.imp.generator/make-permissive-jar-pom.xml</module>
