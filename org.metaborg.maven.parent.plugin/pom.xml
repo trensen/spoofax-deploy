@@ -39,6 +39,11 @@
 		<!-- Execution -->
 		<dependency>
 			<groupId>org.metaborg</groupId>
+			<artifactId>org.metaborg.util</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.metaborg</groupId>
 			<artifactId>org.spoofax.interpreter</artifactId>
 			<version>${metaborg-version}</version>
 		</dependency>
@@ -73,6 +78,11 @@
 			<version>${metaborg-version}</version>
 		</dependency>
 		<!-- Spoofax -->
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.metaborg.spoofax.core</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.metaborg</groupId>
 			<artifactId>org.strategoxt.imp.generator</artifactId>
