@@ -20,6 +20,7 @@
 		<module>../../mb-exec/org.spoofax.interpreter.ui</module>
 
 		<!-- Spoofax -->
+		<module>../../spoofax/org.metaborg.spoofax.eclipse.test</module>
 		<module>../../spoofax/org.strategoxt.imp.metatooling</module>
 		<module>../../spoofax/org.strategoxt.imp.nativebundle</module>
 		<module>../../spoofax/org.strategoxt.imp.runtime</module>

@@ -71,6 +71,11 @@
 				</exclusions>
 			</dependency>
 			<dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>1.2</version>
+			</dependency>
+			<dependency>
 				<groupId>jline</groupId>
 				<artifactId>jline</artifactId>
 				<version>${jline-version}</version>

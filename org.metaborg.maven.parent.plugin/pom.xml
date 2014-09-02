@@ -157,6 +157,11 @@
 					</environments>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tycho-version}</version>
+			</plugin>
 		</plugins>
 	</build>
 
