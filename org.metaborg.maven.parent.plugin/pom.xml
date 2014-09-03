@@ -16,6 +16,7 @@
 
 	<properties>
 		<tycho-version>0.20.0</tycho-version>
+		<test-workspace-location>${project.build.directory}/work</test-workspace-location>
 	</properties>
 
 	<dependencies>
@@ -171,9 +172,40 @@
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-surefire-plugin</artifactId>
 				<version>${tycho-version}</version>
+				<configuration>
+					<useUIHarness>true</useUIHarness>
+					<useUIThread>true</useUIThread>
+					<argLine>-Xmx512m -XX:MaxPermSize=256m ${ui.test.vmargs}</argLine>
+					<work>${test-workspace-location}</work>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>macosx</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<properties>
+				<ui.test.vmargs>-XstartOnFirstThread</ui.test.vmargs>
+			</properties>
+		</profile>
+		<profile>
+			<id>not-macosx</id>
+			<activation>
+				<os>
+					<family>!mac</family>
+				</os>
+			</activation>
+			<properties>
+				<ui.test.vmargs></ui.test.vmargs>
+			</properties>
+		</profile>
+	</profiles>
 
 	<repositories>
 		<repository>
