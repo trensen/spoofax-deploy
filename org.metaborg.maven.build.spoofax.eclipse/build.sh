@@ -43,36 +43,10 @@ fi
 MAVEN_DEPLOY=${INPUT_MAVEN_DEPLOY:-""}
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-ROOT="$DIR/../../"
-
-STRATEGOXT_JAR="$ROOT/strategoxt/strategoxt/stratego-libraries/java-backend/java/strategoxt.jar"
-
-GEN_LOC="$ROOT/spoofax/org.strategoxt.imp.generator/"
-GEN_DIST_LOC="$GEN_LOC/dist/"
-
-case $OSTYPE in
-  linux-gnu)
-    NATIVE_LOC="$ROOT/spoofax/org.strategoxt.imp.nativebundle/native/linux/"
-    ;;
-  darwin*)
-    NATIVE_LOC="$ROOT/spoofax/org.strategoxt.imp.nativebundle/native/macosx/"
-    ;;
-  cygwin)
-    NATIVE_LOC="$ROOT/spoofax/org.strategoxt.imp.nativebundle/native/cygwin/"
-    ;;
-  *)
-    echo "Unsupported platform: $OSTYPE" >&2
-    exit 3
-    ;;
-esac
-
 
 mvn \
   -f "$DIR/pom.xml" \
   -DforceContextQualifier=$QUALIFIER \
-  -Dstrategoxt-jar=$STRATEGOXT_JAR \
-  -Ddist-loc=$GEN_DIST_LOC \
-  -Dnative-loc=$NATIVE_LOC \
-  clean verify \
+  clean install \
   $MAVEN_DEPLOY \
   $MAVEN_ARGS

@@ -13,12 +13,104 @@
 		<relativePath>../org.metaborg.maven.parent.plugin</relativePath>
 	</parent>
 
+	<properties>
+		<builddeps-location>${basedir}/builddeps/</builddeps-location>
+		<nativebundle-location>${builddeps-location}/native</nativebundle-location>
+		<generator-jars-location>${builddeps-location}/dist</generator-jars-location>
+		<strategoxt-jar-location>${maven.dependency.org.metaborg.strategoxt-jar.jar.path}</strategoxt-jar-location>
+	</properties>
+	
+  <dependencies>
+    <!-- Depend on the StrategoXT JAR so that it is available for the build. -->
+    <dependency>
+      <groupId>org.metaborg</groupId>
+      <artifactId>strategoxt-jar</artifactId>
+      <version>${metaborg-version}</version>
+    </dependency>
+  </dependencies>
+
+	<profiles>
+		<profile>
+			<id>linux-os-profile</id>
+			<activation>
+				<os>
+					<family>unix</family>
+				</os>
+			</activation>
+			<properties>
+				<nativebundle-os-location>${nativebundle-location}/linux/</nativebundle-os-location>
+			</properties>
+		</profile>
+		<!--
+			Order of profiles is important here because OSX is of both the unix and mac families, last profile that gets
+			activated overrides the value of the property.
+		-->
+		<profile>
+			<id>macosx-os-profile</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<properties>
+				<nativebundle-os-location>${nativebundle-location}/macosx/</nativebundle-os-location>
+			</properties>
+		</profile>
+		<profile>
+			<id>windows-os-profile</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<properties>
+				<nativebundle-os-location>${nativebundle-location}/cygwin/</nativebundle-os-location>
+			</properties>
+		</profile>
+	</profiles>
+
 	<build>
 		<sourceDirectory>editor/java</sourceDirectory>
 		<plugins>
+			<!-- Unpack generator JARs and native executables to project directory, to prepare for Ant build. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>spoofax-unpack-build-dependencies</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.metaborg</groupId>
+									<artifactId>org.strategoxt.imp.nativebundle</artifactId>
+									<version>${metaborg-version}</version>
+									<type>eclipse-plugin</type>
+									<includes>native/**/*</includes>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.metaborg</groupId>
+									<artifactId>org.strategoxt.imp.generator</artifactId>
+									<version>${metaborg-version}</version>
+									<type>jar</type>
+									<includes>dist/**/*</includes>
+								</artifactItem>
+							</artifactItems>
+							<outputDirectory>${builddeps-location}</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Run the Spoofax Ant build. -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
+				<!-- Extra dependencies that should be put on the classpath for Ant. -->
 				<dependencies>
 					<dependency>
 						<groupId>org.metaborg</groupId>
@@ -52,11 +144,6 @@
 						<phase>clean</phase>
 						<configuration>
 							<target>
-								<property name="externaljarx" refid="maven.compile.classpath" />
-								<property name="eclipse.spoofaximp.jars" value="${dist-loc}" />
-								<property name="eclipse.spoofaximp.strategojar" value="${strategoxt-jar}" />
-								<property name="build.strategoxt.sdf" value="${native-loc}" />
-								<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
 								<ant antfile="build.main.xml" inheritRefs="true">
 									<target name="clean" />
 								</ant>
@@ -72,9 +159,9 @@
 						<configuration>
 							<target>
 								<property name="externaljarx" refid="maven.compile.classpath" />
-								<property name="eclipse.spoofaximp.jars" value="${dist-loc}" />
-								<property name="eclipse.spoofaximp.strategojar" value="${strategoxt-jar}" />
-								<property name="build.strategoxt.sdf" value="${native-loc}" />
+								<property name="eclipse.spoofaximp.jars" value="${generator-jars-location}" />
+								<property name="eclipse.spoofaximp.strategojar" value="${strategoxt-jar-location}" />
+								<property name="build.strategoxt.sdf" value="${nativebundle-os-location}" />
 								<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
 								<ant antfile="build.main.xml" inheritRefs="true">
 									<target name="generate-sources" />
@@ -91,9 +178,9 @@
 						<configuration>
 							<target>
 								<property name="externaljarx" refid="maven.compile.classpath" />
-								<property name="eclipse.spoofaximp.jars" value="${dist-loc}" />
-								<property name="eclipse.spoofaximp.strategojar" value="${strategoxt-jar}" />
-								<property name="build.strategoxt.sdf" value="${native-loc}" />
+								<property name="eclipse.spoofaximp.jars" value="${generator-jars-location}" />
+								<property name="eclipse.spoofaximp.strategojar" value="${strategoxt-jar-location}" />
+								<property name="build.strategoxt.sdf" value="${nativebundle-os-location}" />
 								<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
 								<ant antfile="build.main.xml" inheritRefs="true">
 									<target name="package" />
@@ -103,6 +190,29 @@
 						<goals>
 							<goal>run</goal>
 						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Clean up unpacked build dependencies -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>spoofax-clean-build-dependencies</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+						<configuration>
+							<excludeDefaultDirectories>true</excludeDefaultDirectories>
+							<filesets>
+								<fileset>
+									<directory>${builddeps-location}</directory>
+								</fileset>
+							</filesets>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
