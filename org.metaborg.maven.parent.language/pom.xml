@@ -14,20 +14,21 @@
 	</parent>
 
 	<properties>
+		<skip-language-build>false</skip-language-build>
 		<builddeps-location>${basedir}/builddeps/</builddeps-location>
 		<nativebundle-location>${builddeps-location}/native</nativebundle-location>
 		<generator-jars-location>${builddeps-location}/dist</generator-jars-location>
 		<strategoxt-jar-location>${maven.dependency.org.metaborg.strategoxt-jar.jar.path}</strategoxt-jar-location>
 	</properties>
-	
-  <dependencies>
-    <!-- Depend on the StrategoXT JAR so that it is available for the build. -->
-    <dependency>
-      <groupId>org.metaborg</groupId>
-      <artifactId>strategoxt-jar</artifactId>
-      <version>${metaborg-version}</version>
-    </dependency>
-  </dependencies>
+
+	<dependencies>
+		<!-- Depend on the StrategoXT JAR so that it is available for the build. -->
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>strategoxt-jar</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
+	</dependencies>
 
 	<profiles>
 		<profile>
@@ -84,6 +85,7 @@
 							<goal>unpack</goal>
 						</goals>
 						<configuration>
+							<skip>${skip-language-build}</skip>
 							<artifactItems>
 								<artifactItem>
 									<groupId>org.metaborg</groupId>
@@ -143,6 +145,7 @@
 						<id>spoofax-clean</id>
 						<phase>clean</phase>
 						<configuration>
+							<skip>${skip-language-build}</skip>
 							<target>
 								<ant antfile="build.main.xml" inheritRefs="true">
 									<target name="clean" />
@@ -157,6 +160,7 @@
 						<id>spoofax-generate-sources</id>
 						<phase>generate-sources</phase>
 						<configuration>
+							<skip>${skip-language-build}</skip>
 							<target>
 								<property name="externaljarx" refid="maven.compile.classpath" />
 								<property name="eclipse.spoofaximp.jars" value="${generator-jars-location}" />
@@ -176,6 +180,7 @@
 						<id>spoofax-package</id>
 						<phase>prepare-package</phase>
 						<configuration>
+							<skip>${skip-language-build}</skip>
 							<target>
 								<property name="externaljarx" refid="maven.compile.classpath" />
 								<property name="eclipse.spoofaximp.jars" value="${generator-jars-location}" />
@@ -206,6 +211,7 @@
 							<goal>clean</goal>
 						</goals>
 						<configuration>
+							<skip>${skip-language-build}</skip>
 							<excludeDefaultDirectories>true</excludeDefaultDirectories>
 							<filesets>
 								<fileset>
