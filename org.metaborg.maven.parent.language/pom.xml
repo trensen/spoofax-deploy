@@ -13,6 +13,14 @@
 		<relativePath>../org.metaborg.maven.parent.plugin</relativePath>
 	</parent>
 
+	<dependencies>
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>strategoxt-jar</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
+	</dependencies>
+
 	<properties>
 		<skip-language-build>false</skip-language-build>
 		<builddeps-location>${basedir}/builddeps/</builddeps-location>
@@ -20,15 +28,6 @@
 		<generator-jars-location>${builddeps-location}/dist</generator-jars-location>
 		<strategoxt-jar-location>${maven.dependency.org.metaborg.strategoxt-jar.jar.path}</strategoxt-jar-location>
 	</properties>
-
-	<dependencies>
-		<!-- Depend on the StrategoXT JAR so that it is available for the build. -->
-		<dependency>
-			<groupId>org.metaborg</groupId>
-			<artifactId>strategoxt-jar</artifactId>
-			<version>${metaborg-version}</version>
-		</dependency>
-	</dependencies>
 
 	<profiles>
 		<profile>
@@ -116,6 +115,11 @@
 				<dependencies>
 					<dependency>
 						<groupId>org.metaborg</groupId>
+						<artifactId>org.strategoxt.imp.generator</artifactId>
+						<version>${metaborg-version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.metaborg</groupId>
 						<artifactId>aster-jar</artifactId>
 						<version>${metaborg-version}</version>
 					</dependency>
@@ -126,18 +130,8 @@
 					</dependency>
 					<dependency>
 						<groupId>org.metaborg</groupId>
-						<artifactId>sdf2imp-jar</artifactId>
-						<version>${metaborg-version}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.metaborg</groupId>
 						<artifactId>make-permissive-jar</artifactId>
 						<version>${metaborg-version}</version>
-					</dependency>
-					<dependency>
-						<groupId>jline</groupId>
-						<artifactId>jline</artifactId>
-						<version>${jline-version}</version>
 					</dependency>
 				</dependencies>
 				<executions>

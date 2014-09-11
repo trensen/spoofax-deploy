@@ -43,10 +43,27 @@ fi
 MAVEN_DEPLOY=${INPUT_MAVEN_DEPLOY:-""}
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+ROOT="$DIR/../.."
 
 mvn \
   -f "$DIR/pom.xml" \
   -DforceContextQualifier=$QUALIFIER \
-  clean verify \
+  clean install \
   $MAVEN_DEPLOY \
   $MAVEN_ARGS
+
+mvn \
+  -f "$ROOT/spoofax-deploy/org.metaborg.maven.parent.plugin/pom.xml" \
+  -DforceContextQualifier=$QUALIFIER \
+  clean install \
+  $MAVEN_DEPLOY \
+  $MAVEN_ARGS
+  
+mvn \
+  -f "$ROOT/spoofax-deploy/org.metaborg.maven.parent.language/pom.xml" \
+  -Dskip-language-build=true \
+  -DforceContextQualifier=$QUALIFIER \
+  clean install \
+  $MAVEN_DEPLOY \
+  $MAVEN_ARGS
+  
