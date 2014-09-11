@@ -46,6 +46,9 @@
 		<!-- Deployment -->
 		<module>../org.metaborg.maven.parent</module>
 		<module>../org.metaborg.maven.parent.java</module>
+		<!-- HACK: also include plugin and language parent POMs. -->
+		<module>../org.metaborg.maven.parent.plugin</module>
+		<module>../org.metaborg.maven.parent.language</module>
 
 		<!-- External dependencies -->
 		<module>../../mb-exec-deps/org.spoofax.interpreter.externaldeps</module>
