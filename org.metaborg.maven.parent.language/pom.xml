@@ -159,7 +159,7 @@
 								<property name="externaljarx" refid="maven.compile.classpath" />
 								<property name="eclipse.spoofaximp.jars" value="${generator-jars-location}" />
 								<property name="eclipse.spoofaximp.strategojar" value="${strategoxt-jar-location}" />
-								<property name="build.strategoxt.sdf" value="${nativebundle-os-location}" />
+								<property name="eclipse.spoofaximp.nativeprefix" value="${nativebundle-os-location}" />
 								<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
 								<ant antfile="build.main.xml" inheritRefs="true">
 									<target name="generate-sources" />
@@ -179,7 +179,7 @@
 								<property name="externaljarx" refid="maven.compile.classpath" />
 								<property name="eclipse.spoofaximp.jars" value="${generator-jars-location}" />
 								<property name="eclipse.spoofaximp.strategojar" value="${strategoxt-jar-location}" />
-								<property name="build.strategoxt.sdf" value="${nativebundle-os-location}" />
+								<property name="eclipse.spoofaximp.nativeprefix" value="${nativebundle-os-location}" />
 								<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
 								<ant antfile="build.main.xml" inheritRefs="true">
 									<target name="package" />
