@@ -65,18 +65,6 @@ mvn \
   clean install \
   $MAVEN_DEPLOY \
   $MAVEN_ARGS
-  
-mvn \
-  -f "$DIR/morepoms/strategoxt-jar/pom.xml" \
-  clean install \
-  $MAVEN_DEPLOY \
-  $MAVEN_ARGS
-
-mvn \
-  -f "$DIR/morepoms/strategoxt-min-jar/pom.xml" \
-  clean install \
-  $MAVEN_DEPLOY \
-  $MAVEN_ARGS
 
 
 # Clean up

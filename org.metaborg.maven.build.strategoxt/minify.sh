@@ -31,5 +31,5 @@ rm -rf "$STRATEGOXT_MIN/org/strategoxt/lang/compat/stratego_rtg_compat"
 rm -rf "$STRATEGOXT_MIN/org/strategoxt/lang/compat/strc_compat"
 rm -rf "$STRATEGOXT_MIN/org/strategoxt/lang/parallel"
 rm -f $STRATEGOXT_MIN_JAR
-jar cf $STRATEGOXT_MIN_JAR -C $STRATEGOXT_MIN .
+jar cf $STRATEGOXT_MIN_JAR -C $STRATEGOXT_MIN -J-Xmx512m .
 rm -rf $STRATEGOXT_MIN
