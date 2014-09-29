@@ -49,6 +49,7 @@
 		<module>../../runtime-libraries/org.metaborg.meta.lang.analysis</module>
 		<module>../../sdf/org.strategoxt.imp.editors.sdf</module>
 		<module>../../sdf/org.strategoxt.imp.editors.template</module>
+		<module>../../dynsem/dynsem</module>
 		<module>../../spt/org.strategoxt.imp.testing</module>
 		<module>../../spt/org.strategoxt.imp.testing.ui</module>
 		<module>../../stratego/org.strategoxt.imp.editors.stratego</module>
