@@ -3,21 +3,17 @@
 set -e
 set -u
 
-
 # Parse input
-while getopts ":dq:a:e:" opt; do
+while getopts ":a:e:d" opt; do
   case $opt in
-    d)
-      INPUT_MAVEN_DEPLOY="deploy"
-      ;;
-    q)
-      INPUT_QUALIFIER=$OPTARG
-      ;;
     a)
       INPUT_MAVEN_ARGS=$OPTARG
       ;;
     e)
       INPUT_MAVEN_ENV=$OPTARG
+      ;;
+    d)
+      INPUT_MAVEN_DEPLOY="deploy"
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -32,8 +28,6 @@ done
 
 
 # Set build vars
-QUALIFIER=${INPUT_QUALIFIER:-$(date +%Y%m%d%H%M)}
-
 MAVEN_ARGS=${INPUT_MAVEN_ARGS:-""}
 if [ -z ${INPUT_MAVEN_ENV+x} ]; then
   export MAVEN_OPTS="-Xmx512m -Xms512m -Xss16m"
@@ -43,11 +37,11 @@ fi
 MAVEN_DEPLOY=${INPUT_MAVEN_DEPLOY:-""}
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-ROOT="$DIR/../.."
+
 
 mvn \
   -f "$DIR/pom.xml" \
-  -DforceContextQualifier=$QUALIFIER \
-  clean verify \
+  -Dskip-language-build=true \
+  clean install \
+  $MAVEN_DEPLOY \
   $MAVEN_ARGS
-  
