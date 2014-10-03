@@ -48,6 +48,6 @@ ROOT="$DIR/../.."
 mvn \
   -f "$DIR/pom.xml" \
   -DforceContextQualifier=$QUALIFIER \
-  clean verify \
+  clean install \
   $MAVEN_ARGS
   
