@@ -4,16 +4,13 @@ set -e
 set -u
 
 # Parse input
-while getopts ":a:e:d" opt; do
+while getopts ":a:e:" opt; do
   case $opt in
     a)
       INPUT_MAVEN_ARGS=$OPTARG
       ;;
     e)
       INPUT_MAVEN_ENV=$OPTARG
-      ;;
-    d)
-      INPUT_MAVEN_DEPLOY="deploy"
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -34,13 +31,11 @@ if [ -z ${INPUT_MAVEN_ENV+x} ]; then
 else
   export MAVEN_OPTS="$INPUT_MAVEN_ENV"
 fi
-MAVEN_DEPLOY=${INPUT_MAVEN_DEPLOY:-""}
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 
 mvn \
   -f "$DIR/pom.xml" \
-  clean install \
-  $MAVEN_DEPLOY \
+  clean verify \
   $MAVEN_ARGS

@@ -51,66 +51,20 @@ STRATEGOXT_MIN_JAR="$DIR/strategoxt-min.jar"
 
 # Update strategoxt distribution if it does not exist, or if requested
 if [ -n "${UPDATE_DISTRIB+1}" ] || [ ! -f $STRATEGOXT_JAR ]; then
-	rm -rf $STRATEGOXT_DISTRIB
-  rm -f $STRATEGOXT_DISTRIB_TAR
-	mkdir -p $STRATEGOXT_DISTRIB
-	wget http://hydra.nixos.org/job/strategoxt-java/strategoxt-java-bootstrap/bootstrap3/latest/download-by-type/file/tar -O $STRATEGOXT_DISTRIB_TAR
-	tar -xf $STRATEGOXT_DISTRIB_TAR -C $STRATEGOXT_DISTRIB
-	chmod a+x "$STRATEGOXT_DISTRIB/share/strategoxt/macosx/"*
-  chmod a+x "$STRATEGOXT_DISTRIB/share/strategoxt/linux/"*
-	rm $STRATEGOXT_DISTRIB_TAR
-	cd ..
+	$("$DIR/update.sh" $STRATEGOXT_DISTRIB_TAR $STRATEGOXT_DISTRIB)
 fi
 
 
 # Create minified strategoxt JAR
-rm -rf $STRATEGOXT_MIN
-mkdir -p $STRATEGOXT_MIN
-unzip -qq -o -d $STRATEGOXT_MIN $STRATEGOXT_JAR
-rm "$STRATEGOXT_MIN/run.class"
-rm "$STRATEGOXT_MIN/start.class"
-rm "$STRATEGOXT_MIN/COPYING"
-rm "$STRATEGOXT_MIN/build.xml"
-rm -rf "$STRATEGOXT_MIN/META-INF"
-rm -rf "$STRATEGOXT_MIN/com"
-rm -rf "$STRATEGOXT_MIN/net"
-rm -rf "$STRATEGOXT_MIN/fj"
-rm -rf "$STRATEGOXT_MIN/jdbm"
-rm -rf "$STRATEGOXT_MIN/jline"
-rm -rf "$STRATEGOXT_MIN/etc"
-rm -rf "$STRATEGOXT_MIN/org/metaborg"
-rm -rf "$STRATEGOXT_MIN/org/spoofax"
-rm -rf "$STRATEGOXT_MIN/org/strategoxt/"*".class"
-rm -rf "$STRATEGOXT_MIN/org/strategoxt/lang/"*".class"
-rm -rf "$STRATEGOXT_MIN/org/strategoxt/lang/compat/"*".class"
-rm -rf "$STRATEGOXT_MIN/org/strategoxt/lang/compat/override/"*".class"
-rm -rf "$STRATEGOXT_MIN/org/strategoxt/lang/compat/stratego_rtg_compat"
-rm -rf "$STRATEGOXT_MIN/org/strategoxt/lang/compat/strc_compat"
-rm -rf "$STRATEGOXT_MIN/org/strategoxt/lang/parallel"
-rm -f $STRATEGOXT_MIN_JAR
-jar cf $STRATEGOXT_MIN_JAR -C $STRATEGOXT_MIN .
-rm -rf $STRATEGOXT_MIN
+$("$DIR/minify.sh" $STRATEGOXT_JAR $STRATEGOXT_MIN $STRATEGOXT_MIN_JAR)
 
 
 # Install strategoxt JARs and distribution into local maven repository
 mvn \
-  -f "$DIR/strategoxt-distrib-pom.xml" \
+  -f "$DIR/pom.xml" \
   clean install \
   $MAVEN_DEPLOY \
   $MAVEN_ARGS
-  
-mvn \
-  -f "$DIR/strategoxt-jar-pom.xml" \
-  clean install \
-  $MAVEN_DEPLOY \
-  $MAVEN_ARGS
-
-mvn \
-  -f "$DIR/strategoxt-min-jar-pom.xml" \
-  clean install \
-  $MAVEN_DEPLOY \
-  $MAVEN_ARGS
-
 
 
 # Clean up

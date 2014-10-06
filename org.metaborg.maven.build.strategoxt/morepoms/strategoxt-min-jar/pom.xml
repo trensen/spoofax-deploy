@@ -10,7 +10,7 @@
 		<groupId>org.metaborg</groupId>
 		<artifactId>org.metaborg.maven.parent</artifactId>
 		<version>1.2.0-SNAPSHOT</version>
-		<relativePath>../org.metaborg.maven.parent</relativePath>
+		<relativePath>../../../org.metaborg.maven.parent</relativePath>
 	</parent>
 
 	<build>
@@ -29,8 +29,8 @@
 							<goal>install-file</goal>
 						</goals>
 						<configuration>
-							<file>${basedir}/strategoxt-min.jar</file>
-							<pomFile>${basedir}/strategoxt-min-jar-pom.xml</pomFile>
+							<file>${basedir}/../../strategoxt-min.jar</file>
+							<pomFile>${basedir}/pom.xml</pomFile>
 						</configuration>
 					</execution>
 				</executions>
@@ -49,8 +49,8 @@
 							<goal>deploy-file</goal>
 						</goals>
 						<configuration>
-							<file>${basedir}/strategoxt-min.jar</file>
-							<pomFile>${basedir}/strategoxt-min-jar-pom.xml</pomFile>
+							<file>${basedir}/../../strategoxt-min.jar</file>
+							<pomFile>${basedir}/pom.xml</pomFile>
 							<url>${deployFileUrl}</url>
 							<repositoryId>${deployRepositoryId}</repositoryId>
 						</configuration>

@@ -32,9 +32,9 @@
 		<!-- Spoofax -->
 		<module>../../spoofax/org.metaborg.spoofax.core</module>
 		<module>../../spoofax/org.strategoxt.imp.generator</module>
-		<module>../../spoofax/org.strategoxt.imp.generator/aster-jar-pom.xml</module>
-		<module>../../spoofax/org.strategoxt.imp.generator/make-permissive-jar-pom.xml</module>
-		<module>../../spoofax/org.strategoxt.imp.generator/sdf2imp-jar-pom.xml</module>
+		<module>../../spoofax/org.strategoxt.imp.generator/morepoms/aster-jar</module>
+		<module>../../spoofax/org.strategoxt.imp.generator/morepoms/make-permissive-jar</module>
+		<module>../../spoofax/org.strategoxt.imp.generator/morepoms/sdf2imp-jar</module>
 
 		<!-- Parser -->
 		<module>../../jsglr/org.spoofax.jsglr</module>

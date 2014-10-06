@@ -41,6 +41,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 mvn \
   -f "$DIR/pom.xml" \
+  -Dskip-language-build=true \
   clean install \
   $MAVEN_DEPLOY \
   $MAVEN_ARGS

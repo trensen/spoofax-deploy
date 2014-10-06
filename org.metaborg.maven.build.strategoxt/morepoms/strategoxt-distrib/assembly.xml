@@ -6,7 +6,7 @@
 	<includeBaseDirectory>false</includeBaseDirectory>
 	<fileSets>
 		<fileSet>
-			<directory>strategoxt-distrib</directory>
+			<directory>../../strategoxt-distrib</directory>
 			<outputDirectory></outputDirectory>
 		</fileSet>
 	</fileSets>

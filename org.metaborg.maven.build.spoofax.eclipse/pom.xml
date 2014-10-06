@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>org.metaborg.maven.build.spoofax.plugin</artifactId>
+	<artifactId>org.metaborg.maven.build.spoofax.eclipse</artifactId>
 	<packaging>pom</packaging>
 	<description>Maven build for Spoofax Eclipse</description>
 	<url>https://github.com/metaborg/spoofax-deploy</url>
@@ -50,6 +50,7 @@
 		<module>../../runtime-libraries/org.metaborg.meta.lang.analysis</module>
 		<module>../../sdf/org.strategoxt.imp.editors.sdf</module>
 		<module>../../sdf/org.strategoxt.imp.editors.template</module>
+		<module>../../dynsem/dynsem</module>
 		<module>../../spt/org.strategoxt.imp.testing</module>
 		<module>../../spt/org.strategoxt.imp.testing.ui</module>
 		<module>../../stratego/org.strategoxt.imp.editors.stratego</module>
