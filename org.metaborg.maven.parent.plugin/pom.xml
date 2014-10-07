@@ -175,7 +175,7 @@
 				<configuration>
 					<useUIHarness>true</useUIHarness>
 					<useUIThread>true</useUIThread>
-					<argLine>-Xmx512m -XX:MaxPermSize=256m ${ui.test.vmargs}</argLine>
+					<argLine>-Xmx512m -Xms256m -Xss16m -XX:MaxPermSize=256m -server ${ui.test.vmargs}</argLine>
 					<work>${test-workspace-location}</work>
 				</configuration>
 			</plugin>
