@@ -15,7 +15,7 @@
 		<manifest-location>META-INF</manifest-location>
 		<forceContextQualifier>qualifier</forceContextQualifier>
 		<deployFileUrl>${project.distributionManagement.snapshotRepository.url}</deployFileUrl>
-		<deployRepositoryId>ossrh</deployRepositoryId>
+		<deployRepositoryId>metaborg-nexus</deployRepositoryId>
 
 		<java-version>1.7</java-version>
 		<maven-eclipse-compiler-version>2.3</maven-eclipse-compiler-version>
@@ -293,11 +293,11 @@
 	<distributionManagement>
 		<snapshotRepository>
 			<id>${deployRepositoryId}</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<url>http://artifacts.metaborg.org/content/repositories/snapshots/</url>
 		</snapshotRepository>
 		<repository>
 			<id>${deployRepositoryId}</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+			<url>http://artifacts.metaborg.org/content/repositories/releases/</url>
 		</repository>
 	</distributionManagement>
 
