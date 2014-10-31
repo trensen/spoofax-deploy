@@ -106,6 +106,12 @@
 			<artifactId>org.strategoxt.strj</artifactId>
 			<version>${metaborg-version}</version>
 		</dependency>
+		<!-- Interpretation -->
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.metaborg.meta.interpreter.framework</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
 		<!-- External dependencies -->
 		<dependency>
 			<groupId>org.metaborg</groupId>
