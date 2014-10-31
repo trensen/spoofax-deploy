@@ -52,6 +52,16 @@
 
 		<!-- External dependencies -->
 		<module>../../mb-exec-deps/org.spoofax.interpreter.externaldeps</module>
+
+		<!-- Spoofax Sunshine -->
+		<module>../../spoofax-sunshine/org.spoofax.sunshine</module>
+
+		<!-- Spoofax benchmarker -->
+        <module>../../spoofax-benchmark/org.metaborg.spoofax.benchmark.core</module>
+        <module>../../spoofax-benchmark/org.metaborg.spoofax.benchmark.cmd</module>
+
+        <!-- Spoofax SPT test listener -->
+        <module>../../spt/org.metaborg.spt.listener</module>
 	</modules>
 
 	<developers>

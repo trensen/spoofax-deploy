@@ -51,6 +51,7 @@
 		<module>../../sdf/org.strategoxt.imp.editors.template</module>
 		<module>../../dynsem/dynsem</module>
 		<module>../../spt/org.strategoxt.imp.testing</module>
+		<module>../../spt/org.strategoxt.imp.testing.cmd</module>
 		<module>../../spt/org.strategoxt.imp.testing.ui</module>
 		<module>../../stratego/org.strategoxt.imp.editors.stratego</module>
 		<module>../../ts/org.metaborg.meta.lang.ts</module>
@@ -78,7 +79,6 @@
 		<module>../../imp-patched/org.eclipse.imp.smapi</module>
 		<module>../../imp-patched/org.eclipse.imp.smapifier</module>
 		<module>../../imp-patched/org.eclipse.imp.xform</module>
-
 		<module>../../lpg-runtime</module>
 		<module>../../shrike</module>
 	</modules>

@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>org.metaborg.maven.build.spoofax.benchmark</artifactId>
+	<artifactId>org.metaborg.maven.build.spoofax.testrunner</artifactId>
 	<packaging>pom</packaging>
-	<description>Maven build for Spoofax benchmarker</description>
-	<url>https://github.com/metaborg/spoofax-benchmark</url>
+	<description>Maven build for Spoofax SPT test runner</description>
+	<url>https://github.com/metaborg/spt</url>
 
 	<parent>
 		<groupId>org.metaborg</groupId>
@@ -14,8 +14,8 @@
 	</parent>
 
 	<modules>
-		<module>../../spoofax-benchmark/org.metaborg.spoofax.benchmark.core</module>
-		<module>../../spoofax-benchmark/org.metaborg.spoofax.benchmark.cmd</module>
+		<module>../../spt/org.metaborg.spoofax.testrunner.core</module>
+        <module>../../spt/org.metaborg.spoofax.testrunner.cmd</module>
 	</modules>
 
 	<developers>
