@@ -2,7 +2,7 @@
 <feature
       id="org.spoofax.modelware.emf.feature"
       label="Spoofax EMF Integration"
-      version="1.2.0.0">
+      version="1.3.0.qualifier">
 
    <description url="http://metaborg.org/wiki/spoofax/">
       Spoofax EMF Integration provides integration between Spoofax and the Eclipse Modeling Framework (EMF).

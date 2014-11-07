@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>org.metaborg.maven.parent.java</artifactId>
+	<packaging>pom</packaging>
+	<description>Maven parent POM for Java projects</description>
+	<url>https://github.com/metaborg/spoofax-deploy</url>
+
+	<parent>
+		<groupId>org.metaborg</groupId>
+		<artifactId>org.metaborg.maven.parent</artifactId>
+		<version>1.3.0-SNAPSHOT</version>
+		<relativePath>../org.metaborg.maven.parent</relativePath>
+	</parent>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<!-- Generate MANIFEST.MF from project, to make project available to Eclipse plugins. -->
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<configuration>
+					<instructions>
+						<!-- Fix names not to include the groupId. -->
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Name>${project.artifactId}</Bundle-Name>
+						<!-- Replace SNAPSHOT in the manifest version with given qualifier. -->
+						<Bundle-Version>$(replace;${project.version};-SNAPSHOT;.${forceContextQualifier})</Bundle-Version>
+						<!-- Also export packages that contain '.impl', because it would exclude '.imploder' in jsglr. -->
+						<Export-Package>*</Export-Package>
+						<!-- Don't declare dependency on sun packages, they should be provided by the JVM. -->
+						<Import-Package>
+							!sun.misc,
+							!sun.nio.cs,
+							*
+						</Import-Package>
+						<!-- Don't generate uses declarations in exported packages. -->
+						<_nouses>true</_nouses>
+					</instructions>
+				</configuration>
+				<!-- Hook in manifest generation into the process-classes phase, because this is not automatically done for projects
+					with 'jar' packaging. -->
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>manifest</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Add the generated MANIFEST.MF is used in the resulting JAR file. -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestFile>${manifest-location}/MANIFEST.MF</manifestFile>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<developers>
+		<developer>
+			<name>Gabriël Konat</name>
+			<email>g.d.p.konat@tudelft.nl</email>
+			<organization>Delft University of Technology</organization>
+			<organizationUrl>http://www.ewi.tudelft.nl/en</organizationUrl>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:git@github.com:metaborg/spoofax-deploy.git</connection>
+		<developerConnection>scm:git:git@github.com:metaborg/spoofax-deploy.git</developerConnection>
+		<url>https://github.com/metaborg/spoofax-deploy</url>
+	</scm>
+</project>
