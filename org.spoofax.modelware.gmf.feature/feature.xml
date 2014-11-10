@@ -2,7 +2,7 @@
 <feature
       id="org.spoofax.modelware.gmf.feature"
       label="Spoofax GMF Integration"
-      version="1.3.0.qualifier">
+      version="1.3.0">
 
    <description url="http://metaborg.org/wiki/spoofax/">
       Spoofax GMF integration provides integration between Spoofax and the Graphical Modeling Framework (GMF) in order to support real-time synchronized views and/or editors for Spoofax.
@@ -21,7 +21,7 @@ Most Spoofax/IMP code is licensed under the GNU Lesser General Public License (L
 
    <includes
          id="org.spoofax.modelware.emf.feature"
-         version="1.3.0.qualifier"
+         version="1.3.0"
          search-location="both"/>
 
    <includes
@@ -34,14 +34,14 @@ Most Spoofax/IMP code is licensed under the GNU Lesser General Public License (L
          id="org.spoofax.modelware.gmf"
          download-size="0"
          install-size="0"
-         version="1.3.0.qualifier"
+         version="1.3.0"
          unpack="false"/>
 
    <plugin
          id="ca.ecliptical.gmf.ant"
          download-size="0"
          install-size="0"
-         version="1.3.0.qualifier"
+         version="1.3.0"
          unpack="false"/>
 
 </feature>

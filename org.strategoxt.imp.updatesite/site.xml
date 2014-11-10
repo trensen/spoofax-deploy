@@ -3,13 +3,13 @@
    <description name="Spoofax/IMP" url="http://spoofax.org/update/stable/">
       Spoofax update site
    </description>
-   <feature url="features/org.strategoxt.imp_1.3.0.qualifier.jar" id="org.strategoxt.imp" version="1.3.0.qualifier">
+   <feature url="features/org.strategoxt.imp_1.3.0.jar" id="org.strategoxt.imp" version="1.3.0">
       <category name="Spoofax Core"/>
    </feature>
-   <feature url="features/org.spoofax.modelware.emf.feature_1.3.0.qualifier.jar" id="org.spoofax.modelware.emf.feature" version="1.3.0.qualifier">
+   <feature url="features/org.spoofax.modelware.emf.feature_1.3.0.jar" id="org.spoofax.modelware.emf.feature" version="1.3.0">
       <category name="Spoofax Modelware"/>
    </feature>
-   <feature url="features/org.spoofax.modelware.gmf.feature_1.3.0.qualifier.jar" id="org.spoofax.modelware.gmf.feature" version="1.3.0.qualifier">
+   <feature url="features/org.spoofax.modelware.gmf.feature_1.3.0.jar" id="org.spoofax.modelware.gmf.feature" version="1.3.0">
       <category name="Spoofax Modelware"/>
    </feature>
    <category-def name="Spoofax Core" label="Spoofax Core">
