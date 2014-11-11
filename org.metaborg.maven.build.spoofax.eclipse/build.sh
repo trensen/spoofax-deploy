@@ -49,5 +49,5 @@ mvn \
   -f "$DIR/pom.xml" \
   -DforceContextQualifier=$QUALIFIER \
   clean install \
+  $MAVEN_DEPLOY \
   $MAVEN_ARGS
-  
