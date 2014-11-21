@@ -115,4 +115,40 @@
          version="1.3.0.qualifier"
          unpack="false"/>
 
+   <plugin
+         id="org.metaborg.meta.lang.analysis"
+         download-size="0"
+         install-size="0"
+         version="1.3.0.qualifier"/>
+
+   <plugin
+         id="org.metaborg.meta.lang.nabl"
+         download-size="0"
+         install-size="0"
+         version="1.3.0.qualifier"/>
+
+   <plugin
+         id="org.metaborg.meta.lang.ts"
+         download-size="0"
+         install-size="0"
+         version="1.3.0.qualifier"/>
+
+   <plugin
+         id="dynsem"
+         download-size="0"
+         install-size="0"
+         version="1.3.0.qualifier"/>
+
+   <plugin
+         id="org.strategoxt.imp.testing"
+         download-size="0"
+         install-size="0"
+         version="1.3.0.qualifier"/>
+
+   <plugin
+         id="org.strategoxt.imp.testing.ui"
+         download-size="0"
+         install-size="0"
+         version="1.3.0.qualifier"/>
+
 </feature>
