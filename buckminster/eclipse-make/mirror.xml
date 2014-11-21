@@ -18,7 +18,7 @@
 
 		<p2.mirror source="http://download.spoofax.org/update/unstable">
 			<destination location="${basedir}/mirror-spoofax" />
-			<iu id="org.strategoxt.imp.feature.group" />
+			<iu id="org.strategoxt.imp.meta.feature.group" />
 		</p2.mirror>
 	</target>
 </project>
