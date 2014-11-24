@@ -151,4 +151,122 @@
          install-size="0"
          version="1.3.0.qualifier"/>
 
+   <plugin
+         id="com.ibm.wala.shrike"
+         download-size="0"
+         install-size="0"
+         version="1.3.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.imp.java.hosted"
+         download-size="0"
+         install-size="0"
+         version="1.3.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.imp.metatooling"
+         download-size="0"
+         install-size="0"
+         version="1.3.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.imp.preferences"
+         download-size="0"
+         install-size="0"
+         version="1.3.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.imp.prefspecs"
+         download-size="0"
+         install-size="0"
+         version="1.3.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.imp.presentation"
+         download-size="0"
+         install-size="0"
+         version="1.3.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.imp.lpg"
+         download-size="0"
+         install-size="0"
+         version="1.3.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.imp.smapi"
+         download-size="0"
+         install-size="0"
+         version="1.3.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.imp.smapifier"
+         download-size="0"
+         install-size="0"
+         version="1.3.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.imp.lpg.ide"
+         download-size="0"
+         install-size="0"
+         version="1.3.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.imp.xform"
+         download-size="0"
+         install-size="0"
+         version="1.3.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.metaborg.meta.interpreter.framework"
+         download-size="0"
+         install-size="0"
+         version="1.3.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.metaborg.spoofax.core"
+         download-size="0"
+         install-size="0"
+         version="1.3.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.metaborg.util"
+         download-size="0"
+         install-size="0"
+         version="1.3.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.spoofax.aterm"
+         download-size="0"
+         install-size="0"
+         version="1.3.0.qualifier"/>
+
+   <plugin
+         id="org.strategoxt.imp.debug.ui"
+         download-size="0"
+         install-size="0"
+         version="1.3.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.strategoxt.imp.metatooling"
+         download-size="0"
+         install-size="0"
+         version="1.3.0.qualifier"
+         unpack="false"/>
+
 </feature>
