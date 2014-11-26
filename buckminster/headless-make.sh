@@ -12,4 +12,4 @@ rm -rf headless
 
 
 #	-i org.eclipse.ui \
-#	-i org.strategoxt.imp.feature.group
+#	-i org.strategoxt.imp.meta.feature.group

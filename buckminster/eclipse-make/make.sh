@@ -68,7 +68,7 @@ function eclipse {
     -installIU org.eclipse.pde.source.feature.group \
     -installIU org.eclipse.jgit.feature.group \
     -installIU org.eclipse.egit.feature.group \
-    -installIU org.strategoxt.imp.feature.group \
+    -installIU org.strategoxt.imp.meta.feature.group \
     -p2.os $1 \
     -p2.ws $2 \
     -p2.arch $3 \
