@@ -12,6 +12,9 @@
    <feature url="features/org.strategoxt.imp.meta_1.3.0.qualifier.jar" id="org.strategoxt.imp.meta" version="1.3.0.qualifier">
       <category name="Spoofax Core"/>
    </feature>
+   <feature url="features/org.strategoxt.imp_1.3.0.qualifier.jar" id="org.strategoxt.imp" version="1.3.0.qualifier">
+      <category name="Spoofax Core"/>
+   </feature>
    <category-def name="Spoofax Core" label="Spoofax Core">
       <description>
          The Spoofax Language Workbench.
