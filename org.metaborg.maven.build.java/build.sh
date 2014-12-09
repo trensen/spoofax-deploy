@@ -1,26 +1,22 @@
 #!/usr/bin/env bash
 
-set -e
-set -u
+set -eu
 
 
 # Parse input
-while getopts ":gdq:a:e:" opt; do
+while getopts ":gdq:a:" opt; do
   case $opt in
     g)
       SKIP_GENERATOR_INPUT="true"
       ;;
     d)
-      INPUT_MAVEN_DEPLOY="deploy"
+      INPUT_MAVEN_PHASE="deploy"
       ;;
     q)
       INPUT_QUALIFIER=$OPTARG
       ;;
     a)
       INPUT_MAVEN_ARGS=$OPTARG
-      ;;
-    e)
-      INPUT_MAVEN_ENV=$OPTARG
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -39,21 +35,16 @@ SKIP_GENERATOR=${SKIP_GENERATOR_INPUT:-"false"}
 QUALIFIER=${INPUT_QUALIFIER:-$(date +%Y%m%d%H%M)}
 
 MAVEN_ARGS=${INPUT_MAVEN_ARGS:-""}
-if [ -z ${INPUT_MAVEN_ENV+x} ]; then
-  export MAVEN_OPTS="-Xmx512m -Xms512m -Xss16m"
-else
-  export MAVEN_OPTS="$INPUT_MAVEN_ENV"
-fi
-MAVEN_DEPLOY=${INPUT_MAVEN_DEPLOY:-""}
+MAVEN_PHASE=${INPUT_MAVEN_PHASE:-"install"}
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 
-# Build and install Java projects
+# Run Maven build
 mvn \
   -f "$DIR/pom.xml" \
   -DforceContextQualifier=$QUALIFIER \
   -Dskip-generator=$SKIP_GENERATOR \
-  clean install \
-  $MAVEN_DEPLOY \
+  clean \
+  $MAVEN_PHASE \
   $MAVEN_ARGS

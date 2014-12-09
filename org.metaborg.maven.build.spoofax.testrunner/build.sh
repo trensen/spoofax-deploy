@@ -1,16 +1,13 @@
 #!/usr/bin/env bash
 
-set -e
-set -u
+set -eu
+
 
 # Parse input
-while getopts ":a:e:" opt; do
+while getopts ":a:" opt; do
   case $opt in
     a)
       INPUT_MAVEN_ARGS=$OPTARG
-      ;;
-    e)
-      INPUT_MAVEN_ENV=$OPTARG
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -26,15 +23,11 @@ done
 
 # Set build vars
 MAVEN_ARGS=${INPUT_MAVEN_ARGS:-""}
-if [ -z ${INPUT_MAVEN_ENV+x} ]; then
-  export MAVEN_OPTS="-Xmx512m -Xms512m -Xss16m"
-else
-  export MAVEN_OPTS="$INPUT_MAVEN_ENV"
-fi
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 
+# Run Maven build
 mvn \
   -f "$DIR/pom.xml" \
   clean verify \
