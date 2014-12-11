@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>org.spoofax.modelware.gmf.feature</artifactId>
 	<packaging>eclipse-feature</packaging>
-	<description>Eclipse feature for Spoofax GMF integration</description>
+	<description>Runtime support for GMF integration</description>
 	<url>https://github.com/metaborg/spoofax-deploy</url>
 
 	<parent>

@@ -62,7 +62,10 @@
 
 		<!-- Deployment -->
 		<module>../org.spoofax.modelware.emf.feature</module>
+                <module>../org.spoofax.modelware.emf.meta.feature</module>
 		<module>../org.spoofax.modelware.gmf.feature</module>
+                <module>../org.spoofax.modelware.gmf.meta.feature</module>
+                <module>../org.spoofax.modelware.gmf.headless.feature</module>
 		<module>../org.strategoxt.imp.feature</module>
                 <module>../org.strategoxt.imp.meta.feature</module>
 		<module>../org.strategoxt.imp.updatesite</module>
