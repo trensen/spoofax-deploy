@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.spoofax.modelware.emf.meta.feature"
+      id="org.metaborg.modelware.emf.meta"
       label="Spoofax EMF Integration"
       version="1.3.0.qualifier">
 
@@ -20,13 +20,12 @@ Most Spoofax/IMP code is licensed under the GNU Lesser General Public License (L
    </license>
 
    <includes
-         id="org.spoofax.modelware.emf.feature"
+         id="org.strategoxt.imp.meta"
          version="1.3.0.qualifier"
          search-location="both"/>
 
    <includes
-         id="org.strategoxt.imp.meta"
-         version="1.3.0.qualifier"
-         search-location="both"/>
+         id="org.metaborg.modelware.emf"
+         version="0.0.0"/>
 
 </feature>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.spoofax.modelware.gmf.headless.feature"
+      id="org.metaborg.modelware.gmf.headless"
       label="Headless support for GMF code generation"
       version="1.3.0.qualifier">
 
@@ -26,7 +26,7 @@ Most Spoofax/IMP code is licensed under the GNU Lesser General Public License (L
          search-location="both"/>
 
    <plugin
-         id="ca.ecliptical.gmf.ant"
+         id="org.spoofax.modelware.gmf.codegenextension"
          download-size="0"
          install-size="0"
          version="1.3.0.qualifier"

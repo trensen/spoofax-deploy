@@ -38,7 +38,7 @@
 		<!-- Modelware -->
 		<module>../../modelware/org.spoofax.modelware.emf</module>
 		<module>../../modelware/org.spoofax.modelware.gmf</module>
-		<module>../../modelware/patched-plugins/ca.ecliptical.gmf.ant</module>
+		<module>../../modelware/org.spoofax.modelware.gmf.codegenextension</module>
 
 		<!-- Meta languages -->
 		<module>../../mb-rep/org.strategoxt.imp.editors.aterm</module>

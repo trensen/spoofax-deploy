@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.spoofax.modelware.gmf.meta.feature"
+      id="org.metaborg.modelware.gmf.meta"
       label="Spoofax GMF Integration"
       version="1.3.0.qualifier">
 
@@ -20,13 +20,11 @@ Most Spoofax/IMP code is licensed under the GNU Lesser General Public License (L
    </license>
 
    <includes
-         id="org.spoofax.modelware.gmf.feature"
-         version="1.3.0.qualifier"
-         search-location="both"/>
+         id="org.metaborg.modelware.emf.meta"
+         version="0.0.0"/>
 
    <includes
-         id="org.spoofax.modelware.emf.meta.feature"
-         version="1.3.0.qualifier"
-         search-location="both"/>
+         id="org.metaborg.modelware.gmf"
+         version="0.0.0"/>
 
 </feature>
