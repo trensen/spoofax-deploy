@@ -44,7 +44,7 @@ function install-director {
 
 		rm -rf "$DIRECTOR_LOCATION"
 		rm -f director.zip
-		wget -q -O director.zip http://eclipse.mirror.triple-it.nl/tools/buckminster/products/director_latest.zip
+		wget -O director.zip http://eclipse.mirror.triple-it.nl/tools/buckminster/products/director_latest.zip
 		unzip -q director.zip
 		rm director.zip
 	fi
@@ -76,7 +76,7 @@ function install-default-eclipse {
 	if [ ! -d "$ECLIPSE_LOCATION" ]; then
 		echo "Installing default eclipse..."
  
-		eclipse "macosx" "cocoa" "x86_64" "eclipse" "-repository $ECLIPSE_UPDATE_SITE"
+		eclipse "macosx" "cocoa" "x86_64" "eclipse" "-repository $ECLIPSE_REPO"
 	fi
 }
 

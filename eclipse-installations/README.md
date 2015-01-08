@@ -33,3 +33,13 @@ By default, the build script fetches Eclipse and Spoofax from online update site
 Note that this can take several hours because the Eclipse update site is huge. Subsequent calls to the mirror script will update the local mirror.
 
 After mirroring, the build script will use the local mirror. To use the online version again, delete the `mirror` directory.
+
+## Sources
+
+* Installing Eclipse using the p2 director: <http://help.eclipse.org/luna/topic/org.eclipse.platform.doc.isv/guide/p2_director.html?cp=2_0_20_2>
+
+* Standalone p2 director download: <http://eclipse.mirror.triple-it.nl/tools/buckminster/products/director_latest.zip>
+
+* Downloading JRE's from command line: <https://ivan-site.com/2012/05/download-oracle-java-jre-jdk-using-a-script/>
+
+* Mirroring Eclipse update sites: <https://wiki.eclipse.org/Equinox_p2_Repository_Mirroring>
