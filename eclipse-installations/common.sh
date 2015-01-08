@@ -22,7 +22,7 @@ SPOOFAX_UPDATE_MIRROR="$MIRROR_LOCATION/spoofax"
 
 # Set Eclipse and Spoofax repositories
 if [ -d "$ECLIPSE_UPDATE_MIRROR" ]; then
-  ECLIPSE_REPO="file://$ECLIPSE_UPDATE_MIRROR";
+  ECLIPSE_REPO="file://$ECLIPSE_UPDATE_MIRROR/";
   echo "Using mirrored Eclipse repository: $ECLIPSE_REPO";
 else
   ECLIPSE_REPO="$ECLIPSE_UPDATE_SITE";
@@ -30,7 +30,7 @@ else
 fi
 
 if [ -d "$SPOOFAX_UPDATE_MIRROR" ]; then
-  SPOOFAX_REPO="file://$SPOOFAX_UPDATE_MIRROR";
+  SPOOFAX_REPO="file://$SPOOFAX_UPDATE_MIRROR/";
   echo "Using mirrored Spoofax repository: $SPOOFAX_REPO";
 else
   SPOOFAX_REPO="$SPOOFAX_UPDATE_SITE";
@@ -84,7 +84,15 @@ function mirror {
 	# 1. source
 	# 2. destination
 
+	echo "Mirroring $1 to $2"
+
 	mkdir -p $2
+	"$ECLIPSE_LOCATION/eclipse" \
+		-nosplash \
+		-verbose \
+		-application org.eclipse.equinox.p2.metadata.repository.mirrorApplication \
+	 	-source $1 \
+	 	-destination $2
 	"$ECLIPSE_LOCATION/eclipse" \
 		-nosplash \
 		-verbose \
@@ -109,10 +117,10 @@ function spoofax {
 	INI_PATH="$INSTALL_PATH/$4"
 
 	# Create Eclipse installation
-	rm -rf $INSTALL_PATH
-	rm -f $INSTALL_NOJAVA_ZIP
-	rm -f $INSTALL_ZIP
-	eclipse $1 $2 $3 $INSTALL_PATH "$INSTALL_ARGS"
+	rm -rf "$INSTALL_PATH"
+	rm -f "$INSTALL_NOJAVA_ZIP"
+	rm -f "$INSTALL_ZIP"
+	eclipse $1 $2 $3 "$INSTALL_PATH" "$INSTALL_ARGS"
 
 	# Remove regular VM args
 	sed -i '' -e 's|-Xms[0-9]*m||' $INI_PATH;
@@ -138,7 +146,7 @@ function spoofax {
 	# Create an archive with JRE
 	JRE_PATH="$JRE_LOCATION/$1-$3" 
 	if [ ! -d "$JRE_PATH" ]; then
-		echo "JRE for $1 $3 does not exist, please download and unpack this JRE into $JRE_PATH, skipping..."
+		echo "JRE for $1 $3 does not exist, skipping archive with JRE included..."
 	else
 	    echo "Including JRE from $JRE_PATH";
 
@@ -158,7 +166,38 @@ function spoofax {
 	    echo "Archiving with JRE included: $INSTALL_ZIP";
 	    zip -q -r $INSTALL_ZIP $INSTALL_PATH;
 	fi
+
+	rm -rf "$INSTALL_PATH"
 }
+
+function downloadjre {
+	# 1. os
+	# 2. arch
+	# 3. url
+
+	DOWNLOAD_NAME="jre.tar.gz"
+	DOWNLOAD_PATH="$JRE_LOCATION/$1-$2"
+	DOWNLOAD_FILE="$DOWNLOAD_PATH/$DOWNLOAD_NAME"
+
+	echo "Downloading JRE for $1 $2 from $3"
+
+	rm -rf "$DOWNLOAD_PATH"
+	mkdir -p "$DOWNLOAD_PATH"
+	wget \
+		--no-cookies --no-check-certificate \
+		--header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" \
+		--output-document "$DOWNLOAD_FILE" \
+		$3
+
+	echo "Unpacking JRE"
+
+	(
+		cd $DOWNLOAD_PATH
+		tar -xf "$DOWNLOAD_NAME" --strip 1
+		rm "$DOWNLOAD_NAME"
+	)
+}
+
 
 # Ensure that the director and default eclipse are installed
 install-director
