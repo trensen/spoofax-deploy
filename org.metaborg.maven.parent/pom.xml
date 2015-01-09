@@ -119,7 +119,11 @@
         <artifactId>clj-ds</artifactId>
         <version>0.0.4</version>
       </dependency>
-
+      <dependency>
+        <groupId>com.esotericsoftware</groupId>
+        <artifactId>kryo</artifactId>
+        <version>3.0.0</version>
+      </dependency>
 
       <dependency>
         <groupId>junit</groupId>
