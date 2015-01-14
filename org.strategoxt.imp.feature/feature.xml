@@ -140,12 +140,12 @@ Most Spoofax/IMP code is licensed under the GNU Lesser General Public License (L
          version="1.3.0.qualifier"
          unpack="false"/>
 
+  <!-- External deps have to be unpacked so that we can provide nested Jars on the classpath when building language plugins -->
    <plugin
          id="org.spoofax.interpreter.externaldeps"
          download-size="0"
          install-size="0"
-         version="1.3.0.qualifier"
-         unpack="false"/>
+         version="1.3.0.qualifier"/>
 
    <plugin
          id="org.metaborg.runtime.task"
