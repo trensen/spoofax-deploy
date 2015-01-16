@@ -234,13 +234,6 @@ Most Spoofax/IMP code is licensed under the GNU Lesser General Public License (L
          unpack="false"/>
 
    <plugin
-         id="org.metaborg.meta.interpreter.framework"
-         download-size="0"
-         install-size="0"
-         version="1.3.0.qualifier"
-         unpack="false"/>
-
-   <plugin
          id="org.metaborg.spoofax.core"
          download-size="0"
          install-size="0"
