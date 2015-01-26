@@ -75,7 +75,7 @@ function eclipse {
 function install-default-eclipse {
 	if [ ! -d "$ECLIPSE_LOCATION" ]; then
 		echo "Installing default eclipse..."
- 
+
 		eclipse "macosx" "cocoa" "x86_64" "eclipse" "-repository $ECLIPSE_REPO"
 	fi
 }
@@ -111,9 +111,10 @@ function spoofax {
 	echo "Creating Spoofax installation for $1 $2 $3";
 
 	INSTALL_ARGS="-repository $ECLIPSE_REPO,$SPOOFAX_REPO -installIU org.strategoxt.imp.feature.group,org.spoofax.modelware.gmf.feature.feature.group,org.spoofax.modelware.emf.feature.feature.group"
-	INSTALL_PATH="$RESULT_LOCATION/spoofax-$1-$3"
-	INSTALL_NOJAVA_ZIP="$RESULT_LOCATION/spoofax-$1-$3-nojre.zip"
-	INSTALL_ZIP="$RESULT_LOCATION/spoofax-$1-$3.zip"
+  INSTALL_QUALIFIER="spoofax-$1-$3"
+	INSTALL_PATH="$RESULT_LOCATION/$INSTALL_QUALIFIER"
+	INSTALL_NOJAVA_ZIP="$RESULT_LOCATION/$INSTALL_QUALIFIER-nojre.zip"
+	INSTALL_ZIP="$RESULT_LOCATION/$INSTALL_QUALIFIER.zip"
 	INI_PATH="$INSTALL_PATH/$4"
 
 	# Create Eclipse installation
@@ -134,27 +135,27 @@ function spoofax {
 
 	# Add own VM arguments
 	echo "-Xms512m" >> $INI_PATH;
-	echo "-Xmx1024m" >> $INI_PATH;
+	echo "-Xmx1536m" >> $INI_PATH;
 	echo "-Xss16m" >> $INI_PATH;
 	echo "-XX:MaxPermSize=256m" >> $INI_PATH;
 	echo "-server" >> $INI_PATH;
 
 	# Create an archive without JRE
 	echo "Archiving without JRE included: $INSTALL_NOJAVA_ZIP";
-	zip -q -r $INSTALL_NOJAVA_ZIP $INSTALL_PATH;
+	(cd $RESULT_LOCATION; zip -q -r $INSTALL_NOJAVA_ZIP $INSTALL_QUALIFIER);
 
 	# Create an archive with JRE
-	JRE_PATH="$JRE_LOCATION/$1-$3" 
+	JRE_PATH="$JRE_LOCATION/$1-$3"
 	if [ ! -d "$JRE_PATH" ]; then
 		echo "JRE for $1 $3 does not exist, skipping archive with JRE included..."
 	else
 	    echo "Including JRE from $JRE_PATH";
 
 	    JRE_TARGET_PATH="$INSTALL_PATH/jre";
-	    
+
 	    # Copy JRE into Eclipse directory
 	    mkdir -p $JRE_TARGET_PATH;
-	    cp -R "$JRE_PATH/." $JRE_TARGET_PATH;
+	    cp -a "$JRE_PATH/." $JRE_TARGET_PATH;
 
 	    # Prepend VM argument
 	    sed -i '' -e "1s;^;-vm@$5@;" $INI_PATH;
@@ -164,7 +165,7 @@ function spoofax {
 
 	    # Zip it with JRE
 	    echo "Archiving with JRE included: $INSTALL_ZIP";
-	    zip -q -r $INSTALL_ZIP $INSTALL_PATH;
+	    (cd $RESULT_LOCATION; zip -q -r -y $INSTALL_ZIP $INSTALL_QUALIFIER);
 	fi
 
 	rm -rf "$INSTALL_PATH"
