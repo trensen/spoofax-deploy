@@ -81,29 +81,51 @@ class MetaborgRelengReset(cli.Application):
 class MetaborgRelengBuild(cli.Application):
   '''Builds one or more components of spoofax-releng'''
 
-  unclean = cli.Flag(names = ['-u', '--unclean'], default = False, help = "Don't clean before building?")
-  deploy = cli.Flag(names = ['-d', '--deploy'], default = False, help = 'Deploy after building?')
-  buildStratego = cli.Flag(names = ['-s', '--build-stratego'], default = False, help = 'Build StrategoXT?')
-  noStrategoTest = cli.Flag(names = ['-t', '--no-stratego-test'], default = False, help = 'Skip StrategoXT tests?')
+  buildStratego = cli.Flag(names = ['-s', '--build-stratego'], default = False,
+                           help = 'Build StrategoXT?')
+  noStrategoTest = cli.Flag(names = ['-t', '--no-stratego-test'], default = False,
+                            help = 'Skip StrategoXT tests?')
+
+  noClean = cli.Flag(names = ['-u', '--no-clean'], default = False,
+                     help = "Don't clean before building?")
+  deploy = cli.Flag(names = ['-d', '--deploy'], default = False,
+                    help = 'Deploy after building?')
+  release = cli.Flag(names = ['-r', '--release'], default = False,
+                     help = 'Perform a release build? Checks whether all dependencies are release versions, fails the build if not')
+
+  offline = cli.Flag(names = ['-o', '--offline'], default = False,
+                     help = "Pass --offline flag to Maven?")
+  debug = cli.Flag(names = ['-b', '--debug'], default = False,
+                   help = "Pass --debug flag to Maven?")
+  quiet = cli.Flag(names = ['-q', '--quiet'], default = False,
+                   help = "Pass --quiet flag to Maven?")
 
   def main(self, *args):
-    repo = self.parent.repo
-    basedir = repo.working_tree_dir
-
     if len(args) == 0:
       print('No components specified, pass one or more of the following components to build:')
       print(', '.join(GetAllBuilds()))
       return 1
 
-    if not self.unclean:
+    repo = self.parent.repo
+    basedir = repo.working_tree_dir
+    clean = not self.noClean
+    profiles = []
+    if self.release:
+      profiles.append('release')
+
+    if clean:
       CleanLocalRepo()
 
     if self.buildStratego:
       print('Building StrategoXT')
-      BuildStrategoXt(basedir, not self.unclean, self.deploy, not self.noStrategoTest)
+      BuildStrategoXt(basedir = basedir, deploy = self.deploy, runTests = not self.noStrategoTest,
+                      clean = clean, noSnapshotUpdates = True, profiles = profiles, debug = self.debug,
+                      quiet = self.quiet)
     else:
       print('Downloading StrategoXT')
-      DownloadStrategoXt(basedir)
+      DownloadStrategoXt(basedir = basedir)
+
+    profiles.append('!add-metaborg-repositories')
 
     qualifier = CreateQualifier(repo)
     print('Using Eclipse qualifier {}.'.format(qualifier))
@@ -113,7 +135,9 @@ class MetaborgRelengBuild(cli.Application):
     for build in buildOrder:
       print('Building: {}'.format(build))
       cmd = GetBuildCommand(build)
-      cmd(basedir, qualifier, not self.unclean, self.deploy)
+      cmd(basedir = basedir, qualifier = qualifier, deploy = self.deploy, clean = clean,
+          noSnapshotUpdates = True, profiles = profiles, offline = self.offline,
+          debug = self.debug, quiet = self.quiet)
 
     print('All done!')
 

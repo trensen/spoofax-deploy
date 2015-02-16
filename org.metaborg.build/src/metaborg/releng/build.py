@@ -8,59 +8,64 @@ from metaborg.util.maven import Mvn
 
 def DownloadStrategoXt(basedir):
   pomFile = path.join(basedir, 'strategoxt', 'strategoxt', 'download-pom.xml')
-  Mvn(pomFile, False, 'dependency:resolve')
+  Mvn(pomFile = pomFile, clean = False, phase = 'dependency:resolve')
 
-def BuildStrategoXt(basedir, clean, deploy, runTests):
+def BuildStrategoXt(basedir, deploy, runTests, **kwargs):
   strategoXtDir = path.join(basedir, 'strategoxt', 'strategoxt')
   phase = 'deploy' if deploy else 'install'
 
   pomFile = path.join(strategoXtDir, 'build-pom.xml')
-  Mvn(pomFile, clean, phase, **{'strategoxt-skip-test': not runTests})
+  buildKwargs = dict(kwargs)
+  buildKwargs.update({'strategoxt-skip-test': not runTests})
+  Mvn(pomFile = pomFile, phase = phase, **buildKwargs)
 
   parent_pom_file = path.join(strategoXtDir, 'buildpoms', 'pom.xml')
-  Mvn(parent_pom_file, clean, phase, **{'strategoxt-skip-build': 'true', 'strategoxt-skip-assembly' : 'true'})
+  buildKwargs = dict(kwargs)
+  buildKwargs.update({'strategoxt-skip-build': True, 'strategoxt-skip-assembly' : True})
+  Mvn(pomFile = parent_pom_file, phase = phase, **buildKwargs)
 
 
-def BuildJava(basedir, qualifier, clean, deploy):
+def BuildJava(basedir, qualifier, deploy, **kwargs):
   phase = 'deploy' if deploy else 'install'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.java', 'pom.xml')
-  Mvn(pomFile, clean, phase, forceContextQualifier = qualifier)
+  Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
 
-def BuildEclipse(basedir, qualifier, clean, deploy):
+def BuildEclipse(basedir, qualifier, deploy, **kwargs):
   phase = 'deploy' if deploy else 'install'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.eclipse', 'pom.xml')
-  Mvn(pomFile, clean, phase, forceContextQualifier = qualifier)
+  Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
 
-def BuildPoms(basedir, qualifier, clean, deploy):
+def BuildPoms(basedir, deploy, qualifier = None, **kwargs):
   phase = 'deploy' if deploy else 'install'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.parentpoms', 'pom.xml')
-  Mvn(pomFile, clean, phase, **{'skip-language-build' : 'true'})
+  kwargs.update({'skip-language-build' : True})
+  Mvn(pomFile = pomFile, phase = phase, **kwargs)
 
-def BuildSpoofaxLibs(basedir, qualifier, clean, deploy):
+def BuildSpoofaxLibs(basedir, deploy, qualifier = None, **kwargs):
   phase = 'deploy' if deploy else 'verify'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.libs', 'pom.xml')
-  Mvn(pomFile, clean, phase)
+  Mvn(pomFile = pomFile, phase = phase, **kwargs)
 
-def BuildTestRunner(basedir, qualifier, clean, deploy):
+def BuildTestRunner(basedir, deploy, qualifier = None, **kwargs):
   phase = 'deploy' if deploy else 'verify'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.testrunner', 'pom.xml')
-  Mvn(pomFile, clean, phase)
+  Mvn(pomFile = pomFile, phase = phase, **kwargs)
 
 
 '''Build dependencies must be topologically ordered, otherwise the algorithm will not work'''
 _buildDependencies = OrderedDict([
-  ('java', []),
-  ('eclipse', ['java']),
-  ('poms', ['java', 'eclipse']),
+  ('java'        , []),
+  ('eclipse'     , ['java']),
+  ('poms'        , ['java', 'eclipse']),
   ('spoofax-libs', ['java']),
-  ('test-runner', ['java']),
+  ('test-runner' , ['java']),
 ])
 _buildCommands = {
-  'poms' : BuildPoms,
-  'java': BuildJava,
+  'poms'         : BuildPoms,
+  'java'         : BuildJava,
   'spoofax-libs' : BuildSpoofaxLibs,
-  'test-runner' : BuildTestRunner,
-  'eclipse': BuildEclipse,
+  'test-runner'  : BuildTestRunner,
+  'eclipse'      : BuildEclipse,
 }
 
 def GetAllBuilds():
