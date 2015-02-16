@@ -1,8 +1,7 @@
 from git.repo.base import Repo
 from plumbum import cli
 
-from metaborg.releng.build import BuildStrategoXt, DownloadStrategoXt, Build, \
-  buildComps, CleanLocalRepo
+from metaborg.releng.build import BuildStrategoXt, DownloadStrategoXt, CleanLocalRepo, CreateQualifier, GetBuildOrder, GetBuildCommand, GetAllBuilds
 from metaborg.util.git import UpdateAll, CheckoutAll, CleanAll, ResetAll
 
 
@@ -90,11 +89,10 @@ class MetaborgRelengBuild(cli.Application):
   def main(self, *args):
     repo = self.parent.repo
     basedir = repo.working_tree_dir
-    phase = 'deploy' if self.deploy else 'install'
 
     if len(args) == 0:
       print('No components specified, pass one or more of the following components to build:')
-      print(', '.join(buildComps + ['all']))
+      print(', '.join(GetAllBuilds()))
       return 1
 
     if not self.unclean:
@@ -102,13 +100,22 @@ class MetaborgRelengBuild(cli.Application):
 
     if self.buildStratego:
       print('Building StrategoXT')
-      BuildStrategoXt(basedir = basedir, clean = not self.unclean, phase = phase, runTests = not self.noStrategoTest)
+      BuildStrategoXt(basedir, not self.unclean, self.deploy, not self.noStrategoTest)
     else:
       print('Downloading StrategoXT')
       DownloadStrategoXt(basedir)
 
-    print('Building component(s) {}'.format(', '.join(args)))
-    Build(repo, not self.unclean, phase, *args)
+    qualifier = CreateQualifier(repo)
+    print('Using Eclipse qualifier {}.'.format(qualifier))
+
+    buildOrder = GetBuildOrder(*args)
+    print('Building component(s): {}'.format(', '.join(buildOrder)))
+    for build in buildOrder:
+      print('Building: {}'.format(build))
+      cmd = GetBuildCommand(build)
+      cmd(basedir, qualifier, not self.unclean, self.deploy)
+
+    print('All done!')
 
 
 if __name__ == "__main__":

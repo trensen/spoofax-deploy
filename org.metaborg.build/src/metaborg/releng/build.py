@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from os import path
 import shutil
 
@@ -9,8 +10,9 @@ def DownloadStrategoXt(basedir):
   pomFile = path.join(basedir, 'strategoxt', 'strategoxt', 'download-pom.xml')
   Mvn(pomFile, False, 'dependency:resolve')
 
-def BuildStrategoXt(basedir, clean = True, phase = 'install', runTests = True):
+def BuildStrategoXt(basedir, clean, deploy, runTests):
   strategoXtDir = path.join(basedir, 'strategoxt', 'strategoxt')
+  phase = 'deploy' if deploy else 'install'
 
   pomFile = path.join(strategoXtDir, 'build-pom.xml')
   Mvn(pomFile, clean, phase, **{'strategoxt-skip-test': not runTests})
@@ -19,57 +21,72 @@ def BuildStrategoXt(basedir, clean = True, phase = 'install', runTests = True):
   Mvn(parent_pom_file, clean, phase, **{'strategoxt-skip-build': 'true', 'strategoxt-skip-assembly' : 'true'})
 
 
-def BuildJava(basedir, qualifier, clean = True, phase = 'install'):
+def BuildJava(basedir, qualifier, clean, deploy):
+  phase = 'deploy' if deploy else 'install'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.java', 'pom.xml')
   Mvn(pomFile, clean, phase, forceContextQualifier = qualifier)
 
-def BuildEclipse(basedir, qualifier, clean = True, phase = 'install'):
+def BuildEclipse(basedir, qualifier, clean, deploy):
+  phase = 'deploy' if deploy else 'install'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.eclipse', 'pom.xml')
   Mvn(pomFile, clean, phase, forceContextQualifier = qualifier)
 
-def BuildPoms(basedir, qualifier, clean = True, phase = 'install'):
+def BuildPoms(basedir, qualifier, clean, deploy):
+  phase = 'deploy' if deploy else 'install'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.parentpoms', 'pom.xml')
   Mvn(pomFile, clean, phase, **{'skip-language-build' : 'true'})
 
-def BuildSpoofaxLibs(basedir, qualifier, clean = True, phase = 'verify'):
+def BuildSpoofaxLibs(basedir, qualifier, clean, deploy):
+  phase = 'deploy' if deploy else 'verify'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.libs', 'pom.xml')
   Mvn(pomFile, clean, phase)
 
-def BuildTestRunner(basedir, qualifier, clean = True, phase = 'verify'):
+def BuildTestRunner(basedir, qualifier, clean, deploy):
+  phase = 'deploy' if deploy else 'verify'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.testrunner', 'pom.xml')
   Mvn(pomFile, clean, phase)
 
 
-buildComps = ['java', 'eclipse', 'poms', 'spoofax-libs', 'test-runner']
 '''Build dependencies must be topologically ordered, otherwise the algorithm will not work'''
-buildDeps = {
-             'java': [],
-             'eclipse': ['java'],
-             'poms' : ['java', 'eclipse'],
-             'spoofax-libs' : ['java'],
-             'test-runner' : ['java'],
+_buildDependencies = OrderedDict([
+  ('java', []),
+  ('eclipse', ['java']),
+  ('poms', ['java', 'eclipse']),
+  ('spoofax-libs', ['java']),
+  ('test-runner', ['java']),
+])
+_buildCommands = {
+  'poms' : BuildPoms,
+  'java': BuildJava,
+  'spoofax-libs' : BuildSpoofaxLibs,
+  'test-runner' : BuildTestRunner,
+  'eclipse': BuildEclipse,
 }
-buildCmds = {
-             'poms' : BuildPoms,
-             'java': BuildJava,
-             'spoofax-libs' : BuildSpoofaxLibs,
-             'test-runner' : BuildTestRunner,
-             'eclipse': BuildEclipse,
-             }
 
-def GetBuilds(*args):
+def GetAllBuilds():
+  return list(_buildDependencies.keys()) + ['all']
+
+def GetBuildOrder(*args):
   if 'all' in args:
-    return buildComps
+    return list(_buildDependencies.keys())
 
   builds = set()
-  for name, deps in buildDeps.items():
+  for name, deps in _buildDependencies.items():
     if name in args:
       builds.add(name)
       for dep in deps:
         builds.add(dep)
-  return builds
+  orderedBuilds = []
+  for name in _buildDependencies.keys():
+    if name in builds:
+      orderedBuilds.append(name)
+  return orderedBuilds
 
-def Qualifier(repo):
+def GetBuildCommand(build):
+  return _buildCommands[build]
+
+
+def CreateQualifier(repo):
   date = LatestDate(repo)
   qualifier = date.strftime('%Y%m%d-%H%M%S')
   return qualifier
@@ -78,14 +95,3 @@ def CleanLocalRepo():
   localRepo = path.join(path.expanduser('~'), '.m2', 'repository')
   shutil.rmtree(path.join(localRepo, 'org', 'metaborg'), ignore_errors = True)
   shutil.rmtree(path.join(localRepo, '.cache', 'tycho'), ignore_errors = True)
-
-def Build(repo, clean = True, phase = 'verify', *args):
-  qualifier = Qualifier(repo)
-  print('Using Eclipse qualifier {}.'.format(qualifier))
-
-  builds = GetBuilds(*args)
-  for name in buildDeps.keys():
-    if name in builds:
-      cmd = buildCmds[name]
-      print('Building {}'.format(name))
-      cmd(basedir = repo.working_tree_dir, qualifier = qualifier, clean = clean, phase = phase)
