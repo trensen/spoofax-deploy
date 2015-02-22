@@ -21,7 +21,7 @@ def LatestDate(repo):
 
 def Update(submodule):
   if not submodule.module_exists():
-    print('Cannot update {}, it has not been initialized yet. Run "git submodule update --init" first.'.format(submodule.name))
+    print('Cannot update {}, it has not been initialized yet. Run "git submodule update --init --recursive" first.'.format(submodule.name))
     return
 
   subrepo = submodule.module()
@@ -35,7 +35,10 @@ def Update(submodule):
 #    print('Cannot update {}, it has UNTRACKED FILES. Resolve the untracked files manually or run "clean" to clean untracked files.'.format(submodule.name))
   else:
     print('Updating {} from {}/{}'.format(submodule.name, remote.name, head.reference.name))
-    submodule.update(init = False, recursive = True, to_latest_revision = True, keep_going = True)
+    submodule.update(init = False, recursive = False, to_latest_revision = True, keep_going = True)
+
+  for submodule in subrepo.submodules:
+    Update(submodule)
 
 def UpdateAll(repo):
   print('Updating all submodules')
@@ -47,6 +50,10 @@ def Checkout(submodule):
   branch = submodule.branch
   print('Switching {} to {}'.format(submodule.name, branch.name))
   branch.checkout()
+
+  subrepo = submodule.module()
+  for submodule in subrepo.submodules:
+    Checkout(submodule)
 
 def CheckoutAll(repo, confirmPrompt = False):
   print('Checking out correct branches for all submodules')

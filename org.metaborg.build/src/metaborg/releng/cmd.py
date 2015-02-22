@@ -140,7 +140,3 @@ class MetaborgRelengBuild(cli.Application):
           debug = self.debug, quiet = self.quiet)
 
     print('All done!')
-
-
-if __name__ == "__main__":
-  MetaborgReleng.run()
