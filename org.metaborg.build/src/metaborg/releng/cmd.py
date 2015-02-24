@@ -3,8 +3,8 @@ from plumbum import cli
 
 from metaborg.releng.build import BuildStrategoXt, DownloadStrategoXt, CleanLocalRepo, CreateQualifier, GetBuildOrder, GetBuildCommand, GetAllBuilds
 from metaborg.releng.versions import SetVersions
-from metaborg.util.git import UpdateAll, CheckoutAll, CleanAll, ResetAll
-from metaborg.util.prompt import YesNo, YesNoTwice
+from metaborg.util.git import UpdateAll, MergeAll, TagAll, PushAll, CheckoutAll, CleanAll, ResetAll
+from metaborg.util.prompt import YesNo, YesNoTwice, YesNoTrice
 
 
 class MetaborgReleng(cli.Application):
@@ -113,8 +113,7 @@ class MetaborgRelengPush(cli.Application):
 @MetaborgReleng.subcommand("checkout")
 class MetaborgRelengCheckout(cli.Application):
   '''
-  Checks out the correct branches for each submodule.
-  WARNING: This will get rid of detached heads, including any commits you have made to detached heads
+  Checks out the correct branches for each submodule
   '''
 
   confirmPrompt = cli.Flag(names = ['-y', '--yes'], default = False,
@@ -133,8 +132,7 @@ class MetaborgRelengCheckout(cli.Application):
 @MetaborgReleng.subcommand("clean")
 class MetaborgRelengClean(cli.Application):
   '''
-  Cleans untracked files in each submodule.
-  WARNING: This will DELETE UNTRACKED FILES
+  Cleans untracked files in each submodule
   '''
 
   confirmPrompt = cli.Flag(names = ['-y', '--yes'], default = False,
@@ -153,8 +151,7 @@ class MetaborgRelengClean(cli.Application):
 @MetaborgReleng.subcommand("reset")
 class MetaborgRelengReset(cli.Application):
   '''
-  Resets each submodule.
-  WARNING: This will DELETE UNCOMMITED CHANGES and possibly DELETE UNPUSHED COMMITS
+  Resets each submodule
   '''
 
   toRemote = cli.Flag(names = ['-r', '--remote'], default = False,
@@ -177,8 +174,7 @@ class MetaborgRelengReset(cli.Application):
 @MetaborgReleng.subcommand("set-versions")
 class MetaborgRelengSetVersions(cli.Application):
   '''
-  Sets Maven and Eclipse version numbers to given version number.
-  WARNING: This will change pom.xml, MANIFEST.MF, and feature.xml files
+  Sets Maven and Eclipse version numbers to given version number
   '''
 
   fromVersion = cli.SwitchAttr(names = ['-f', '--from'], argtype = str, mandatory = True,

@@ -117,6 +117,6 @@ def Push(submodule):
   remote = subrepo.remote('origin')
   remote.push()
 
-def PushAll(repo)
+def PushAll(repo):
   for submodule in repo.submodules:
     PushAll(submodule)
