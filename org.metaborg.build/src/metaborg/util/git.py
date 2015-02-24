@@ -1,7 +1,5 @@
 from datetime import datetime
 
-from metaborg.util.prompt import YesNo, YesNoTwice
-
 
 def LatestDate(repo):
   date = 0
@@ -41,7 +39,6 @@ def Update(submodule):
     Update(submodule)
 
 def UpdateAll(repo):
-  print('Updating all submodules')
   for submodule in repo.submodules:
     Update(submodule)
 
@@ -55,11 +52,7 @@ def Checkout(submodule):
   for submodule in subrepo.submodules:
     Checkout(submodule)
 
-def CheckoutAll(repo, confirmPrompt = False):
-  print('Checking out correct branches for all submodules')
-  print('WARNING: This will get rid of detached heads, including any commits you have made to detached heads, do you want to continue?')
-  if confirmPrompt or not YesNo():
-    return
+def CheckoutAll(repo):
   for submodule in repo.submodules:
     Checkout(submodule)
 
@@ -69,11 +62,7 @@ def Clean(submodule):
   print('Cleaning {}'.format(submodule.name))
   subrepo.git.clean('-fd')
 
-def CleanAll(repo, confirmPrompt = False):
-  print('Cleaning all submodules')
-  print('WARNING: This will DELETE UNTRACKED FILES, do you want to continue?')
-  if confirmPrompt or not YesNoTwice():
-    return
+def CleanAll(repo):
   for submodule in repo.submodules:
     Clean(submodule)
 
@@ -83,10 +72,6 @@ def Reset(submodule):
   print('Resetting {}'.format(submodule.name))
   subrepo.git.reset('--hard')
 
-def ResetAll(repo, confirmPrompt = False):
-  print('Resetting all submodules')
-  print('WARNING: This will DELETE UNCOMMITED CHANGES AND UNPUSHED COMMITS, do you want to continue?')
-  if confirmPrompt or not YesNoTwice():
-    return
+def ResetAll(repo):
   for submodule in repo.submodules:
     Reset(submodule)
