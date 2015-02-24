@@ -51,7 +51,11 @@ def Mvn(pomFile = 'pom.xml', settingsFile = None, globalSettingsFile = None, noS
 
   cmd = ' '.join(args)
   print(cmd)
-  process = subprocess.Popen(cmd, env = mvnEnv)
-  process.communicate()
+  try:
+    process = subprocess.Popen(cmd, env = mvnEnv, shell = True)
+    process.communicate()
+  except KeyboardInterrupt:
+    raise Exception("Maven build interrupted") 
+
   if process.returncode != 0:
     raise Exception("Maven build failed")

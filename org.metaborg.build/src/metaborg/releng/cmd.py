@@ -113,30 +113,34 @@ class MetaborgRelengBuild(cli.Application):
     if self.release:
       profiles.append('release')
 
-    if clean:
-      CleanLocalRepo()
+    try:
+      if clean:
+        CleanLocalRepo()
 
-    if self.buildStratego:
-      print('Building StrategoXT')
-      BuildStrategoXt(basedir = basedir, deploy = self.deploy, runTests = not self.noStrategoTest,
-                      clean = clean, noSnapshotUpdates = True, profiles = profiles, debug = self.debug,
-                      quiet = self.quiet)
-    else:
-      print('Downloading StrategoXT')
-      DownloadStrategoXt(basedir = basedir)
+      if self.buildStratego:
+        print('Building StrategoXT')
+        BuildStrategoXt(basedir = basedir, deploy = self.deploy, runTests = not self.noStrategoTest,
+                        clean = clean, noSnapshotUpdates = True, profiles = profiles, debug = self.debug,
+                        quiet = self.quiet)
+      else:
+        print('Downloading StrategoXT')
+        DownloadStrategoXt(basedir = basedir)
 
-    profiles.append('!add-metaborg-repositories')
+      profiles.append('!add-metaborg-repositories')
 
-    qualifier = CreateQualifier(repo)
-    print('Using Eclipse qualifier {}.'.format(qualifier))
+      qualifier = CreateQualifier(repo)
+      print('Using Eclipse qualifier {}.'.format(qualifier))
 
-    buildOrder = GetBuildOrder(*args)
-    print('Building component(s): {}'.format(', '.join(buildOrder)))
-    for build in buildOrder:
-      print('Building: {}'.format(build))
-      cmd = GetBuildCommand(build)
-      cmd(basedir = basedir, qualifier = qualifier, deploy = self.deploy, clean = clean,
-          noSnapshotUpdates = True, profiles = profiles, offline = self.offline,
-          debug = self.debug, quiet = self.quiet)
-
-    print('All done!')
+      buildOrder = GetBuildOrder(*args)
+      print('Building component(s): {}'.format(', '.join(buildOrder)))
+      for build in buildOrder:
+        print('Building: {}'.format(build))
+        cmd = GetBuildCommand(build)
+        cmd(basedir = basedir, qualifier = qualifier, deploy = self.deploy, clean = clean,
+            noSnapshotUpdates = True, profiles = profiles, offline = self.offline,
+            debug = self.debug, quiet = self.quiet)
+      print('All done!')
+      return 0
+    except Exception as detail:
+      print(detail)
+      return 1
