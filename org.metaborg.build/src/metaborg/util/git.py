@@ -73,7 +73,7 @@ def Reset(submodule, toRemote):
     remote = subrepo.remote('origin')
     branchName = '{}/{}'.format(remote.name, head.reference.name)
     print('Resetting {} to {}'.format(submodule.name, branchName))
-    subrepo.git.reset('--hard {}'.format(branchName))
+    subrepo.git.reset('--hard', branchName)
   else:
     print('Resetting {}'.format(submodule.name))
     subrepo.git.reset('--hard')
