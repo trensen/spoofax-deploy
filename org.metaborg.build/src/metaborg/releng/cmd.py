@@ -61,8 +61,8 @@ class MetaborgRelengMerge(cli.Application):
     print('Merging branch into current branch for each submodule')
     if not self.confirmPrompt:
       print('This will merge branches, changing the state of your repositories, do you want to continue?')
-    if not self.confirmPrompt and not YesNo():
-      return 1
+      if not YesNo():
+        return 1
     MergeAll(self.parent.repo, self.branch)
     return 0
 
@@ -85,8 +85,8 @@ class MetaborgRelengTag(cli.Application):
     print('Creating a tag in each submodules')
     if not self.confirmPrompt:
       print('This creates tags, changing the state of your repositories, do you want to continue?')
-    if not self.confirmPrompt and not YesNo():
-      return 1
+      if not YesNo():
+        return 1
     TagAll(self.parent.repo, self.tag, self.description)
     return 0
 
@@ -104,8 +104,8 @@ class MetaborgRelengPush(cli.Application):
     print('Pushing current branch for each submodule')
     if not self.confirmPrompt:
       print('This pushes commits to the remote repository, do you want to continue?')
-    if not self.confirmPrompt and not YesNo():
-      return 1
+      if not YesNo():
+        return 1
     PushAll(self.parent.repo)
     return 0
 
@@ -124,8 +124,8 @@ class MetaborgRelengCheckout(cli.Application):
     print('Checking out correct branches for all submodules')
     if not self.confirmPrompt:
       print('WARNING: This will get rid of detached heads, including any commits you have made to detached heads, do you want to continue?')
-    if not self.confirmPrompt and not YesNo():
-      return 1
+      if not YesNo():
+        return 1
     CheckoutAll(self.parent.repo)
     return 0
 
@@ -144,8 +144,8 @@ class MetaborgRelengClean(cli.Application):
     print('Cleaning all submodules')
     if not self.confirmPrompt:
       print('WARNING: This will DELETE UNTRACKED FILES, do you want to continue?')
-    if not self.confirmPrompt and not YesNoTwice():
-      return 1
+      if not YesNoTwice():
+        return 1
     CleanAll(self.parent.repo)
     return 0
 
@@ -154,18 +154,22 @@ class MetaborgRelengClean(cli.Application):
 class MetaborgRelengReset(cli.Application):
   '''
   Resets each submodule.
-  WARNING: This will DELETE UNCOMMITED CHANGES AND UNPUSHED COMMITS
+  WARNING: This will DELETE UNCOMMITED CHANGES and possibly DELETE UNPUSHED COMMITS
   '''
 
-  confirmPrompt = cli.Flag(names = ['-y', '--yes'], default = False,
-                           help = 'Answer warning prompts with yes automatically')
+  toRemote = cli.Flag(names = ['-r', '--remote'], default = False,
+                      help = 'Resets to the remote branch, deleting any unpushed commits')
 
   def main(self):
     print('Resetting all submodules')
-    if not self.confirmPrompt:
-      print('WARNING: This will DELETE UNCOMMITED CHANGES AND UNPUSHED COMMITS, do you want to continue?')
-    if not self.confirmPrompt and not YesNoTwice():
-      return 1
+    if self.toRemote:
+      print('WARNING: This will DELETE UNCOMMITED CHANGES and DELETE UNPUSHED COMMITS, do you want to continue?')
+      if not YesNoTrice():
+        return 1
+    else:
+      print('WARNING: This will DELETE UNCOMMITED CHANGES, do you want to continue?')
+      if not YesNoTwice():
+        return 1
     ResetAll(self.parent.repo)
     return 0
 
@@ -190,13 +194,13 @@ class MetaborgRelengSetVersions(cli.Application):
                            help = 'Answer warning prompts with yes automatically')
 
   def main(self):
-    if not self.dryRun:
+    if not self.confirmPrompt and not self.dryRun:
       if self.commit:
         print('WARNING: This will CHANGE and COMMIT pom.xml, MANIFEST.MF, and feature.xml files, do you want to continue?')
       else:
         print('WARNING: This will CHANGE pom.xml, MANIFEST.MF, and feature.xml files, do you want to continue?')
-      if self.confirmPrompt or not YesNo():
-        return 1
+        if not YesNo():
+          return 1
     SetVersions(self.parent.repo, self.fromVersion, self.toVersion, self.dryRun, self.commit)
     return 0
 

@@ -12,3 +12,9 @@ def YesNoTwice():
   if YesNo():
     return YesNo("Are you really really sure?")
   return False
+
+def YesNoTrice():
+  if YesNo():
+    if YesNo("Are you really really sure?"):
+      return YesNo("Are you really really really really sure?")
+  return False

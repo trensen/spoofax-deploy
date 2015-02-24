@@ -63,12 +63,22 @@ def CleanAll(repo):
     Clean(submodule)
 
 
-def Reset(submodule):
+def Reset(submodule, toRemote = False):
   subrepo = submodule.module()
-  print('Resetting {}'.format(submodule.name))
-  subrepo.git.reset('--hard')
+  if toRemote:
+    head = subrepo.head
+    if head.is_detached:
+      print('Cannot reset, {} has a DETACHED HEAD.'.format(submodule.name))
+      return
+    remote = subrepo.remote('origin')
+    branchName = '{}/{}'.format(remote.name, head.reference.name)
+    print('Resetting {} to {}'.format(submodule.name, branchName))
+    subrepo.git.reset('--hard {}'.format(branchName))
+  else:
+    print('Resetting {}'.format(submodule.name))
+    subrepo.git.reset('--hard')
 
-def ResetAll(repo):
+def ResetAll(repo, toRemote = False):
   for submodule in repo.submodules:
     Reset(submodule)
 
