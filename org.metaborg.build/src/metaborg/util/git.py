@@ -63,7 +63,7 @@ def CleanAll(repo):
     Clean(submodule)
 
 
-def Reset(submodule, toRemote = False):
+def Reset(submodule, toRemote):
   subrepo = submodule.module()
   if toRemote:
     head = subrepo.head
@@ -78,9 +78,9 @@ def Reset(submodule, toRemote = False):
     print('Resetting {}'.format(submodule.name))
     subrepo.git.reset('--hard')
 
-def ResetAll(repo, toRemote = False):
+def ResetAll(repo, toRemote):
   for submodule in repo.submodules:
-    Reset(submodule)
+    Reset(submodule, toRemote)
 
 
 def Merge(submodule, branchName):
