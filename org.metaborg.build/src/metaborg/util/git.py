@@ -27,10 +27,6 @@ def Update(submodule):
   head = subrepo.head
   if head.is_detached:
     print('Cannot update {}, it has a DETACHED HEAD. Resolve the detached head manually or run "checkout" to check out the correct branch.'.format(submodule.name))
-#  elif subrepo.is_dirty(untracked_files = False):
-#    print('Cannot update {}, it has UNCOMMITTED CHANGES. Resolve the uncommitted changes manually or run "reset" to reset changes.'.format(submodule.name))
-#  elif subrepo.is_dirty(untracked_files = True):
-#    print('Cannot update {}, it has UNTRACKED FILES. Resolve the untracked files manually or run "clean" to clean untracked files.'.format(submodule.name))
   else:
     print('Updating {} from {}/{}'.format(submodule.name, remote.name, head.reference.name))
     submodule.update(init = False, recursive = False, to_latest_revision = True, keep_going = True)
@@ -75,3 +71,42 @@ def Reset(submodule):
 def ResetAll(repo):
   for submodule in repo.submodules:
     Reset(submodule)
+
+
+def Merge(submodule, branchName):
+  subrepo = submodule.module()
+  head = subrepo.head
+  if head.is_detached:
+    print('Cannot merge, {} has a DETACHED HEAD.'.format(submodule.name))
+    return
+  branch = subrepo.heads[branchName]
+  if branch == None:
+    print('Cannot merge, branch {} does not exist'.format(branchName))
+    return
+  print('Merging branch {} into {} in {}'.format(branch, head.reference.name, submodule.name))
+  subrepo.index.merge_tree(branch)
+
+def MergeAll(repo, branchName):
+  for submodule in repo.submodules:
+    Merge(submodule, branchName)
+
+
+def Tag(submodule, tagName, tagDescription):
+  print('Creating tag {} in {}'.format(tagName, submodule.name))
+  subrepo = submodule.module()
+  subrepo.create_tag(path = tagName, message = tagDescription)
+
+def TagAll(repo, tagName, tagDescription):
+  for submodule in repo.submodules:
+    Tag(submodule, tagName, tagDescription)
+
+
+def Push(submodule):
+  print('Pushing {}'.format(submodule.name))
+  subrepo = submodule.module()
+  remote = subrepo.remote('origin')
+  remote.push()
+
+def PushAll(repo)
+  for submodule in repo.submodules:
+    PushAll(submodule)

@@ -35,11 +35,78 @@ class MetaborgReleng(cli.Application):
 
 @MetaborgReleng.subcommand("update")
 class MetaborgRelengUpdate(cli.Application):
-  '''Updates all submodules to the latest commit on the remote repository'''
+  '''
+  Updates all submodules to the latest commit on the remote repository
+  '''
 
   def main(self):
     print('Updating all submodules')
     UpdateAll(self.parent.repo)
+    return 0
+
+
+@MetaborgReleng.subcommand("merge")
+class MetaborgRelengMerge(cli.Application):
+  '''
+  Merges a branch into the current branch for each submodule
+  '''
+
+  branch = cli.SwitchAttr(names = ['-b', '--branch'], argtype = str, mandatory = True,
+                          help = 'Branch to merge')
+
+  confirmPrompt = cli.Flag(names = ['-y', '--yes'], default = False,
+                           help = 'Answer warning prompts with yes automatically')
+
+  def main(self):
+    print('Merging branch into current branch for each submodule')
+    if not self.confirmPrompt:
+      print('This will merge branches, changing the state of your repositories, do you want to continue?')
+    if not self.confirmPrompt and not YesNo():
+      return 1
+    MergeAll(self.parent.repo, self.branch)
+    return 0
+
+
+@MetaborgReleng.subcommand("tag")
+class MetaborgRelengTag(cli.Application):
+  '''
+  Creates a tag in each submodule
+  '''
+
+  tag = cli.SwitchAttr(names = ['-n', '--name'], argtype = str, mandatory = True,
+                       help = 'Name of the tag')
+  description = cli.SwitchAttr(names = ['-d', '--description'], argtype = str, mandatory = False, default = None,
+                       help = 'Description of the tag')
+
+  confirmPrompt = cli.Flag(names = ['-y', '--yes'], default = False,
+                           help = 'Answer warning prompts with yes automatically')
+
+  def main(self):
+    print('Creating a tag in each submodules')
+    if not self.confirmPrompt:
+      print('This creates tags, changing the state of your repositories, do you want to continue?')
+    if not self.confirmPrompt and not YesNo():
+      return 1
+    TagAll(self.parent.repo, self.tag, self.description)
+    return 0
+
+
+@MetaborgReleng.subcommand("push")
+class MetaborgRelengPush(cli.Application):
+  '''
+  Pushes the current branch for each submodule
+  '''
+
+  confirmPrompt = cli.Flag(names = ['-y', '--yes'], default = False,
+                           help = 'Answer warning prompts with yes automatically')
+
+  def main(self):
+    print('Pushing current branch for each submodule')
+    if not self.confirmPrompt:
+      print('This pushes commits to the remote repository, do you want to continue?')
+    if not self.confirmPrompt and not YesNo():
+      return 1
+    PushAll(self.parent.repo)
     return 0
 
 
