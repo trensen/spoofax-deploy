@@ -50,7 +50,7 @@ class MetaborgRelengCheckout(cli.Application):
   WARNING: This will get rid of detached heads, including any commits you have made to detached heads
   '''
 
-  confirmPrompt = cli.Flag(names = ['-c', '--confirm'], default = False,
+  confirmPrompt = cli.Flag(names = ['-y', '--yes'], default = False,
                            help = 'Answer warning prompts with yes automatically')
 
   def main(self):
@@ -70,7 +70,7 @@ class MetaborgRelengClean(cli.Application):
   WARNING: This will DELETE UNTRACKED FILES
   '''
 
-  confirmPrompt = cli.Flag(names = ['-c', '--confirm'], default = False,
+  confirmPrompt = cli.Flag(names = ['-y', '--yes'], default = False,
                            help = 'Answer warning prompts with yes automatically')
 
   def main(self):
@@ -90,7 +90,7 @@ class MetaborgRelengReset(cli.Application):
   WARNING: This will DELETE UNCOMMITED CHANGES AND UNPUSHED COMMITS
   '''
 
-  confirmPrompt = cli.Flag(names = ['-c', '--confirm'], default = False,
+  confirmPrompt = cli.Flag(names = ['-y', '--yes'], default = False,
                            help = 'Answer warning prompts with yes automatically')
 
   def main(self):
@@ -115,17 +115,22 @@ class MetaborgRelengSetVersions(cli.Application):
   toVersion = cli.SwitchAttr(names = ['-t', '--to'], argtype = str, mandatory = True,
                              help = 'Maven version to change from')
 
+  commit = cli.Flag(names = ['-c', '--commit'], default = False,
+                    help = 'Commit changed files')
   dryRun = cli.Flag(names = ['-d', '--dryrun'], default = False,
-                           help = 'Do not modify files, only print files that will change')
-  confirmPrompt = cli.Flag(names = ['-c', '--confirm'], default = False,
+                    help = 'Do not modify or commit files, just print operations')
+  confirmPrompt = cli.Flag(names = ['-y', '--yes'], default = False,
                            help = 'Answer warning prompts with yes automatically')
 
   def main(self):
     if not self.dryRun:
-      print('WARNING: This will change pom.xml, MANIFEST.MF, and feature.xml files, do you want to continue?')
+      if self.commit:
+        print('WARNING: This will CHANGE and COMMIT pom.xml, MANIFEST.MF, and feature.xml files, do you want to continue?')
+      else:
+        print('WARNING: This will CHANGE pom.xml, MANIFEST.MF, and feature.xml files, do you want to continue?')
       if self.confirmPrompt or not YesNo():
         return 1
-    SetVersions(self.parent.repo.working_tree_dir, self.fromVersion, self.toVersion, self.dryRun)
+    SetVersions(self.parent.repo, self.fromVersion, self.toVersion, self.dryRun, self.commit)
     return 0
 
 
