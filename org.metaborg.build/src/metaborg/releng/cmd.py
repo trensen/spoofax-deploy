@@ -167,7 +167,7 @@ class MetaborgRelengReset(cli.Application):
       print('WARNING: This will DELETE UNCOMMITED CHANGES, do you want to continue?')
       if not YesNoTwice():
         return 1
-    ResetAll(self.parent.repo)
+    ResetAll(self.parent.repo, self.toRemote)
     return 0
 
 
