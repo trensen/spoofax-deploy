@@ -217,7 +217,7 @@
 		<repository>
 			<id>eclipse-luna</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/luna</url>
+			<url>http://artifacts.metaborg.org/content/repositories/eclipse-luna/</url>
 		</repository>
 	</repositories>
 
