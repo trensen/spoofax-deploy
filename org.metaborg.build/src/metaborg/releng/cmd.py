@@ -2,7 +2,7 @@ from os import path
 from git.repo.base import Repo
 from plumbum import cli
 
-from metaborg.releng.build import BuildPoms, BuildStrategoXt, DownloadStrategoXt, CleanLocalRepo, CreateQualifier, GetBuildOrder, GetBuildCommand, GetAllBuilds
+from metaborg.releng.build import BuildAll, GetAllBuilds
 from metaborg.releng.versions import SetVersions
 from metaborg.releng.release import Release, ResetRelease
 from metaborg.util.git import UpdateAll, MergeAll, TagAll, PushAll, CheckoutAll, CleanAll, ResetAll
@@ -236,45 +236,15 @@ class MetaborgRelengBuild(cli.Application):
       return 1
 
     repo = self.parent.repo
-    basedir = repo.working_tree_dir
-    clean = not self.noClean
-    profiles = []
-    if self.release:
-      profiles.append('release')
 
     try:
-      if clean:
-        CleanLocalRepo()
-
-      print('Building parent POMs')
-      BuildPoms(basedir = basedir, deploy = self.deploy)
-
-      if self.buildStratego:
-        print('Building StrategoXT')
-        BuildStrategoXt(basedir = basedir, deploy = self.deploy, runTests = not self.noStrategoTest,
-                        clean = clean, noSnapshotUpdates = True, profiles = profiles, debug = self.debug,
-                        quiet = self.quiet)
-      else:
-        print('Downloading StrategoXT')
-        DownloadStrategoXt(basedir = basedir)
-
-      profiles.append('!add-metaborg-repositories')
-
-      qualifier = CreateQualifier(repo)
-      print('Using Eclipse qualifier {}.'.format(qualifier))
-
-      buildOrder = GetBuildOrder(*components)
-      print('Building component(s): {}'.format(', '.join(buildOrder)))
-      for build in buildOrder:
-        print('Building: {}'.format(build))
-        cmd = GetBuildCommand(build)
-        cmd(basedir = basedir, qualifier = qualifier, deploy = self.deploy, clean = clean,
-            noSnapshotUpdates = True, profiles = profiles, offline = self.offline,
-            debug = self.debug, quiet = self.quiet)
+      BuildAll(repo = repo, buildStratego = self.buildStratego, strategoTest = not self.noStrategoTest,
+               clean = not self.noClean, release = self.release, deploy = self.deploy, offline = self.offline,
+               debug = self.debug, quiet = self.quiet)
       print('All done!')
       return 0
     except Exception as detail:
-      print(detail)
+      print(str(detail))
       return 1
 
 

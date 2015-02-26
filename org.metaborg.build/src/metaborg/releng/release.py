@@ -6,6 +6,8 @@ import traceback
 from os import path
 from metaborg.util.git import CheckoutAll, UpdateAll
 from metaborg.util.prompt import YesNo
+from metaborg.releng.versions import SetVersions
+from metaborg.releng.build import BuildAll
 
 
 def Release(repo, releaseBranchName, developBranchName, curReleaseVersion, curDevelopVersion, nextReleaseVersion, nextDevelopVersion):
@@ -45,6 +47,11 @@ def Release(repo, releaseBranchName, developBranchName, curReleaseVersion, curDe
       except git.exc.GitCommandError as detail:
         print('Automatic merge failed')
         print(str(detail))
+      try:
+        repo.git.checkout('--ours', '--', '.gitmodules')
+      except git.exc.GitCommandError as detail:
+        print("Restoring '.gitmodules' file failed")
+        print(str(detail))
       db['state'] = 3
       print('Please fix any conflicts and commit all changes in the root repository, then continue')
 
@@ -58,25 +65,37 @@ def Release(repo, releaseBranchName, developBranchName, curReleaseVersion, curDe
       for submodule in repo.submodules:
         subrepo = submodule.module()
         try:
-          subrepo.git.merge(submoduleBranches[submodule.name])
+          print('Merging submodule {}'.format(submodule.name))
+          subrepo.git.merge('-Xtheirs', submoduleBranches[submodule.name])
         except git.exc.GitCommandError as detail:
           print('Automatic merge failed')
           print(str(detail))
-      #db['state'] = 4
+      db['state'] = 4
       print('Please fix any conflicts and commit all changes in all submodules, then continue')
 
     def Step4():
-      # for each submodule, check status of repository: no conflicts, no uncommited changes
-      # if bad status: inform user and stop
+      dirtyRepos = []
+      for submodule in repo.submodules:
+        subrepo = submodule.module()
+        if subrepo.is_dirty():
+          dirtyRepos.append(submodule.name)
+      if len(dirtyRepos) > 0:
+        print('You have uncommited changes in submodules {}, are you sure you want to continue?'.format(dirtyRepos))
+        if not YesNo():
+          return
       print('Step 4: for each submodule: set version from the current development version to the next release version')
-      # set version from current development version to next release version
-      #db['state'] = 5
+      SetVersions(repo, curDevelopVersion, nextReleaseVersion, False, True)
+      db['state'] = 5
       print('Please check if versions have been set correctly, then continue')
 
     def Step5():
       print('Step 5: perform a test release build')
-      # perform a release build
-      # if it fails: inform user and stop
+      try:
+        BuildAll(repo = repo, components = ['all'], release = True)
+      except Exception as detail:
+        print('Test release build failed, not continuing to the next step')
+        print(str(detail))
+        return
       #db['state'] = 6
       print('Please check if the built artifact works, then continue')
 

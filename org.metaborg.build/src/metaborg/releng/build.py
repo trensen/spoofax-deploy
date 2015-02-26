@@ -6,15 +6,52 @@ from metaborg.util.git import LatestDate
 from metaborg.util.maven import Mvn
 
 
-def BuildPoms(basedir, deploy, qualifier = None, **kwargs):
+def BuildAll(repo, components = ['all'], buildStratego = False, strategoTest = True, clean = True, release = False,
+             deploy = False, profiles = [], **mavenArgs):
+  basedir = repo.working_tree_dir
+  if release:
+    profiles.append('release')
+    buildStratego = True
+    strategoTest = True
+    clean = True
+
+  if clean:
+    CleanLocalRepo()
+
+  print('Building parent POMs')
+  BuildPoms(basedir = basedir, deploy = deploy, profiles = profiles, **mavenArgs)
+
+  if buildStratego:
+    print('Building StrategoXT')
+    BuildStrategoXt(basedir = basedir, deploy = deploy, runTests = strategoTest, noSnapshotUpdates = True, clean = clean,
+                    profiles = profiles, **mavenArgs)
+  else:
+    print('Downloading StrategoXT')
+    DownloadStrategoXt(basedir = basedir, profiles = profiles, **mavenArgs)
+
+  profiles.append('!add-metaborg-repositories')
+
+  qualifier = CreateQualifier(repo)
+  print('Using Eclipse qualifier {}.'.format(qualifier))
+
+  buildOrder = GetBuildOrder(components)
+  print('Building component(s): {}'.format(', '.join(buildOrder)))
+  for build in buildOrder:
+    print('Building: {}'.format(build))
+    cmd = GetBuildCommand(build)
+    cmd(basedir = basedir, deploy = deploy, qualifier = qualifier, noSnapshotUpdates = True, clean = clean,
+        profiles = profiles, **mavenArgs)
+
+
+def BuildPoms(basedir, deploy, **kwargs):
   phase = 'deploy' if deploy else 'install'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.parentpoms', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, **kwargs)
 
 
-def DownloadStrategoXt(basedir):
+def DownloadStrategoXt(basedir, **kwargs):
   pomFile = path.join(basedir, 'strategoxt', 'strategoxt', 'download-pom.xml')
-  Mvn(pomFile = pomFile, clean = False, phase = 'dependency:resolve')
+  Mvn(pomFile = pomFile, clean = False, phase = 'dependency:resolve', **kwargs)
 
 def BuildStrategoXt(basedir, deploy, runTests, **kwargs):
   strategoXtDir = path.join(basedir, 'strategoxt', 'strategoxt')
@@ -77,7 +114,7 @@ _buildCommands = {
 def GetAllBuilds():
   return list(_buildDependencies.keys()) + ['all']
 
-def GetBuildOrder(*args):
+def GetBuildOrder(args):
   if 'all' in args:
     return list(_buildDependencies.keys())
 
