@@ -63,6 +63,7 @@ def SetVersions(repo, oldMavenVersion, newMavenVersion, dryRun = False, commit =
   def IsGeneratedManifestFile(file):
     with open(file) as fileHandle:
       text = fileHandle.read()
+    return 'Bnd-LastModified' in text
 
   print('Setting Maven versions in POM files')
   for file in FindFiles(baseDir, '.xml'):
@@ -76,7 +77,8 @@ def SetVersions(repo, oldMavenVersion, newMavenVersion, dryRun = False, commit =
 
   print('Setting Eclipse versions in MANIFEST.MF files')
   for file in FindFiles(baseDir, 'MANIFEST.MF'):
-    ReplaceInFile(file, oldEclipseVersion, newEclipseVersion)
+    if not IsGeneratedManifestFile(file):
+      ReplaceInFile(file, oldEclipseVersion, newEclipseVersion)
 
   print('Setting Eclipse versions in feature.xml files')
   spoofaxDeployDir = path.join(baseDir, 'spoofax-deploy')
