@@ -1,7 +1,7 @@
 from git.repo.base import Repo
 from plumbum import cli
 
-from metaborg.releng.build import BuildStrategoXt, DownloadStrategoXt, CleanLocalRepo, CreateQualifier, GetBuildOrder, GetBuildCommand, GetAllBuilds
+from metaborg.releng.build import BuildPoms, BuildStrategoXt, DownloadStrategoXt, CleanLocalRepo, CreateQualifier, GetBuildOrder, GetBuildCommand, GetAllBuilds
 from metaborg.releng.versions import SetVersions
 from metaborg.util.git import UpdateAll, MergeAll, TagAll, PushAll, CheckoutAll, CleanAll, ResetAll
 from metaborg.util.prompt import YesNo, YesNoTwice, YesNoTrice
@@ -242,6 +242,9 @@ class MetaborgRelengBuild(cli.Application):
     try:
       if clean:
         CleanLocalRepo()
+
+      print('Building parent POMs')
+      BuildPoms(basedir = basedir, deploy = self.deploy)
 
       if self.buildStratego:
         print('Building StrategoXT')

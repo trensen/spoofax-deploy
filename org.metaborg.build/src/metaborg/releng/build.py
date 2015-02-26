@@ -6,6 +6,12 @@ from metaborg.util.git import LatestDate
 from metaborg.util.maven import Mvn
 
 
+def BuildPoms(basedir, deploy, qualifier = None, **kwargs):
+  phase = 'deploy' if deploy else 'install'
+  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.parentpoms', 'pom.xml')
+  Mvn(pomFile = pomFile, phase = phase, **kwargs)
+
+
 def DownloadStrategoXt(basedir):
   pomFile = path.join(basedir, 'strategoxt', 'strategoxt', 'download-pom.xml')
   Mvn(pomFile = pomFile, clean = False, phase = 'dependency:resolve')
@@ -35,9 +41,9 @@ def BuildEclipse(basedir, qualifier, deploy, **kwargs):
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.eclipse', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
 
-def BuildPoms(basedir, deploy, qualifier = None, **kwargs):
+def BuildPluginPoms(basedir, deploy, qualifier = None, **kwargs):
   phase = 'deploy' if deploy else 'install'
-  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.parentpoms', 'pom.xml')
+  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.parentpoms.plugin', 'pom.xml')
   kwargs.update({'skip-language-build' : True})
   Mvn(pomFile = pomFile, phase = phase, **kwargs)
 
@@ -56,16 +62,16 @@ def BuildTestRunner(basedir, deploy, qualifier = None, **kwargs):
 _buildDependencies = OrderedDict([
   ('java'        , []),
   ('eclipse'     , ['java']),
-  ('poms'        , ['java', 'eclipse']),
+  ('pluginpoms'  , ['java', 'eclipse']),
   ('spoofax-libs', ['java']),
   ('test-runner' , ['java']),
 ])
 _buildCommands = {
-  'poms'         : BuildPoms,
   'java'         : BuildJava,
+  'eclipse'      : BuildEclipse,
+  'pluginpoms'   : BuildPluginPoms,
   'spoofax-libs' : BuildSpoofaxLibs,
   'test-runner'  : BuildTestRunner,
-  'eclipse'      : BuildEclipse,
 }
 
 def GetAllBuilds():

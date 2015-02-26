@@ -119,4 +119,4 @@ def Push(submodule):
 
 def PushAll(repo):
   for submodule in repo.submodules:
-    PushAll(submodule)
+    Push(submodule)

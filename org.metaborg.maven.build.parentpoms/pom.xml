@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>org.metaborg.maven.build.parentpoms</artifactId>
 	<packaging>pom</packaging>
-	<description>Maven build for plugin and language parent POMs</description>
+	<description>Maven build for root and java parent POMs</description>
 	<url>https://github.com/metaborg/spoofax-deploy</url>
 
 	<parent>
@@ -15,8 +15,8 @@
 	</parent>
 
 	<modules>
-		<module>../org.metaborg.maven.parent.plugin</module>
-		<module>../org.metaborg.maven.parent.language</module>
+		<module>../org.metaborg.maven.parent</module>
+		<module>../org.metaborg.maven.parent.java</module>
 	</modules>
 
 	<developers>
