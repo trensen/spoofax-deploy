@@ -1,10 +1,13 @@
+from os import path
 from git.repo.base import Repo
 from plumbum import cli
 
 from metaborg.releng.build import BuildPoms, BuildStrategoXt, DownloadStrategoXt, CleanLocalRepo, CreateQualifier, GetBuildOrder, GetBuildCommand, GetAllBuilds
 from metaborg.releng.versions import SetVersions
+from metaborg.releng.release import Release, ResetRelease
 from metaborg.util.git import UpdateAll, MergeAll, TagAll, PushAll, CheckoutAll, CleanAll, ResetAll
 from metaborg.util.prompt import YesNo, YesNoTwice, YesNoTrice
+from metaborg.util.path import CommonPrefix
 
 
 class MetaborgReleng(cli.Application):
@@ -273,3 +276,37 @@ class MetaborgRelengBuild(cli.Application):
     except Exception as detail:
       print(detail)
       return 1
+
+
+@MetaborgReleng.subcommand("release")
+class MetaborgRelengRelease(cli.Application):
+  '''
+  Performs an interactive release
+  '''
+
+  releaseBranch = cli.SwitchAttr(names = ['--rel-branch'], argtype = str, mandatory = True,
+                                 help = "Release branch")
+  developBranch = cli.SwitchAttr(names = ['--dev-branch'], argtype = str, mandatory = True,
+                                 help = "Development branch")
+
+  curReleaseVersion = cli.SwitchAttr(names = ['--cur-rel-ver'], argtype = str, mandatory = True,
+                                     help = "Current Maven version in the release branch")
+  curDevelopVersion = cli.SwitchAttr(names = ['--cur-dev-ver'], argtype = str, mandatory = True,
+                                     help = "Current Maven version in the development branch")
+  nextReleaseVersion = cli.SwitchAttr(names = ['--next-rel-ver'], argtype = str, mandatory = True,
+                                      help = "Next Maven version in the release branch")
+  nextDevelopVersion = cli.SwitchAttr(names = ['--next-dev-ver'], argtype = str, mandatory = True,
+                                      help = "Next Maven version in the development branch")
+
+  def main(self):
+    print('Performing interactive release')
+
+    repo = self.parent.repo
+    repoDir = repo.working_tree_dir
+    scriptDir = path.dirname(path.realpath(__file__))
+    if CommonPrefix([repoDir, scriptDir]) == repoDir:
+      print('Cannot perform release on the same repository this script is contained in, please set another repository using the -r/--repo switch.')
+      return 1
+
+    Release(repo, self.releaseBranch, self.developBranch, self.curReleaseVersion, self.curDevelopVersion, self.nextReleaseVersion, self.nextDevelopVersion)
+    return 0
