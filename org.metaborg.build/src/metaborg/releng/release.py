@@ -10,7 +10,7 @@ from metaborg.releng.versions import SetVersions
 from metaborg.releng.build import BuildAll
 
 
-def Release(repo, releaseBranchName, developBranchName, curReleaseVersion, curDevelopVersion, nextReleaseVersion, nextDevelopVersion):
+def Release(repo, releaseBranchName, developBranchName, curDevelopVersion, nextReleaseVersion, nextDevelopVersion):
   with shelve.open(_ShelveLocation()) as db:
     releaseBranch = repo.heads[releaseBranchName]
     developBranch = repo.heads[developBranchName]
@@ -43,11 +43,13 @@ def Release(repo, releaseBranchName, developBranchName, curReleaseVersion, curDe
     def Step2():
       print('Step 2: merge development branch into release branch')
       try:
-        repo.git.merge(developBranch.name)
+        # Merge using 'theirs' to overwrite any changes in the release branch with changes from the development branch
+        repo.git.merge('-Xtheirs', developBranch.name)
       except git.exc.GitCommandError as detail:
         print('Automatic merge failed')
         print(str(detail))
       try:
+        # Restore .gitmodules because the submodule branches should not be overwritten by the development branch
         repo.git.checkout('--ours', '--', '.gitmodules')
       except git.exc.GitCommandError as detail:
         print("Restoring '.gitmodules' file failed")
@@ -66,6 +68,8 @@ def Release(repo, releaseBranchName, developBranchName, curReleaseVersion, curDe
         subrepo = submodule.module()
         try:
           print('Merging submodule {}'.format(submodule.name))
+          # Merge using 'theirs' to overwrite any changes in the release branch with changes from the development branch
+          # This should change all versions to the current development branch
           subrepo.git.merge('-Xtheirs', submoduleBranches[submodule.name])
         except git.exc.GitCommandError as detail:
           print('Automatic merge failed')
@@ -91,44 +95,58 @@ def Release(repo, releaseBranchName, developBranchName, curReleaseVersion, curDe
     def Step5():
       print('Step 5: perform a test release build')
       try:
-        BuildAll(repo = repo, components = ['all'], release = True)
+        BuildAll(repo = repo, components = ['all'], buildStratego = True, bootstrapStratego = True,
+                 strategoTest = True, release = True)
       except Exception as detail:
         print('Test release build failed, not continuing to the next step')
         print(str(detail))
         return
-      #db['state'] = 6
+      db['state'] = 6
       print('Please check if the built artifact works, then continue')
 
     def Step6():
       print('Step 6: perform release deployment')
-      # perform a release deploy
-      #db['state'] = 7
+      BuildAll(repo = repo, components = ['all'], buildStratego = True, bootstrapStratego = True,
+               strategoTest = True, release = True, deploy = True)
+      db['state'] = 7
       print('Please check if deploying succeeded, and manually deploy extra artifacts, then continue')
 
     def Step7():
-      print('Step 7: push repository and submodules')
-      # push all commits in repo and submodules
-      #db['state'] = 8
+      print('Step 7: tag release submodules and repository')
+      tagName = nextReleaseVersion
+      tagDescription = 'Tag for {} release'.format(nextReleaseVersion)
+      TagAll(repo, tagName, tagDescription)
+      repo.create_tag(path = tagName, message = tagDescription)
+      db['state'] = 8
       Step8()
 
     def Step8():
-      print('Step 8: switch to development branch')
-      # switch to development branch
-      #db['state'] = 9
-      Step9()
+      print('Step 8: push release submodules and repository')
+      PushAll(repo)
+      remote = repo.remote('origin')
+      remote.push()
+      db['state'] = 9
+      Step8()
 
     def Step9():
-      print('Step 9: for each submodule: set version from the current development version to the next development version')
-      # switch to development branch
-      # set version from current development version to next development version
-      #db['state'] = 10
-      print('Please check if versions have been set correctly, then continue')
+      print('Step 9: switch to development branch')
+      developBranch.checkout()
+      db['state'] = 10
+      Step9()
 
     def Step10():
-      print('Step 10: push repository and submodules')
-      # push all commits in submodules
+      print('Step 10: for each submodule: set version from the current development version to the next development version')
+      SetVersions(repo, curDevelopVersion, nextDevelopVersion, False, True)
+      db['state'] = 11
+      print('Please check if versions have been set correctly, then continue')
+
+    def Step11():
+      print('Step 11: push development submodules and repository')
+      PushAll(repo)
+      remote = repo.remote('origin')
+      remote.push()
       print('All done!')
-      #ResetRelease()
+      ResetRelease()
 
     steps = {
        0 :  Step0,
@@ -142,6 +160,7 @@ def Release(repo, releaseBranchName, developBranchName, curReleaseVersion, curDe
        8 :  Step8,
        9 :  Step9,
       10 : Step10,
+      11 : Step11,
     }
 
     steps[state]()
@@ -150,4 +169,4 @@ def ResetRelease():
   os.remove(_ShelveLocation())
 
 def _ShelveLocation():
-  return path.join(path.expanduser('~'), '.spoofax-releng-state')
+  return path.join(path.expanduser('~'), '.spoofax-releng-release-state')

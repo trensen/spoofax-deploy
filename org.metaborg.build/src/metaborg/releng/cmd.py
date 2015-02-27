@@ -12,7 +12,7 @@ from metaborg.util.path import CommonPrefix
 
 class MetaborgReleng(cli.Application):
   PROGNAME = 'releng'
-  VERSION = '1.3.0'
+  VERSION = '1.4.0'
 
   repoDirectory = '.'
   repo = None
@@ -212,6 +212,8 @@ class MetaborgRelengBuild(cli.Application):
 
   buildStratego = cli.Flag(names = ['-s', '--build-stratego'], default = False,
                            help = 'Build StrategoXT')
+  bootstrapStratego = cli.Flag(names = ['-b', '--bootstrap-stratego'], default = False,
+                               help = 'Bootstrap StrategoXT')
   noStrategoTest = cli.Flag(names = ['-t', '--no-stratego-test'], default = False,
                             help = 'Skip StrategoXT tests')
 
@@ -238,9 +240,9 @@ class MetaborgRelengBuild(cli.Application):
     repo = self.parent.repo
 
     try:
-      BuildAll(repo = repo, buildStratego = self.buildStratego, strategoTest = not self.noStrategoTest,
-               clean = not self.noClean, release = self.release, deploy = self.deploy, offline = self.offline,
-               debug = self.debug, quiet = self.quiet)
+      BuildAll(repo = repo, buildStratego = self.buildStratego, bootstrapStratego = self.bootstrapStratego,
+               strategoTest = not self.noStrategoTest, clean = not self.noClean, release = self.release,
+               deploy = self.deploy, offline = self.offline, debug = self.debug, quiet = self.quiet)
       print('All done!')
       return 0
     except Exception as detail:
@@ -259,8 +261,6 @@ class MetaborgRelengRelease(cli.Application):
   developBranch = cli.SwitchAttr(names = ['--dev-branch'], argtype = str, mandatory = True,
                                  help = "Development branch")
 
-  curReleaseVersion = cli.SwitchAttr(names = ['--cur-rel-ver'], argtype = str, mandatory = True,
-                                     help = "Current Maven version in the release branch")
   curDevelopVersion = cli.SwitchAttr(names = ['--cur-dev-ver'], argtype = str, mandatory = True,
                                      help = "Current Maven version in the development branch")
   nextReleaseVersion = cli.SwitchAttr(names = ['--next-rel-ver'], argtype = str, mandatory = True,
@@ -278,5 +278,5 @@ class MetaborgRelengRelease(cli.Application):
       print('Cannot perform release on the same repository this script is contained in, please set another repository using the -r/--repo switch.')
       return 1
 
-    Release(repo, self.releaseBranch, self.developBranch, self.curReleaseVersion, self.curDevelopVersion, self.nextReleaseVersion, self.nextDevelopVersion)
+    Release(repo, self.releaseBranch, self.developBranch, self.curDevelopVersion, self.nextReleaseVersion, self.nextDevelopVersion)
     return 0

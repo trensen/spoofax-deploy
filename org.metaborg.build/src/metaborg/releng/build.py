@@ -6,14 +6,17 @@ from metaborg.util.git import LatestDate
 from metaborg.util.maven import Mvn
 
 
-def BuildAll(repo, components = ['all'], buildStratego = False, strategoTest = True, clean = True, release = False,
-             deploy = False, profiles = [], **mavenArgs):
+def BuildAll(repo, components = ['all'], buildStratego = False, bootstrapStratego = False, strategoTest = True,
+             clean = True, release = False, deploy = False, profiles = [], **mavenArgs):
   basedir = repo.working_tree_dir
   if release:
     profiles.append('release')
     buildStratego = True
+    bootstrapStratego = True
     strategoTest = True
     clean = True
+  if bootstrapStratego:
+    buildStratego = True
 
   if clean:
     CleanLocalRepo()
@@ -23,8 +26,8 @@ def BuildAll(repo, components = ['all'], buildStratego = False, strategoTest = T
 
   if buildStratego:
     print('Building StrategoXT')
-    BuildStrategoXt(basedir = basedir, deploy = deploy, runTests = strategoTest, noSnapshotUpdates = True, clean = clean,
-                    profiles = profiles, **mavenArgs)
+    BuildStrategoXt(basedir = basedir, deploy = deploy, bootstrap = bootstrapStratego, runTests = strategoTest,
+                    noSnapshotUpdates = True, clean = clean, profiles = profiles, **mavenArgs)
   else:
     print('Downloading StrategoXT')
     DownloadStrategoXt(basedir = basedir, profiles = profiles, **mavenArgs)
@@ -53,11 +56,14 @@ def DownloadStrategoXt(basedir, **kwargs):
   pomFile = path.join(basedir, 'strategoxt', 'strategoxt', 'download-pom.xml')
   Mvn(pomFile = pomFile, clean = False, phase = 'dependency:resolve', **kwargs)
 
-def BuildStrategoXt(basedir, deploy, runTests, **kwargs):
+def BuildStrategoXt(basedir, deploy, bootstrap, runTests, **kwargs):
   strategoXtDir = path.join(basedir, 'strategoxt', 'strategoxt')
   phase = 'deploy' if deploy else 'install'
 
-  pomFile = path.join(strategoXtDir, 'build-pom.xml')
+  if bootstrap:
+    pomFile = path.join(strategoXtDir, 'bootstrap-pom.xml')
+  else:
+    pomFile = path.join(strategoXtDir, 'build-pom.xml')
   buildKwargs = dict(kwargs)
   buildKwargs.update({'strategoxt-skip-test': not runTests})
   Mvn(pomFile = pomFile, phase = phase, **buildKwargs)
