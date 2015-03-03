@@ -226,7 +226,7 @@ class MetaborgRelengBuild(cli.Application):
 
   offline = cli.Flag(names = ['-o', '--offline'], default = False,
                      help = "Pass --offline flag to Maven")
-  debug = cli.Flag(names = ['-b', '--debug'], default = False,
+  debug = cli.Flag(names = ['-x', '--debug'], default = False,
                    help = "Pass --debug flag to Maven")
   quiet = cli.Flag(names = ['-q', '--quiet'], default = False,
                    help = "Pass --quiet flag to Maven")
