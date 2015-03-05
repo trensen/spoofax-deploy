@@ -5,7 +5,7 @@ import subprocess
 
 def Mvn(pomFile = 'pom.xml', settingsFile = None, globalSettingsFile = None, noSnapshotUpdates = False,
         forceSnapshotUpdate = False, offline = False, profiles = [], debug = False, quiet = False,
-        extraArgs = None, clean = True, phase = 'verify',
+        extraArgs = None, clean = True, phase = 'verify', resumeFrom = None,
         mavenOpts = '-Xms512m -Xmx1024m -Xss32m -XX:MaxPermSize=512m', **kwargs):
   args = []
   if platform.system() == 'Windows':
@@ -45,6 +45,9 @@ def Mvn(pomFile = 'pom.xml', settingsFile = None, globalSettingsFile = None, noS
     args.append('clean')
   args.append(phase)
 
+  if resumeFrom:
+    args.append('--resume-from {}'.format(resumeFrom))
+
   mvnEnv = os.environ.copy()
   mvnEnv['MAVEN_OPTS'] = mavenOpts
   mvnEnv['CYGWIN'] = 'nodosfilewarning'
@@ -55,7 +58,7 @@ def Mvn(pomFile = 'pom.xml', settingsFile = None, globalSettingsFile = None, noS
     process = subprocess.Popen(cmd, env = mvnEnv, shell = True)
     process.communicate()
   except KeyboardInterrupt:
-    raise Exception("Maven build interrupted") 
+    raise Exception("Maven build interrupted")
 
   if process.returncode != 0:
     raise Exception("Maven build failed")

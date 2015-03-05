@@ -6,8 +6,9 @@ from metaborg.util.git import LatestDate
 from metaborg.util.maven import Mvn
 
 
-def BuildAll(repo, components = ['all'], buildStratego = False, bootstrapStratego = False, strategoTest = True,
-             clean = True, release = False, deploy = False, profiles = [], **mavenArgs):
+def BuildAll(repo, components = ['all'], buildDeps = True, resumeFrom = None, buildStratego = False,
+    bootstrapStratego = False, strategoTest = True, cleanRepo = True, release = False, deploy = False, clean = True,
+    profiles = [], **mavenArgs):
   basedir = repo.working_tree_dir
   if release:
     profiles.append('release')
@@ -18,43 +19,45 @@ def BuildAll(repo, components = ['all'], buildStratego = False, bootstrapStrateg
   if bootstrapStratego:
     buildStratego = True
 
-  if clean:
+  if cleanRepo:
     CleanLocalRepo()
-
-  print('Building parent POMs')
-  BuildPoms(basedir = basedir, deploy = deploy, profiles = profiles, **mavenArgs)
-
-  if buildStratego:
-    print('Building StrategoXT')
-    BuildStrategoXt(basedir = basedir, deploy = deploy, bootstrap = bootstrapStratego, runTests = strategoTest,
-                    noSnapshotUpdates = True, clean = clean, profiles = profiles, **mavenArgs)
-  else:
-    print('Downloading StrategoXT')
-    DownloadStrategoXt(basedir = basedir, profiles = profiles, **mavenArgs)
 
   profiles.append('!add-metaborg-repositories')
 
   qualifier = CreateQualifier(repo)
   print('Using Eclipse qualifier {}.'.format(qualifier))
 
-  buildOrder = GetBuildOrder(components)
+  if buildDeps:
+    buildOrder = GetBuildOrder(components)
+  else:
+    buildOrder = components
+
   print('Building component(s): {}'.format(', '.join(buildOrder)))
   for build in buildOrder:
     print('Building: {}'.format(build))
     cmd = GetBuildCommand(build)
     cmd(basedir = basedir, deploy = deploy, qualifier = qualifier, noSnapshotUpdates = True, clean = clean,
-        profiles = profiles, **mavenArgs)
+        profiles = profiles, buildStratego = buildStratego, bootstrapStratego = bootstrapStratego,
+        strategoTest = strategoTest, resumeFrom = resumeFrom, **mavenArgs)
 
 
-def BuildPoms(basedir, deploy, **kwargs):
+def BuildPoms(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, **kwargs):
   phase = 'deploy' if deploy else 'install'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.parentpoms', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, **kwargs)
 
 
-def DownloadStrategoXt(basedir, **kwargs):
+def BuildOrDownloadStrategoXt(basedir, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
+  if buildStratego:
+    BuildStrategoXt(basedir = basedir, deploy = deploy, bootstrap = bootstrapStratego, runTests = strategoTest, **kwargs)
+  else:
+    DownloadStrategoXt(basedir, **kwargs)
+
+def DownloadStrategoXt(basedir, clean, profiles, **kwargs):
+  if '!add-metaborg-repositories' in profiles:
+    profiles.remove('!add-metaborg-repositories')
   pomFile = path.join(basedir, 'strategoxt', 'strategoxt', 'download-pom.xml')
-  Mvn(pomFile = pomFile, clean = False, phase = 'dependency:resolve', **kwargs)
+  Mvn(pomFile = pomFile, clean = False, profiles = profiles, phase = 'dependency:resolve', **kwargs)
 
 def BuildStrategoXt(basedir, deploy, bootstrap, runTests, **kwargs):
   strategoXtDir = path.join(basedir, 'strategoxt', 'strategoxt')
@@ -74,28 +77,28 @@ def BuildStrategoXt(basedir, deploy, bootstrap, runTests, **kwargs):
   Mvn(pomFile = parent_pom_file, phase = phase, **buildKwargs)
 
 
-def BuildJava(basedir, qualifier, deploy, **kwargs):
+def BuildJava(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
   phase = 'deploy' if deploy else 'install'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.java', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
 
-def BuildEclipse(basedir, qualifier, deploy, **kwargs):
+def BuildEclipse(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
   phase = 'deploy' if deploy else 'install'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.eclipse', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
 
-def BuildPluginPoms(basedir, deploy, qualifier = None, **kwargs):
+def BuildPluginPoms(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, **kwargs):
   phase = 'deploy' if deploy else 'install'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.parentpoms.plugin', 'pom.xml')
   kwargs.update({'skip-language-build' : True})
   Mvn(pomFile = pomFile, phase = phase, **kwargs)
 
-def BuildSpoofaxLibs(basedir, deploy, qualifier = None, **kwargs):
+def BuildSpoofaxLibs(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, **kwargs):
   phase = 'deploy' if deploy else 'verify'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.libs', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, **kwargs)
 
-def BuildTestRunner(basedir, deploy, qualifier = None, **kwargs):
+def BuildTestRunner(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, **kwargs):
   phase = 'deploy' if deploy else 'verify'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.testrunner', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, **kwargs)
@@ -103,13 +106,17 @@ def BuildTestRunner(basedir, deploy, qualifier = None, **kwargs):
 
 '''Build dependencies must be topologically ordered, otherwise the algorithm will not work'''
 _buildDependencies = OrderedDict([
-  ('java'        , []),
-  ('eclipse'     , ['java']),
-  ('pluginpoms'  , ['java', 'eclipse']),
-  ('spoofax-libs', ['java']),
-  ('test-runner' , ['java']),
+  ('poms'        , []),
+  ('strategoxt'  , ['poms']),
+  ('java'        , ['poms', 'strategoxt']),
+  ('eclipse'     , ['poms', 'strategoxt', 'java']),
+  ('pluginpoms'  , ['poms', 'strategoxt', 'java', 'eclipse']),
+  ('spoofax-libs', ['poms', 'strategoxt', 'java']),
+  ('test-runner' , ['poms', 'strategoxt', 'java']),
 ])
 _buildCommands = {
+  'poms'         : BuildPoms,
+  'strategoxt'   : BuildOrDownloadStrategoXt,
   'java'         : BuildJava,
   'eclipse'      : BuildEclipse,
   'pluginpoms'   : BuildPluginPoms,
@@ -146,6 +153,11 @@ def CreateQualifier(repo):
   return qualifier
 
 def CleanLocalRepo():
+  print('Cleaning artifacts from local repository')
   localRepo = path.join(path.expanduser('~'), '.m2', 'repository')
-  shutil.rmtree(path.join(localRepo, 'org', 'metaborg'), ignore_errors = True)
-  shutil.rmtree(path.join(localRepo, '.cache', 'tycho'), ignore_errors = True)
+  metaborgPath = path.join(localRepo, 'org', 'metaborg')
+  print('Deleting {}'.format(metaborgPath))
+  shutil.rmtree(metaborgPath, ignore_errors = True)
+  cachePath = path.join(localRepo, '.cache', 'tycho')
+  print('Deleting {}'.format(cachePath))
+  shutil.rmtree(cachePath, ignore_errors = True)
