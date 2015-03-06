@@ -2,7 +2,7 @@
 <feature
       id="org.strategoxt.imp.meta"
       label="Spoofax Core"
-      version="1.4.0.qualifier"
+      version="1.5.0.qualifier"
       plugin="org.strategoxt.imp.runtime">
 
    <description url="http://metaborg.org/spoofax/">
@@ -28,7 +28,7 @@ Most Spoofax/IMP code is licensed under the GNU Lesser General Public License (L
 
    <includes
          id="org.strategoxt.imp"
-         version="1.4.0.qualifier"
+         version="1.5.0.qualifier"
          search-location="both"/>
 
    <requires>
@@ -73,191 +73,191 @@ Most Spoofax/IMP code is licensed under the GNU Lesser General Public License (L
          id="org.strategoxt.imp.editors.sdf"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"/>
+         version="1.5.0.qualifier"/>
 
    <plugin
          id="org.strategoxt.imp.editors.template"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"/>
+         version="1.5.0.qualifier"/>
 
    <plugin
          id="org.strategoxt.imp.editors.stratego"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"/>
+         version="1.5.0.qualifier"/>
 
    <plugin
          id="org.strategoxt.imp.editors.editorservice"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"/>
+         version="1.5.0.qualifier"/>
 
    <plugin
          id="org.strategoxt.imp.editors.aterm"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"/>
+         version="1.5.0.qualifier"/>
 
    <plugin
          id="org.strategoxt.imp.editors.aster"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"
+         version="1.5.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.strategoxt.imp.editors.pp"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"
+         version="1.5.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.strategoxt.imp.editors.rtg"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"
+         version="1.5.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.metaborg.meta.lang.analysis"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"/>
+         version="1.5.0.qualifier"/>
 
    <plugin
          id="org.metaborg.meta.lang.nabl"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"/>
+         version="1.5.0.qualifier"/>
 
    <plugin
          id="org.metaborg.meta.lang.ts"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"/>
+         version="1.5.0.qualifier"/>
 
    <plugin
          id="dynsem"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"/>
+         version="1.5.0.qualifier"/>
 
    <plugin
          id="org.strategoxt.imp.testing"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"/>
+         version="1.5.0.qualifier"/>
 
    <plugin
          id="org.strategoxt.imp.testing.ui"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"/>
+         version="1.5.0.qualifier"/>
 
    <plugin
          id="com.ibm.wala.shrike"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"
+         version="1.5.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.java.hosted"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"
+         version="1.5.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.metatooling"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"
+         version="1.5.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.preferences"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"
+         version="1.5.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.prefspecs"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"
+         version="1.5.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.presentation"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"
+         version="1.5.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.lpg"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"
+         version="1.5.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.smapi"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"
+         version="1.5.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.smapifier"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"
+         version="1.5.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.lpg.ide"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"
+         version="1.5.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.eclipse.imp.xform"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"
+         version="1.5.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.metaborg.spoofax.core"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"
+         version="1.5.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.spoofax.aterm"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"/>
+         version="1.5.0.qualifier"/>
 
    <plugin
          id="org.strategoxt.imp.debug.ui"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"
+         version="1.5.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.strategoxt.imp.metatooling"
          download-size="0"
          install-size="0"
-         version="1.4.0.qualifier"
+         version="1.5.0.qualifier"
          unpack="false"/>
 
 </feature>
