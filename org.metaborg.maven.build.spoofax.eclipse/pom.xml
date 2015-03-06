@@ -10,7 +10,7 @@
 	<parent>
 		<groupId>org.metaborg</groupId>
 		<artifactId>org.metaborg.maven.parent</artifactId>
-		<version>1.3.1</version>
+		<version>1.4.0-SNAPSHOT</version>
 		<relativePath>../org.metaborg.maven.parent</relativePath>
 	</parent>
 
@@ -38,7 +38,7 @@
 		<!-- Modelware -->
 		<module>../../modelware/org.spoofax.modelware.emf</module>
 		<module>../../modelware/org.spoofax.modelware.gmf</module>
-		<module>../../modelware/patched-plugins/ca.ecliptical.gmf.ant</module>
+		<module>../../modelware/org.spoofax.modelware.gmf.codegenextension</module>
 
 		<!-- Meta languages -->
 		<module>../../mb-rep/org.strategoxt.imp.editors.aterm</module>
@@ -62,8 +62,12 @@
 
 		<!-- Deployment -->
 		<module>../org.spoofax.modelware.emf.feature</module>
+                <module>../org.spoofax.modelware.emf.meta.feature</module>
 		<module>../org.spoofax.modelware.gmf.feature</module>
+                <module>../org.spoofax.modelware.gmf.meta.feature</module>
+                <module>../org.spoofax.modelware.gmf.headless.feature</module>
 		<module>../org.strategoxt.imp.feature</module>
+                <module>../org.strategoxt.imp.meta.feature</module>
 		<module>../org.strategoxt.imp.updatesite</module>
 
 		<!-- External dependencies -->

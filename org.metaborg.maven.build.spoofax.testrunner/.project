@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>org.metaborg.maven.build.spoofax.benchmark</name>
+	<name>org.metaborg.maven.build.spoofax.testrunner</name>
 	<comment></comment>
 	<projects>
 	</projects>

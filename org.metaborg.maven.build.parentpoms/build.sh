@@ -34,7 +34,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # Run Maven build
 mvn \
   -f "$DIR/pom.xml" \
-  -Dskip-language-build=true \
   clean \
   $MAVEN_PHASE \
   $MAVEN_ARGS
