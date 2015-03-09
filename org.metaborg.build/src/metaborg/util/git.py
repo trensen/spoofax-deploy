@@ -111,12 +111,12 @@ def TagAll(repo, tagName, tagDescription):
     Tag(submodule, tagName, tagDescription)
 
 
-def Push(submodule):
+def Push(submodule, **kwargs):
   print('Pushing {}'.format(submodule.name))
   subrepo = submodule.module()
   remote = subrepo.remote('origin')
-  remote.push()
+  remote.push(**kwargs)
 
-def PushAll(repo):
+def PushAll(repo, **kwargs):
   for submodule in repo.submodules:
-    Push(submodule)
+    Push(submodule, **kwargs)

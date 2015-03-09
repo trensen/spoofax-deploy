@@ -59,7 +59,10 @@ def DownloadStrategoXt(basedir, clean, profiles, **kwargs):
   pomFile = path.join(basedir, 'strategoxt', 'strategoxt', 'download-pom.xml')
   Mvn(pomFile = pomFile, clean = False, profiles = profiles, phase = 'dependency:resolve', **kwargs)
 
-def BuildStrategoXt(basedir, deploy, bootstrap, runTests, **kwargs):
+def BuildStrategoXt(basedir, profiles, deploy, bootstrap, runTests, **kwargs):
+  if '!add-metaborg-repositories' in profiles:
+    profiles.remove('!add-metaborg-repositories')
+
   strategoXtDir = path.join(basedir, 'strategoxt', 'strategoxt')
   phase = 'deploy' if deploy else 'install'
 
@@ -69,12 +72,12 @@ def BuildStrategoXt(basedir, deploy, bootstrap, runTests, **kwargs):
     pomFile = path.join(strategoXtDir, 'build-pom.xml')
   buildKwargs = dict(kwargs)
   buildKwargs.update({'strategoxt-skip-test': not runTests})
-  Mvn(pomFile = pomFile, phase = phase, **buildKwargs)
+  Mvn(pomFile = pomFile, phase = phase, profiles = profiles, **buildKwargs)
 
   parent_pom_file = path.join(strategoXtDir, 'buildpoms', 'pom.xml')
   buildKwargs = dict(kwargs)
   buildKwargs.update({'strategoxt-skip-build': True, 'strategoxt-skip-assembly' : True})
-  Mvn(pomFile = parent_pom_file, phase = phase, **buildKwargs)
+  Mvn(pomFile = parent_pom_file, phase = phase, profiles = profiles, **buildKwargs)
 
 
 def BuildJava(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
