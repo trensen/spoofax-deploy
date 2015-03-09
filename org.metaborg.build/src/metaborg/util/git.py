@@ -120,3 +120,16 @@ def Push(submodule, **kwargs):
 def PushAll(repo, **kwargs):
   for submodule in repo.submodules:
     Push(submodule, **kwargs)
+
+def Track(submodule):
+  subrepo = submodule.module()
+  head = subrepo.head
+  remote = subrepo.remote('origin')
+  localBranchName = head.reference.name
+  remoteBranchName = '{}/{}'.format(remote.name, localBranchName)
+  print('Setting tracking branch for {} to {}'.format(localBranchName, remoteBranchName))
+  subrepo.git.branch('-u', remoteBranchName, localBranchName)
+
+def TrackAll(repo):
+  for submodule in repo.submodules:
+    Track(submodule)
