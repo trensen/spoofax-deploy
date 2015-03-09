@@ -5,7 +5,7 @@ from plumbum import cli
 from metaborg.releng.build import BuildAll, GetAllBuilds
 from metaborg.releng.versions import SetVersions
 from metaborg.releng.release import Release, ResetRelease
-from metaborg.util.git import UpdateAll, MergeAll, TagAll, PushAll, CheckoutAll, CleanAll, ResetAll
+from metaborg.util.git import UpdateAll, TrackAll, MergeAll, TagAll, PushAll, CheckoutAll, CleanAll, ResetAll
 from metaborg.util.prompt import YesNo, YesNoTwice, YesNoTrice
 from metaborg.util.path import CommonPrefix
 
@@ -45,6 +45,18 @@ class MetaborgRelengUpdate(cli.Application):
   def main(self):
     print('Updating all submodules')
     UpdateAll(self.parent.repo)
+    return 0
+
+
+@MetaborgReleng.subcommand("track")
+class MetaborgRelengTrack(cli.Application):
+  '''
+  Sets tracking branch to submodule remote branch for each submodule
+  '''
+
+  def main(self):
+    print('Setting tracking branch for each submodule')
+    TrackAll(self.parent.repo)
     return 0
 
 

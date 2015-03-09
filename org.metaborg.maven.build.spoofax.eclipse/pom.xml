@@ -13,7 +13,7 @@
   <parent>
     <groupId>org.metaborg</groupId>
     <artifactId>org.metaborg.maven.parent</artifactId>
-    <version>1.4.0-SNAPSHOT</version>
+    <version>1.5.0-SNAPSHOT</version>
     <relativePath>../org.metaborg.maven.parent</relativePath>
   </parent>
 
@@ -38,7 +38,7 @@
     <!-- <module>../../box/org.strategoxt.imp.editors.pp</module> -->
     <!-- <module>../../rtg/org.strategoxt.imp.editors.rtg</module> -->
     <!-- <module>../../aster/org.strategoxt.imp.editors.aster</module> -->
-    
+
     <!-- Deployment -->
     <module>../../spoofax-deploy/org.metaborg.spoofax.eclipse.feature</module>
     <module>../../spoofax-deploy/org.metaborg.spoofax.eclipse.meta.feature</module>
