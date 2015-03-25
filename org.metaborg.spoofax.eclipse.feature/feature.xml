@@ -81,11 +81,6 @@
     version="1.5.0.qualifier"
   />
   <plugin
-    id="org.spoofax.interpreter.library.eclipse"
-    version="1.5.0.qualifier"
-    unpack="false"
-  />
-  <plugin
     id="org.spoofax.interpreter.library.java"
     version="1.5.0.qualifier"
     unpack="false"
