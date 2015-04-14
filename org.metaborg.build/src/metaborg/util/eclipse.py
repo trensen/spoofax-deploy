@@ -6,6 +6,7 @@ import urllib.request
 import urllib.parse
 import shutil
 import zipfile
+import re
 
 
 def EclipseGen(destination, eclipseOS = None, eclipseWS = None, eclipseArch = None, repositories = [], installUnits = []):
@@ -52,6 +53,62 @@ def EclipseGen(destination, eclipseOS = None, eclipseWS = None, eclipseArch = No
 
   if process.returncode != 0:
     raise Exception("Eclipse generation failed")
+
+
+def EclipseIniFix(destination, eclipseOS, stackSize = '16M', heapSize = '1G', maxHeapSize = '1G', maxPermGen = '256M',
+    requiredJavaVersion = '1.7', server = True):
+  iniLocation = _EclipseIniLocation(destination, eclipseOS)
+
+  # Python converts all line endings to '\n' when reading a file in text mode like this.
+  with open(iniLocation, "r") as iniFile:
+    iniText = iniFile.read()
+
+  iniText = re.sub(r'--launcher\.XXMaxPermSize\n[0-9]+[g|G|m|M|k|K]', '', iniText, flags = re.MULTILINE)
+  iniText = re.sub(r'-showsplash\norg.eclipse.platform', '', iniText, flags = re.MULTILINE)
+
+  launcherPattern = r'--launcher\.defaultAction\nopenFile'
+  launcherMatches = len(re.findall(launcherPattern, iniText, flags = re.MULTILINE))
+  if launcherMatches > 1:
+    iniText = re.sub(launcherPattern, '', iniText, count = launcherMatches - 1, flags = re.MULTILINE)
+
+  iniText = re.sub(r'-X(ms|ss|mx)[0-9]+[g|G|m|M|k|K]', '', iniText)
+  iniText = re.sub(r'-XX:MaxPermSize=[0-9]+[g|G|m|M|k|K]', '', iniText)
+  iniText = re.sub(r'-Dorg\.eclipse\.swt\.internal\.carbon\.smallFonts', '', iniText)
+  iniText = re.sub(r'-XstartOnFirstThread', '', iniText)
+  iniText = re.sub(r'-Dosgi.requiredJavaVersion=[0-9]\.[0-9]', '', iniText)
+  iniText = re.sub(r'-server', '', iniText)
+
+  iniText = '\n'.join([line for line in iniText.split('\n') if line.strip()]) + '\n'
+
+  if eclipseOS == 'macosx':
+    iniText += '-XstartOnFirstThread\n'
+
+  if stackSize:
+    iniText += '-Xss{}\n'.format(stackSize)
+  if heapSize:
+    iniText += '-Xms{}\n'.format(heapSize)
+  if maxHeapSize:
+    iniText += '-Xmx{}\n'.format(maxHeapSize)
+  if maxPermGen:
+    iniText += '-XX:MaxPermSize={}\n'.format(maxPermGen)
+
+  if requiredJavaVersion:
+    iniText += '-Dosgi.requiredJavaVersion={}\n'.format(requiredJavaVersion)
+
+  if server:
+    iniText += '-server\n'
+
+  print('Setting contents of {} to:\n{}'.format(iniLocation, iniText))
+  with open(iniLocation, "w") as iniFile:
+    iniFile.write(iniText)
+
+def _EclipseIniLocation(destination, eclipseOS):
+    if eclipseOS == 'macosx':
+      return '{}/Eclipse.app/Contents/MacOS/eclipse.ini'.format(destination)
+    elif eclipseOS == 'linux':
+      return '{}/eclipse.ini'.format(destination)
+    elif eclipseOS == 'win32':
+      return '{}/eclipse.ini'.format(destination)
 
 
 def CurrentEclipseOS():
@@ -114,6 +171,6 @@ def _LocationToURI(location):
 
 if __name__ == "__main__":
   try:
-    GenerateDevSpoofaxEclipse('/Users/gohla/spoofax/eclipse/generated/')
+    EclipseIniFix('/Users/gohla/spoofax/eclipse/generated', 'macosx')
   except KeyboardInterrupt as detail:
     print(detail)
