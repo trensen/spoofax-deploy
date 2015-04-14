@@ -308,9 +308,9 @@ class MetaborgRelengGenEclipse(cli.Application):
   Generate a plain Eclipse instance
   '''
 
-  destination =    cli.SwitchAttr(names = ['-d', '--destination'],  argtype = str, mandatory = True,                             help = 'Path to generate the Eclipse instance at')
-  eclipsePackage = cli.SwitchAttr(names = ['--eclipse-package'],    argtype = str, mandatory = False, default = _eclipsePackage, help = 'Base Eclipse package to install')
-  eclipseRepo =    cli.SwitchAttr(names = ['--eclipse-repository'], argtype = str, mandatory = False, default = _eclipseRepo,    help = 'Eclipse repository used to install the base Eclipse package')
+  destination =    cli.SwitchAttr(names = ['-d', '--destination'], argtype = str, mandatory = True,                             help = 'Path to generate the Eclipse instance at')
+  eclipsePackage = cli.SwitchAttr(names = ['--eclipse-package'],   argtype = str, mandatory = False, default = _eclipsePackage, help = 'Base Eclipse package to install')
+  eclipseRepo =    cli.SwitchAttr(names = ['--eclipse-repo'],      argtype = str, mandatory = False, default = _eclipseRepo,    help = 'Eclipse repository used to install the base Eclipse package')
 
   def main(self):
     print('Generating plain Eclipse instance')
@@ -325,19 +325,27 @@ class MetaborgRelengGenSpoofax(cli.Application):
   Generate an Eclipse instance for Spoofax users
   '''
 
-  destination =    cli.SwitchAttr(names = ['-d', '--destination'],  argtype = str, mandatory = True,                             help = 'Path to generate the Eclipse instance at')
-  eclipsePackage = cli.SwitchAttr(names = ['--eclipse-package'],    argtype = str, mandatory = False, default = _eclipsePackage, help = 'Base Eclipse package to install')
-  eclipseRepo =    cli.SwitchAttr(names = ['--eclipse-repository'], argtype = str, mandatory = False, default = _eclipseRepo,    help = 'Eclipse repository used to install the base Eclipse package')
-  spoofaxRepo =    cli.SwitchAttr(names = ['--spoofax-repository'], argtype = str, mandatory = False, default = _spoofaxRepo,    help = 'Spoofax repository used to install Spoofax plugins')
+  destination =    cli.SwitchAttr(names = ['-d', '--destination'], argtype = str, mandatory = True,                             help = 'Path to generate the Eclipse instance at')
+  eclipsePackage = cli.SwitchAttr(names = ['--eclipse-package'],   argtype = str, mandatory = False, default = _eclipsePackage, help = 'Base Eclipse package to install')
+  eclipseRepo =    cli.SwitchAttr(names = ['--eclipse-repo'],      argtype = str, mandatory = False, default = _eclipseRepo,    help = 'Eclipse repository used to install the base Eclipse package')
+  spoofaxRepo =    cli.SwitchAttr(names = ['--spoofax-repo'],      argtype = str, mandatory = False, default = _spoofaxRepo,    help = 'Spoofax repository used to install Spoofax plugins')
 
-  noMeta =      cli.Flag(names = ['-m', '--nometa'],      default = False, help = "Don't install Spoofax meta-plugins such as the Stratego compiler and editor. Results in a smaller Eclipse instance, but it can only be used to run Spoofax languages, not develop them.")
-  noModelware = cli.Flag(names = ['-w', '--nomodelware'], default = False, help = "Don't install Spoofax modelware plugins. Results in a smaller Eclipse instance, but modelware components cannot be used.")
+  noMeta =       cli.Flag(names = ['-m', '--nometa'],             default = False, help = "Don't install Spoofax meta-plugins such as the Stratego compiler and editor. Results in a smaller Eclipse instance, but it can only be used to run Spoofax languages, not develop them.")
+  noModelware =  cli.Flag(names = ['-w', '--nomodelware'],        default = False, help = "Don't install Spoofax modelware plugins. Results in a smaller Eclipse instance, but modelware components cannot be used.")
+  localSpoofax = cli.Flag(names = ['-l', '--local-spoofax-repo'], default = False, help = "Use locally built Spoofax repository at spoofax-deploy/org.strategoxt.imp.updatesite/target/site")
 
   def main(self):
     print('Generating Eclipse instance for Spoofax users')
 
+    if self.localSpoofax:
+      repo = self.parent.repo
+      repoDir = repo.working_tree_dir
+      spoofaxRepo = '{}/{}'.format(repoDir, 'spoofax-deploy/org.strategoxt.imp.updatesite/target/site')
+    else:
+      spoofaxRepo = self.spoofaxRepo
+
     GenerateSpoofaxEclipse(self.destination, eclipsePackage = self.eclipsePackage, eclipseRepo = self.eclipseRepo,
-                           spoofaxRepo = self.spoofaxRepo, installMeta = not self.noMeta,
+                           spoofaxRepo = spoofaxRepo, installMeta = not self.noMeta,
                            installModelware = not self.noModelware)
     return 0
 
@@ -348,14 +356,23 @@ class MetaborgRelengGenDevSpoofax(cli.Application):
   Generate an Eclipse instance for Spoofax developers
   '''
 
-  destination =    cli.SwitchAttr(names = ['-d', '--destination'],  argtype = str, mandatory = True,                             help = 'Path to generate the Eclipse instance at')
-  eclipsePackage = cli.SwitchAttr(names = ['--eclipse-package'],    argtype = str, mandatory = False, default = _eclipsePackage, help = 'Base Eclipse package to install')
-  eclipseRepo =    cli.SwitchAttr(names = ['--eclipse-repository'], argtype = str, mandatory = False, default = _eclipseRepo,    help = 'Eclipse repository used to install the base Eclipse package')
-  spoofaxRepo =    cli.SwitchAttr(names = ['--spoofax-repository'], argtype = str, mandatory = False, default = _spoofaxRepo,    help = 'Spoofax repository used to install Spoofax plugins')
+  destination =    cli.SwitchAttr(names = ['-d', '--destination'], argtype = str, mandatory = True,                             help = 'Path to generate the Eclipse instance at')
+  eclipsePackage = cli.SwitchAttr(names = ['--eclipse-package'],   argtype = str, mandatory = False, default = _eclipsePackage, help = 'Base Eclipse package to install')
+  eclipseRepo =    cli.SwitchAttr(names = ['--eclipse-repo'],      argtype = str, mandatory = False, default = _eclipseRepo,    help = 'Eclipse repository used to install the base Eclipse package')
+  spoofaxRepo =    cli.SwitchAttr(names = ['--spoofax-repo'],      argtype = str, mandatory = False, default = _spoofaxRepo,    help = 'Spoofax repository used to install Spoofax plugins')
+
+  localSpoofax = cli.Flag(names = ['-l', '--local-spoofax-repo'], default = False, help = "Use locally built Spoofax repository at spoofax-deploy/org.strategoxt.imp.updatesite/target/site")
 
   def main(self):
     print('Generating Eclipse instance for Spoofax developers')
 
+    if self.localSpoofax:
+      repo = self.parent.repo
+      repoDir = repo.working_tree_dir
+      spoofaxRepo = '{}/{}'.format(repoDir, 'spoofax-deploy/org.strategoxt.imp.updatesite/target/site')
+    else:
+      spoofaxRepo = self.spoofaxRepo
+
     GenerateDevSpoofaxEclipse(self.destination, eclipsePackage = self.eclipsePackage, eclipseRepo = self.eclipseRepo,
-                              spoofaxRepo = self.spoofaxRepo)
+                              spoofaxRepo = spoofaxRepo)
     return 0
