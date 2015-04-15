@@ -3,7 +3,7 @@ from os import path
 import shutil
 
 from metaborg.util.git import LatestDate
-from metaborg.util.maven import Mvn
+from metaborg.util.maven import Mvn, MvnSetingsGen, MvnUserSettingsLocation
 
 
 def BuildAll(repo, components = ['all'], buildDeps = True, resumeFrom = None, buildStratego = False,
@@ -164,3 +164,26 @@ def CleanLocalRepo():
   cachePath = path.join(localRepo, '.cache', 'tycho')
   print('Deleting {}'.format(cachePath))
   shutil.rmtree(cachePath, ignore_errors = True)
+
+
+_mvnSettingsLocation = MvnUserSettingsLocation()
+_metaborgReleases = 'http://download.spoofax.org/update/artifacts/releases/'
+_metaborgSnapshots = None
+_spoofaxUpdateSite = 'http://download.spoofax.org/update/nightly/'
+_centralMirror = None
+
+def GenerateMavenSettings(location = _mvnSettingsLocation, metaborgReleases = _metaborgReleases,
+    metaborgSnapshots = _metaborgSnapshots, spoofaxUpdateSite = _spoofaxUpdateSite, centralMirror = _centralMirror):
+  repositories = []
+  if metaborgReleases:
+    repositories.append(('add-metaborg-repositories', 'metaborg-nexus-releases', metaborgReleases, None, True, False, True))
+  if metaborgSnapshots:
+    repositories.append(('add-metaborg-repositories', 'metaborg-nexus-snapshots', metaborgSnapshots, None, True, False, True))
+  if spoofaxUpdateSite:
+    repositories.append(('add-metaborg-repositories', 'spoofax-nightly', spoofaxUpdateSite, 'p2', False, False, False))
+
+  mirrors = []
+  if centralMirror:
+    mirrors.append(('metaborg-nexus-central-mirror', centralMirror, 'central'))
+
+  MvnSetingsGen(location = location, repositories = repositories, mirrors = mirrors)

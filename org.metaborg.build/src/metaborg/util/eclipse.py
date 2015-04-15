@@ -167,10 +167,3 @@ def _LocationToURI(location):
     return location
   else:
     return urllib.parse.urljoin('file:', urllib.request.pathname2url(location))
-
-
-if __name__ == "__main__":
-  try:
-    EclipseIniFix('/Users/gohla/spoofax/eclipse/generated', 'macosx')
-  except KeyboardInterrupt as detail:
-    print(detail)

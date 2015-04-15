@@ -2,7 +2,7 @@ from os import path
 from git.repo.base import Repo
 from plumbum import cli
 
-from metaborg.releng.build import BuildAll, GetAllBuilds
+from metaborg.releng.build import BuildAll, GetAllBuilds, GenerateMavenSettings, _mvnSettingsLocation, _metaborgReleases, _metaborgSnapshots, _spoofaxUpdateSite, _centralMirror
 from metaborg.releng.versions import SetVersions
 from metaborg.releng.release import Release, ResetRelease
 from metaborg.releng.eclipse import GeneratePlainEclipse, GenerateSpoofaxEclipse, GenerateDevSpoofaxEclipse, _eclipseRepo, _eclipsePackage, _spoofaxRepo
@@ -375,4 +375,26 @@ class MetaborgRelengGenDevSpoofax(cli.Application):
 
     GenerateDevSpoofaxEclipse(self.destination, eclipsePackage = self.eclipsePackage, eclipseRepo = self.eclipseRepo,
                               spoofaxRepo = spoofaxRepo)
+    return 0
+
+
+@MetaborgReleng.subcommand("gen-mvn-settings")
+class MetaborgRelengGenMvnSettings(cli.Application):
+  '''
+  Generate a Maven settings file with MetaBorg repositories and a Spoofax update site
+  '''
+
+  destination = cli.SwitchAttr(names = ['-d', '--destination'], argtype = str, mandatory = False, default = _mvnSettingsLocation, help = 'Path to generate Maven settings file at')
+  metaborgReleases = cli.SwitchAttr(names = ['-r', '--metaborg-releases'], argtype = str, mandatory = False, default = _metaborgReleases, help = 'Maven repository for MetaBorg releases')
+  metaborgSnapshots = cli.SwitchAttr(names = ['-s', '--metaborg-snapshots'], argtype = str, mandatory = False, default = _metaborgSnapshots, help = 'Maven repository for MetaBorg snapshots')
+  spoofaxUpdateSite = cli.SwitchAttr(names = ['-u', '--spoofax-update-site'], argtype = str, mandatory = False, default = _spoofaxUpdateSite, help = 'Eclipse update site for Spoofax plugins')
+  centralMirror = cli.SwitchAttr(names = ['-m', '--central-mirror'], argtype = str, mandatory = False, default = _centralMirror, help = 'Maven repository for mirroring Maven central')
+
+  def main(self):
+    print('Generating Maven settings file')
+
+    GenerateMavenSettings(location = self.destination, metaborgReleases = self.metaborgReleases,
+      metaborgSnapshots = self.metaborgSnapshots, spoofaxUpdateSite = self.spoofaxUpdateSite,
+      centralMirror = self.centralMirror)
+
     return 0
