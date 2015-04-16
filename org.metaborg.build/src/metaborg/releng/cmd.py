@@ -223,32 +223,20 @@ class MetaborgRelengBuild(cli.Application):
   Builds one or more components of spoofax-releng
   '''
 
-  buildStratego = cli.Flag(names = ['-s', '--build-stratego'], default = False,
-                           help = 'Build StrategoXT instead of downloading it')
-  bootstrapStratego = cli.Flag(names = ['-b', '--bootstrap-stratego'], default = False,
-                               help = 'Bootstrap StrategoXT instead of building it')
-  noStrategoTest = cli.Flag(names = ['-t', '--no-stratego-test'], default = False,
-                            help = 'Skip StrategoXT tests')
+  buildStratego = cli.Flag(    names = ['-s', '--build-stratego'], default = False, help = 'Build StrategoXT instead of downloading it')
+  bootstrapStratego = cli.Flag(names = ['-b', '--bootstrap-stratego'], default = False, help = 'Bootstrap StrategoXT instead of building it')
+  noStrategoTest = cli.Flag(   names = ['-t', '--no-stratego-test'], default = False, help = 'Skip StrategoXT tests')
 
-  noCleanRepo = cli.Flag(names = ['-p', '--no-clean-repo'], default = False,
-                         help = 'Do not clean local repository before building')
-  noDeps = cli.Flag(names = ['-e', '--no-deps'], default = False, requires = ['--no-clean-repo'],
-                    help = 'Do not build dependencies, just build given components')
-  resumeFrom = cli.SwitchAttr(names = ['-f', '--resume-from'], argtype = str, default = None,
-                              requires = ['--no-clean-repo', '--no-deps'], help = 'Resume build from given artifact')
-  deploy = cli.Flag(names = ['-d', '--deploy'], default = False,
-                    help = 'Deploy after building')
-  release = cli.Flag(names = ['-r', '--release'], default = False,
-                     help = 'Perform a release build. Checks whether all dependencies are release versions, fails the build if not')
+  cleanRepo = cli.Flag(        names = ['-c', '--clean-repo'], default = False, help = 'Clean MetaBorg artifacts from the local repository before building')
+  noDeps = cli.Flag(           names = ['-e', '--no-deps'], default = False, excludes = ['--clean-repo'], help = 'Do not build dependencies, just build given components')
+  resumeFrom = cli.SwitchAttr( names = ['-f', '--resume-from'], argtype = str, default = None, excludes = ['--clean-repo'], requires = ['--no-deps'], help = 'Resume build from given artifact')
+  deploy = cli.Flag(           names = ['-d', '--deploy'], default = False, help = 'Deploy after building')
+  release = cli.Flag(          names = ['-r', '--release'], default = False, help = 'Perform a release build. Checks whether all dependencies are release versions, fails the build if not')
 
-  noClean = cli.Flag(names = ['-u', '--no-clean'], default = False,
-                     help = 'Do not run the clean phase in Maven builds')
-  offline = cli.Flag(names = ['-o', '--offline'], default = False,
-                     help = "Pass --offline flag to Maven")
-  debug = cli.Flag(names = ['-x', '--debug'], default = False, excludes = ['--quiet'],
-                   help = "Pass --debug flag to Maven")
-  quiet = cli.Flag(names = ['-q', '--quiet'], default = False, excludes = ['--debug'],
-                   help = "Pass --quiet flag to Maven")
+  noClean = cli.Flag(          names = ['-u', '--no-clean'], default = False, help = 'Do not run the clean phase in Maven builds')
+  offline = cli.Flag(          names = ['-o', '--offline'], default = False, help = "Pass --offline flag to Maven")
+  debug = cli.Flag(            names = ['-x', '--debug'], default = False, excludes = ['--quiet'], help = "Pass --debug flag to Maven")
+  quiet = cli.Flag(            names = ['-q', '--quiet'], default = False, excludes = ['--debug'], help = "Pass --quiet flag to Maven")
 
   def main(self, *components):
     if len(components) == 0:
@@ -261,7 +249,7 @@ class MetaborgRelengBuild(cli.Application):
     try:
       BuildAll(repo = repo, components = components, buildDeps = not self.noDeps, resumeFrom = self.resumeFrom,
         buildStratego = self.buildStratego, bootstrapStratego = self.bootstrapStratego,
-        strategoTest = not self.noStrategoTest, cleanRepo = not self.noCleanRepo, release = self.release,
+        strategoTest = not self.noStrategoTest, cleanRepo = self.cleanRepo, release = self.release,
         deploy = self.deploy, clean = not self.noClean, offline = self.offline, debug = self.debug, quiet = self.quiet)
       print('All done!')
       return 0
