@@ -2,7 +2,7 @@ from os import path
 from git.repo.base import Repo
 from plumbum import cli
 
-from metaborg.releng.build import BuildAll, GetAllBuilds
+from metaborg.releng.build import BuildAll, GetAllBuilds, GenerateMavenSettings, _mvnSettingsLocation, _metaborgReleases, _metaborgSnapshots, _spoofaxUpdateSite, _centralMirror
 from metaborg.releng.versions import SetVersions
 from metaborg.releng.release import Release, ResetRelease
 from metaborg.releng.eclipse import GeneratePlainEclipse, GenerateSpoofaxEclipse, GenerateDevSpoofaxEclipse, _eclipseRepo, _eclipsePackage, _spoofaxRepo
@@ -223,32 +223,20 @@ class MetaborgRelengBuild(cli.Application):
   Builds one or more components of spoofax-releng
   '''
 
-  buildStratego = cli.Flag(names = ['-s', '--build-stratego'], default = False,
-                           help = 'Build StrategoXT instead of downloading it')
-  bootstrapStratego = cli.Flag(names = ['-b', '--bootstrap-stratego'], default = False,
-                               help = 'Bootstrap StrategoXT instead of building it')
-  noStrategoTest = cli.Flag(names = ['-t', '--no-stratego-test'], default = False,
-                            help = 'Skip StrategoXT tests')
+  buildStratego = cli.Flag(    names = ['-s', '--build-stratego'], default = False, help = 'Build StrategoXT instead of downloading it')
+  bootstrapStratego = cli.Flag(names = ['-b', '--bootstrap-stratego'], default = False, help = 'Bootstrap StrategoXT instead of building it')
+  noStrategoTest = cli.Flag(   names = ['-t', '--no-stratego-test'], default = False, help = 'Skip StrategoXT tests')
 
-  noCleanRepo = cli.Flag(names = ['-p', '--no-clean-repo'], default = False,
-                         help = 'Do not clean local repository before building')
-  noDeps = cli.Flag(names = ['-e', '--no-deps'], default = False, requires = ['--no-clean-repo'],
-                    help = 'Do not build dependencies, just build given components')
-  resumeFrom = cli.SwitchAttr(names = ['-f', '--resume-from'], argtype = str, default = None,
-                              requires = ['--no-clean-repo', '--no-deps'], help = 'Resume build from given artifact')
-  deploy = cli.Flag(names = ['-d', '--deploy'], default = False,
-                    help = 'Deploy after building')
-  release = cli.Flag(names = ['-r', '--release'], default = False,
-                     help = 'Perform a release build. Checks whether all dependencies are release versions, fails the build if not')
+  cleanRepo = cli.Flag(        names = ['-c', '--clean-repo'], default = False, help = 'Clean MetaBorg artifacts from the local repository before building')
+  noDeps = cli.Flag(           names = ['-e', '--no-deps'], default = False, excludes = ['--clean-repo'], help = 'Do not build dependencies, just build given components')
+  resumeFrom = cli.SwitchAttr( names = ['-f', '--resume-from'], argtype = str, default = None, excludes = ['--clean-repo'], requires = ['--no-deps'], help = 'Resume build from given artifact')
+  deploy = cli.Flag(           names = ['-d', '--deploy'], default = False, help = 'Deploy after building')
+  release = cli.Flag(          names = ['-r', '--release'], default = False, help = 'Perform a release build. Checks whether all dependencies are release versions, fails the build if not')
 
-  noClean = cli.Flag(names = ['-u', '--no-clean'], default = False,
-                     help = 'Do not run the clean phase in Maven builds')
-  offline = cli.Flag(names = ['-o', '--offline'], default = False,
-                     help = "Pass --offline flag to Maven")
-  debug = cli.Flag(names = ['-x', '--debug'], default = False, excludes = ['--quiet'],
-                   help = "Pass --debug flag to Maven")
-  quiet = cli.Flag(names = ['-q', '--quiet'], default = False, excludes = ['--debug'],
-                   help = "Pass --quiet flag to Maven")
+  noClean = cli.Flag(          names = ['-u', '--no-clean'], default = False, help = 'Do not run the clean phase in Maven builds')
+  offline = cli.Flag(          names = ['-o', '--offline'], default = False, help = "Pass --offline flag to Maven")
+  debug = cli.Flag(            names = ['-x', '--debug'], default = False, excludes = ['--quiet'], help = "Pass --debug flag to Maven")
+  quiet = cli.Flag(            names = ['-q', '--quiet'], default = False, excludes = ['--debug'], help = "Pass --quiet flag to Maven")
 
   def main(self, *components):
     if len(components) == 0:
@@ -261,7 +249,7 @@ class MetaborgRelengBuild(cli.Application):
     try:
       BuildAll(repo = repo, components = components, buildDeps = not self.noDeps, resumeFrom = self.resumeFrom,
         buildStratego = self.buildStratego, bootstrapStratego = self.bootstrapStratego,
-        strategoTest = not self.noStrategoTest, cleanRepo = not self.noCleanRepo, release = self.release,
+        strategoTest = not self.noStrategoTest, cleanRepo = self.cleanRepo, release = self.release,
         deploy = self.deploy, clean = not self.noClean, offline = self.offline, debug = self.debug, quiet = self.quiet)
       print('All done!')
       return 0
@@ -308,9 +296,9 @@ class MetaborgRelengGenEclipse(cli.Application):
   Generate a plain Eclipse instance
   '''
 
-  destination =    cli.SwitchAttr(names = ['-d', '--destination'],  argtype = str, mandatory = True,                             help = 'Path to generate the Eclipse instance at')
-  eclipsePackage = cli.SwitchAttr(names = ['--eclipse-package'],    argtype = str, mandatory = False, default = _eclipsePackage, help = 'Base Eclipse package to install')
-  eclipseRepo =    cli.SwitchAttr(names = ['--eclipse-repository'], argtype = str, mandatory = False, default = _eclipseRepo,    help = 'Eclipse repository used to install the base Eclipse package')
+  destination =    cli.SwitchAttr(names = ['-d', '--destination'], argtype = str, mandatory = True,                             help = 'Path to generate the Eclipse instance at')
+  eclipsePackage = cli.SwitchAttr(names = ['--eclipse-package'],   argtype = str, mandatory = False, default = _eclipsePackage, help = 'Base Eclipse package to install')
+  eclipseRepo =    cli.SwitchAttr(names = ['--eclipse-repo'],      argtype = str, mandatory = False, default = _eclipseRepo,    help = 'Eclipse repository used to install the base Eclipse package')
 
   def main(self):
     print('Generating plain Eclipse instance')
@@ -325,19 +313,27 @@ class MetaborgRelengGenSpoofax(cli.Application):
   Generate an Eclipse instance for Spoofax users
   '''
 
-  destination =    cli.SwitchAttr(names = ['-d', '--destination'],  argtype = str, mandatory = True,                             help = 'Path to generate the Eclipse instance at')
-  eclipsePackage = cli.SwitchAttr(names = ['--eclipse-package'],    argtype = str, mandatory = False, default = _eclipsePackage, help = 'Base Eclipse package to install')
-  eclipseRepo =    cli.SwitchAttr(names = ['--eclipse-repository'], argtype = str, mandatory = False, default = _eclipseRepo,    help = 'Eclipse repository used to install the base Eclipse package')
-  spoofaxRepo =    cli.SwitchAttr(names = ['--spoofax-repository'], argtype = str, mandatory = False, default = _spoofaxRepo,    help = 'Spoofax repository used to install Spoofax plugins')
+  destination =    cli.SwitchAttr(names = ['-d', '--destination'], argtype = str, mandatory = True,                             help = 'Path to generate the Eclipse instance at')
+  eclipsePackage = cli.SwitchAttr(names = ['--eclipse-package'],   argtype = str, mandatory = False, default = _eclipsePackage, help = 'Base Eclipse package to install')
+  eclipseRepo =    cli.SwitchAttr(names = ['--eclipse-repo'],      argtype = str, mandatory = False, default = _eclipseRepo,    help = 'Eclipse repository used to install the base Eclipse package')
+  spoofaxRepo =    cli.SwitchAttr(names = ['--spoofax-repo'],      argtype = str, mandatory = False, default = _spoofaxRepo,    help = 'Spoofax repository used to install Spoofax plugins')
 
-  noMeta =      cli.Flag(names = ['-m', '--nometa'],      default = False, help = "Don't install Spoofax meta-plugins such as the Stratego compiler and editor. Results in a smaller Eclipse instance, but it can only be used to run Spoofax languages, not develop them.")
-  noModelware = cli.Flag(names = ['-w', '--nomodelware'], default = False, help = "Don't install Spoofax modelware plugins. Results in a smaller Eclipse instance, but modelware components cannot be used.")
+  noMeta =       cli.Flag(names = ['-m', '--nometa'],             default = False, help = "Don't install Spoofax meta-plugins such as the Stratego compiler and editor. Results in a smaller Eclipse instance, but it can only be used to run Spoofax languages, not develop them.")
+  noModelware =  cli.Flag(names = ['-w', '--nomodelware'],        default = False, help = "Don't install Spoofax modelware plugins. Results in a smaller Eclipse instance, but modelware components cannot be used.")
+  localSpoofax = cli.Flag(names = ['-l', '--local-spoofax-repo'], default = False, help = "Use locally built Spoofax repository at spoofax-deploy/org.strategoxt.imp.updatesite/target/site")
 
   def main(self):
     print('Generating Eclipse instance for Spoofax users')
 
+    if self.localSpoofax:
+      repo = self.parent.repo
+      repoDir = repo.working_tree_dir
+      spoofaxRepo = '{}/{}'.format(repoDir, 'spoofax-deploy/org.strategoxt.imp.updatesite/target/site')
+    else:
+      spoofaxRepo = self.spoofaxRepo
+
     GenerateSpoofaxEclipse(self.destination, eclipsePackage = self.eclipsePackage, eclipseRepo = self.eclipseRepo,
-                           spoofaxRepo = self.spoofaxRepo, installMeta = not self.noMeta,
+                           spoofaxRepo = spoofaxRepo, installMeta = not self.noMeta,
                            installModelware = not self.noModelware)
     return 0
 
@@ -348,14 +344,45 @@ class MetaborgRelengGenDevSpoofax(cli.Application):
   Generate an Eclipse instance for Spoofax developers
   '''
 
-  destination =    cli.SwitchAttr(names = ['-d', '--destination'],  argtype = str, mandatory = True,                             help = 'Path to generate the Eclipse instance at')
-  eclipsePackage = cli.SwitchAttr(names = ['--eclipse-package'],    argtype = str, mandatory = False, default = _eclipsePackage, help = 'Base Eclipse package to install')
-  eclipseRepo =    cli.SwitchAttr(names = ['--eclipse-repository'], argtype = str, mandatory = False, default = _eclipseRepo,    help = 'Eclipse repository used to install the base Eclipse package')
-  spoofaxRepo =    cli.SwitchAttr(names = ['--spoofax-repository'], argtype = str, mandatory = False, default = _spoofaxRepo,    help = 'Spoofax repository used to install Spoofax plugins')
+  destination =    cli.SwitchAttr(names = ['-d', '--destination'], argtype = str, mandatory = True,                             help = 'Path to generate the Eclipse instance at')
+  eclipsePackage = cli.SwitchAttr(names = ['--eclipse-package'],   argtype = str, mandatory = False, default = _eclipsePackage, help = 'Base Eclipse package to install')
+  eclipseRepo =    cli.SwitchAttr(names = ['--eclipse-repo'],      argtype = str, mandatory = False, default = _eclipseRepo,    help = 'Eclipse repository used to install the base Eclipse package')
+  spoofaxRepo =    cli.SwitchAttr(names = ['--spoofax-repo'],      argtype = str, mandatory = False, default = _spoofaxRepo,    help = 'Spoofax repository used to install Spoofax plugins')
+
+  localSpoofax = cli.Flag(names = ['-l', '--local-spoofax-repo'], default = False, help = "Use locally built Spoofax repository at spoofax-deploy/org.strategoxt.imp.updatesite/target/site")
 
   def main(self):
     print('Generating Eclipse instance for Spoofax developers')
 
+    if self.localSpoofax:
+      repo = self.parent.repo
+      repoDir = repo.working_tree_dir
+      spoofaxRepo = '{}/{}'.format(repoDir, 'spoofax-deploy/org.strategoxt.imp.updatesite/target/site')
+    else:
+      spoofaxRepo = self.spoofaxRepo
+
     GenerateDevSpoofaxEclipse(self.destination, eclipsePackage = self.eclipsePackage, eclipseRepo = self.eclipseRepo,
-                              spoofaxRepo = self.spoofaxRepo)
+                              spoofaxRepo = spoofaxRepo)
+    return 0
+
+
+@MetaborgReleng.subcommand("gen-mvn-settings")
+class MetaborgRelengGenMvnSettings(cli.Application):
+  '''
+  Generate a Maven settings file with MetaBorg repositories and a Spoofax update site
+  '''
+
+  destination = cli.SwitchAttr(names = ['-d', '--destination'], argtype = str, mandatory = False, default = _mvnSettingsLocation, help = 'Path to generate Maven settings file at')
+  metaborgReleases = cli.SwitchAttr(names = ['-r', '--metaborg-releases'], argtype = str, mandatory = False, default = _metaborgReleases, help = 'Maven repository for MetaBorg releases')
+  metaborgSnapshots = cli.SwitchAttr(names = ['-s', '--metaborg-snapshots'], argtype = str, mandatory = False, default = _metaborgSnapshots, help = 'Maven repository for MetaBorg snapshots')
+  spoofaxUpdateSite = cli.SwitchAttr(names = ['-u', '--spoofax-update-site'], argtype = str, mandatory = False, default = _spoofaxUpdateSite, help = 'Eclipse update site for Spoofax plugins')
+  centralMirror = cli.SwitchAttr(names = ['-m', '--central-mirror'], argtype = str, mandatory = False, default = _centralMirror, help = 'Maven repository for mirroring Maven central')
+
+  def main(self):
+    print('Generating Maven settings file')
+
+    GenerateMavenSettings(location = self.destination, metaborgReleases = self.metaborgReleases,
+      metaborgSnapshots = self.metaborgSnapshots, spoofaxUpdateSite = self.spoofaxUpdateSite,
+      centralMirror = self.centralMirror)
+
     return 0

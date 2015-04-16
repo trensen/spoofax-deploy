@@ -1,4 +1,4 @@
-from metaborg.util.eclipse import EclipseGen
+from metaborg.util.eclipse import EclipseGen, EclipseIniFix, CurrentEclipseOS
 
 
 _eclipseRepo = 'http://eclipse.mirror.triple-it.nl/releases/luna/'
@@ -30,12 +30,17 @@ _m2eFeatures = [
 ]
 
 
-def GeneratePlainEclipse(destination, eclipseRepo = _eclipseRepo, eclipsePackage = _eclipsePackage, **kwargs):
-  EclipseGen(destination = destination, repositories = [eclipseRepo], installUnits = [eclipsePackage], **kwargs)
+def GeneratePlainEclipse(destination, eclipseOS = None, eclipseRepo = _eclipseRepo, eclipsePackage = _eclipsePackage, **kwargs):
+  if not eclipseOS:
+    eclipseOS = CurrentEclipseOS()
 
-def GenerateSpoofaxEclipse(destination, eclipseRepo = _eclipseRepo, eclipsePackage = _eclipsePackage,
+  EclipseGen(destination = destination, eclipseOS = eclipseOS, repositories = [eclipseRepo], installUnits = [eclipsePackage], **kwargs)
+  EclipseIniFix(destination = destination, eclipseOS = eclipseOS, requiredJavaVersion = None)
+
+def GenerateSpoofaxEclipse(destination, eclipseOS = None, eclipseRepo = _eclipseRepo, eclipsePackage = _eclipsePackage,
     spoofaxRepo = _spoofaxRepo, installMeta = True, installModelware = True, **kwargs):
   repositories = [eclipseRepo, spoofaxRepo]
+
   installUnits = [eclipsePackage] + _spoofaxRuntime
   if installMeta:
     installUnits += _spoofaxMeta
@@ -43,10 +48,20 @@ def GenerateSpoofaxEclipse(destination, eclipseRepo = _eclipseRepo, eclipsePacka
     installUnits += _modelwareRuntime
     if installMeta:
       installUnits += _modelwareMeta
-  EclipseGen(destination = destination, repositories = repositories, installUnits = installUnits, **kwargs)
 
-def GenerateDevSpoofaxEclipse(destination, eclipseRepo = _eclipseRepo, eclipsePackage = _eclipsePackage,
+  if not eclipseOS:
+    eclipseOS = CurrentEclipseOS()
+
+  EclipseGen(destination = destination, eclipseOS = eclipseOS, repositories = repositories, installUnits = installUnits, **kwargs)
+  EclipseIniFix(destination = destination, eclipseOS = eclipseOS)
+
+def GenerateDevSpoofaxEclipse(destination, eclipseOS = None, eclipseRepo = _eclipseRepo, eclipsePackage = _eclipsePackage,
     spoofaxRepo = _spoofaxRepo, **kwargs):
   repositories = [eclipseRepo, spoofaxRepo] + _m2eRepos
   installUnits = [eclipsePackage] + _spoofaxRuntime + _spoofaxMeta + _modelwareRuntime + _modelwareMeta + _m2eFeatures
-  EclipseGen(destination = destination, repositories = repositories, installUnits = installUnits, **kwargs)
+
+  if not eclipseOS:
+    eclipseOS = CurrentEclipseOS()
+
+  EclipseGen(destination = destination, eclipseOS = eclipseOS, repositories = repositories, installUnits = installUnits, **kwargs)
+  EclipseIniFix(destination = destination, eclipseOS = eclipseOS)

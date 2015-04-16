@@ -1,6 +1,7 @@
 import os
 import platform
 import subprocess
+import pystache
 
 
 def Mvn(pomFile = 'pom.xml', settingsFile = None, globalSettingsFile = None, noSnapshotUpdates = False,
@@ -62,3 +63,88 @@ def Mvn(pomFile = 'pom.xml', settingsFile = None, globalSettingsFile = None, noS
 
   if process.returncode != 0:
     raise Exception("Maven build failed")
+
+
+def MvnSetingsGen(location, repositories = [], mirrors = []):
+  profileDict = {}
+  for repo in repositories:
+    profileId, repoId, url, layout, releases, snapshots, plugins = repo
+    if profileId not in profileDict:
+      profileDict[profileId] = []
+    profileDict[profileId].append({
+      'id'        : repoId,
+      'url'       : url,
+      'layout'    : layout,
+      'releases'  : str(releases).lower(),
+      'snapshots' : str(snapshots).lower(),
+      'plugins'   : plugins
+    })
+
+  profileObjects = []
+  for profileId, repos in profileDict.items():
+    profileObjects.append({'profileId' : profileId, 'repos' : repos})
+
+  mirrorObjects = []
+  for mirror in mirrors:
+    mirrorId, url, mirrorOf = mirror
+    mirrorObjects.append({'id' : mirrorId, 'url' : url, 'mirrorOf' : mirrorOf})
+
+  settingsTemplate = '''<?xml version="1.0" ?>
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  <profiles>
+    {{#profiles}}
+    <profile>
+      <id>{{profileId}}</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <repositories>
+        {{#repos}}
+        <repository>
+          <id>{{id}}</id>
+          <url>{{url}}</url>
+          {{#layout}}<layout>{{layout}}</layout>
+          {{/layout}}<releases>
+            <enabled>{{releases}}</enabled>
+          </releases>
+          <snapshots>
+            <enabled>{{snapshots}}</enabled>
+          </snapshots>
+        </repository>
+        {{/repos}}
+      </repositories>
+      <pluginRepositories>
+        {{#repos}}{{#plugins}}<pluginRepository>
+          <id>{{id}}</id>
+          <url>{{url}}</url>
+          {{#layout}}<layout>{{layout}}</layout>
+          {{/layout}}<releases>
+            <enabled>{{releases}}</enabled>
+          </releases>
+          <snapshots>
+            <enabled>{{snapshots}}</enabled>
+          </snapshots>
+        </pluginRepository>{{/plugins}}{{/repos}}
+      </pluginRepositories>
+    </profile>
+    {{/profiles}}
+  </profiles>
+  <mirrors>
+    {{#mirrors}}
+    <mirror>
+      <id>{{id}}</id>
+      <url>{{url}}</url>
+      <mirrorOf>{{mirrorOf}}</mirrorOf>
+    </mirror>
+    {{/mirrors}}
+  </mirrors>
+</settings>
+'''
+
+  settingsXml = pystache.render(settingsTemplate, { 'profiles' : profileObjects, 'mirrors' : mirrorObjects})
+  print('Setting contents of {} to:\n{}'.format(location, settingsXml))
+  with open(location, "w") as settingsFile:
+    settingsFile.write(settingsXml)
+
+def MvnUserSettingsLocation():
+  return os.path.join(os.path.expanduser('~'), '.m2/settings.xml')
