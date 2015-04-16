@@ -381,6 +381,11 @@ class MetaborgRelengGenMvnSettings(cli.Application):
   def main(self):
     print('Generating Maven settings file')
 
+    if path.isfile(self.destination):
+      print('Maven settings file already exists at {}, do you want to overwrite it?'.format(self.destination))
+      if not YesNo():
+        return 1
+
     GenerateMavenSettings(location = self.destination, metaborgReleases = self.metaborgReleases,
       metaborgSnapshots = self.metaborgSnapshots, spoofaxUpdateSite = self.spoofaxUpdateSite,
       centralMirror = self.centralMirror)
