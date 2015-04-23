@@ -32,6 +32,7 @@
 
 		<!-- Spoofax -->
 		<module>../../spoofax/org.metaborg.spoofax.core</module>
+		<module>../../spoofax/org.metaborg.spoofax.generator</module>
 		<module>../../spoofax/org.strategoxt.imp.generator</module>
 		<module>../../spoofax/org.strategoxt.imp.generator/morepoms/aster-jar</module>
 		<module>../../spoofax/org.strategoxt.imp.generator/morepoms/make-permissive-jar</module>
