@@ -417,9 +417,11 @@ class MetaborgRelengChanged(cli.Application):
 
   destination = cli.SwitchAttr(names = ['-d', '--destination'], argtype = str, mandatory = False, default = _qualifierLocation, help = 'Path to read/write the last qualifier to')
 
+  forceChange = cli.Flag(names = ['-f', '--force-change'], default = False, help = 'Force a change, always return 0')
+
   def main(self):
     changed, qualifier = RepoChanged(self.parent.repo, self.destination)
-    if changed:
+    if self.forceChange or changed:
       print(qualifier)
       return 0
     return 1
