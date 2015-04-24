@@ -4,7 +4,7 @@ import shutil
 from datetime import datetime
 import time
 
-from metaborg.util.git import LatestDate
+from metaborg.util.git import LatestDate, Branch
 from metaborg.util.maven import Mvn, MvnSetingsGen, MvnUserSettingsLocation
 
 
@@ -152,26 +152,36 @@ def GetBuildCommand(build):
   return _buildCommands[build]
 
 
+def CreateQualifier(repo, branch = None):
+  timestamp = LatestDate(repo)
+  if not branch:
+    branch = Branch(repo)
+  return FormatQualifier(timestamp, branch)
+
 _qualifierFormat = '%Y%m%d-%H%M%S'
-def CreateQualifier(repo):
-  date = LatestDate(repo)
-  qualifier = date.strftime(_qualifierFormat)
-  return qualifier
+def FormatQualifier(timestamp, branch):
+  return '{}-{}'.format(timestamp.strftime(_qualifierFormat), branch)
 
 _qualifierLocation = '.qualifier'
 def RepoChanged(repo, qualifierLocation = _qualifierLocation):
-  qualifier = LatestDate(repo)
+  timestamp = LatestDate(repo)
+  branch = Branch(repo)
   changed = False;
   if not path.isfile(qualifierLocation):
     changed = True
   else:
-    with open(qualifierLocation, mode = 'r') as timestampFile:
-      storedQualifierStr = timestampFile.read().replace('\n', '')
-      storedQualifier = datetime.fromtimestamp(int(storedQualifierStr))
-      changed = qualifier > storedQualifier
+    with open(qualifierLocation, mode = 'r') as qualifierFile:
+      storedTimestampStr = qualifierFile.readline().replace('\n', '')
+      storedBranch = qualifierFile.readline().replace('\n', '')
+      if not storedTimestampStr or not storedBranch:
+        raise Exception('Invalid qualifier file {}, please delete this file and retry'.format(qualifierLocation))
+      storedTimestamp = datetime.fromtimestamp(int(storedTimestampStr))
+      changed = (timestamp > storedTimestamp) or (branch != storedBranch)
   with open(qualifierLocation, mode = 'w') as timestampFile:
-    timestampFile.write(str(int(time.mktime(qualifier.timetuple()))))
-  return changed
+    timestampStr = str(int(time.mktime(timestamp.timetuple())))
+    timestampFile.write('{}\n{}\n'.format(timestampStr, branch))
+  return changed, FormatQualifier(timestamp, branch)
+
 
 def CleanLocalRepo():
   print('Cleaning artifacts from local repository')
