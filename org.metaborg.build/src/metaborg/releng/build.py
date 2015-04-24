@@ -1,6 +1,8 @@
 from collections import OrderedDict
 from os import path
 import shutil
+from datetime import datetime
+import time
 
 from metaborg.util.git import LatestDate
 from metaborg.util.maven import Mvn, MvnSetingsGen, MvnUserSettingsLocation
@@ -150,10 +152,26 @@ def GetBuildCommand(build):
   return _buildCommands[build]
 
 
+_qualifierFormat = '%Y%m%d-%H%M%S'
 def CreateQualifier(repo):
   date = LatestDate(repo)
-  qualifier = date.strftime('%Y%m%d-%H%M%S')
+  qualifier = date.strftime(_qualifierFormat)
   return qualifier
+
+_qualifierLocation = '.qualifier'
+def RepoChanged(repo, qualifierLocation = _qualifierLocation):
+  qualifier = LatestDate(repo)
+  changed = False;
+  if not path.isfile(qualifierLocation):
+    changed = True
+  else:
+    with open(qualifierLocation, mode = 'r') as timestampFile:
+      storedQualifierStr = timestampFile.read().replace('\n', '')
+      storedQualifier = datetime.fromtimestamp(int(storedQualifierStr))
+      changed = qualifier > storedQualifier
+  with open(qualifierLocation, mode = 'w') as timestampFile:
+    timestampFile.write(str(int(time.mktime(qualifier.timetuple()))))
+  return changed
 
 def CleanLocalRepo():
   print('Cleaning artifacts from local repository')

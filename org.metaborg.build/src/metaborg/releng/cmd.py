@@ -2,7 +2,7 @@ from os import path
 from git.repo.base import Repo
 from plumbum import cli
 
-from metaborg.releng.build import BuildAll, GetAllBuilds, GenerateMavenSettings, _mvnSettingsLocation, _metaborgReleases, _metaborgSnapshots, _spoofaxUpdateSite, _centralMirror
+from metaborg.releng.build import BuildAll, GetAllBuilds, GenerateMavenSettings, _mvnSettingsLocation, _metaborgReleases, _metaborgSnapshots, _spoofaxUpdateSite, _centralMirror, RepoChanged, _qualifierLocation
 from metaborg.releng.versions import SetVersions
 from metaborg.releng.release import Release, ResetRelease
 from metaborg.releng.eclipse import GeneratePlainEclipse, GenerateSpoofaxEclipse, GenerateDevSpoofaxEclipse, _eclipseRepo, _eclipsePackage, _spoofaxRepo
@@ -223,6 +223,8 @@ class MetaborgRelengBuild(cli.Application):
   Builds one or more components of spoofax-releng
   '''
 
+  USAGE = '    %(progname)s [SWITCHES] %(tailargs)s\n\n    with one or more components: {}\n'.format(', '.join(GetAllBuilds()))
+
   buildStratego = cli.Flag(    names = ['-s', '--build-stratego'], default = False, help = 'Build StrategoXT instead of downloading it')
   bootstrapStratego = cli.Flag(names = ['-b', '--bootstrap-stratego'], default = False, help = 'Bootstrap StrategoXT instead of building it')
   noStrategoTest = cli.Flag(   names = ['-t', '--no-stratego-test'], default = False, help = 'Skip StrategoXT tests')
@@ -391,3 +393,17 @@ class MetaborgRelengGenMvnSettings(cli.Application):
       centralMirror = self.centralMirror)
 
     return 0
+
+
+@MetaborgReleng.subcommand("changed")
+class MetaborgRelengChanged(cli.Application):
+  '''
+  Returns 0 when repository has changed since last invocation of this command, based on the latest commit date in all submodules. Returns 1 otherwise.
+  '''
+
+  destination = cli.SwitchAttr(names = ['-d', '--destination'], argtype = str, mandatory = False, default = _qualifierLocation, help = 'Path to read/write the last qualifier to')
+
+  def main(self):
+    if RepoChanged(self.parent.repo, self.destination):
+      return 0
+    return 1
