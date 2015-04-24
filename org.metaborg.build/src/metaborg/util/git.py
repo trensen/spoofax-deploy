@@ -16,6 +16,12 @@ def LatestDate(repo):
 
   return datetime.fromtimestamp(date)
 
+def Branch(repo):
+  head = repo.head
+  if head.is_detached:
+    return "DETACHED"
+  return head.reference.name
+
 
 def Update(submodule):
   if not submodule.module_exists():

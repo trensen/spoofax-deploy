@@ -2,7 +2,7 @@ from os import path
 from git.repo.base import Repo
 from plumbum import cli
 
-from metaborg.releng.build import BuildAll, GetAllBuilds, GenerateMavenSettings, _mvnSettingsLocation, _metaborgReleases, _metaborgSnapshots, _spoofaxUpdateSite, _centralMirror, RepoChanged, _qualifierLocation
+from metaborg.releng.build import BuildAll, GetAllBuilds, GenerateMavenSettings, _mvnSettingsLocation, _metaborgReleases, _metaborgSnapshots, _spoofaxUpdateSite, _centralMirror, CreateQualifier, RepoChanged, _qualifierLocation
 from metaborg.releng.versions import SetVersions
 from metaborg.releng.release import Release, ResetRelease
 from metaborg.releng.eclipse import GeneratePlainEclipse, GenerateSpoofaxEclipse, GenerateDevSpoofaxEclipse, _eclipseRepo, _eclipsePackage, _spoofaxRepo
@@ -170,19 +170,23 @@ class MetaborgRelengReset(cli.Application):
   Resets each submodule
   '''
 
+  confirmPrompt = cli.Flag(names = ['-y', '--yes'], default = False,
+                           help = 'Answer warning prompts with yes automatically')
   toRemote = cli.Flag(names = ['-r', '--remote'], default = False,
                       help = 'Resets to the remote branch, deleting any unpushed commits')
 
   def main(self):
     print('Resetting all submodules')
     if self.toRemote:
-      print('WARNING: This will DELETE UNCOMMITED CHANGES and DELETE UNPUSHED COMMITS, do you want to continue?')
-      if not YesNoTrice():
-        return 1
+      if not self.confirmPrompt:
+        print('WARNING: This will DELETE UNCOMMITED CHANGES and DELETE UNPUSHED COMMITS, do you want to continue?')
+        if not YesNoTrice():
+          return 1
     else:
-      print('WARNING: This will DELETE UNCOMMITED CHANGES, do you want to continue?')
-      if not YesNoTwice():
-        return 1
+      if not self.confirmPrompt:
+        print('WARNING: This will DELETE UNCOMMITED CHANGES, do you want to continue?')
+        if not YesNoTwice():
+          return 1
     ResetAll(self.parent.repo, self.toRemote)
     return 0
 
@@ -395,15 +399,27 @@ class MetaborgRelengGenMvnSettings(cli.Application):
     return 0
 
 
+@MetaborgReleng.subcommand("qualifier")
+class MetaborgRelengQualifier(cli.Application):
+  '''
+  Prints the current qualifier based on the current branch and latest commit date in all submodules.
+  '''
+
+  def main(self):
+    print(CreateQualifier(self.parent.repo))
+
+
 @MetaborgReleng.subcommand("changed")
 class MetaborgRelengChanged(cli.Application):
   '''
-  Returns 0 when repository has changed since last invocation of this command, based on the latest commit date in all submodules. Returns 1 otherwise.
+  Returns 0 and prints the qualifer when repository has changed since last invocation of this command, based on the current branch and latest commit date in all submodules. Returns 1 otherwise.
   '''
 
   destination = cli.SwitchAttr(names = ['-d', '--destination'], argtype = str, mandatory = False, default = _qualifierLocation, help = 'Path to read/write the last qualifier to')
 
   def main(self):
-    if RepoChanged(self.parent.repo, self.destination):
+    changed, qualifier = RepoChanged(self.parent.repo, self.destination)
+    if changed:
+      print(qualifier)
       return 0
     return 1
