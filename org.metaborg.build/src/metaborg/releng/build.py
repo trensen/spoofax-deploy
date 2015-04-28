@@ -106,14 +106,20 @@ def BuildTestRunner(basedir, deploy, qualifier, buildStratego, bootstrapStratego
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.testrunner', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, **kwargs)
 
+def BuildMeta(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
+  phase = 'deploy' if deploy else 'install'
+  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.meta', 'pom.xml')
+  Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
+
 
 '''Build dependencies must be topologically ordered, otherwise the algorithm will not work'''
 _buildDependencies = OrderedDict([
   ('poms'        , []),
   ('strategoxt'  , ['poms']),
   ('java'        , ['poms', 'strategoxt']),
-  ('eclipse'     , ['poms', 'strategoxt', 'java']),
-  ('pluginpoms'  , ['poms', 'strategoxt', 'java', 'eclipse']),
+  ('meta'        , ['poms', 'strategoxt', 'java']),
+  ('eclipse'     , ['poms', 'strategoxt', 'java', 'meta']),
+  ('pluginpoms'  , ['poms', 'strategoxt', 'java', 'meta', 'eclipse']),
   ('spoofax-libs', ['poms', 'strategoxt', 'java']),
   ('test-runner' , ['poms', 'strategoxt', 'java']),
 ])
@@ -121,6 +127,7 @@ _buildCommands = {
   'poms'         : BuildPoms,
   'strategoxt'   : BuildOrDownloadStrategoXt,
   'java'         : BuildJava,
+  'meta'         : BuildMeta,
   'eclipse'      : BuildEclipse,
   'pluginpoms'   : BuildPluginPoms,
   'spoofax-libs' : BuildSpoofaxLibs,

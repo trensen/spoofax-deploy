@@ -41,6 +41,7 @@
 		<module>../../modelware/org.spoofax.modelware.gmf.codegenextension</module>
 
 		<!-- Meta languages -->
+		<!--
 		<module>../../mb-rep/org.strategoxt.imp.editors.aterm</module>
 		<module>../../aster/org.strategoxt.imp.editors.aster</module>
 		<module>../../box/org.strategoxt.imp.editors.pp</module>
@@ -56,6 +57,7 @@
 		<module>../../spt/org.strategoxt.imp.testing.ui</module>
 		<module>../../stratego/org.strategoxt.imp.editors.stratego</module>
 		<module>../../ts/org.metaborg.meta.lang.ts</module>
+		-->
 
 		<!-- Strategoxt -->
 		<module>../../strategoxt/strategoxt/stratego-libraries/jarprovider</module>
