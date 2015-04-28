@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>org.metaborg.maven.build.parentpoms</artifactId>
+	<artifactId>org.metaborg.maven.build.parentpoms.language</artifactId>
 	<packaging>pom</packaging>
-	<description>Maven build for root and java parent POMs</description>
+	<description>Maven build for plugin and language parent POMs</description>
 	<url>https://github.com/metaborg/spoofax-deploy</url>
 
 	<parent>
@@ -15,8 +15,7 @@
 	</parent>
 
 	<modules>
-		<module>../org.metaborg.maven.parent</module>
-		<module>../org.metaborg.maven.parent.java</module>
+		<module>../org.metaborg.maven.parent.language</module>
 	</modules>
 
 	<developers>
