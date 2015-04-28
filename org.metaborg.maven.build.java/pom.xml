@@ -49,6 +49,9 @@
 		<!-- Interpretation -->
 		<module>../../dynsem/org.metaborg.meta.interpreter.framework</module>
 
+		<!-- Spoofax Maven Plugin -->
+		<module>../../spoofax-maven/spoofax-maven-plugin</module>
+
 		<!-- Deployment -->
 		<module>../org.metaborg.maven.parent</module>
 		<module>../org.metaborg.maven.parent.java</module>

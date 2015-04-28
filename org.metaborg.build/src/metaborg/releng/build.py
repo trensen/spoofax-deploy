@@ -143,7 +143,17 @@ def BuildJava(basedir, qualifier, deploy, buildStratego, bootstrapStratego, stra
     BuildArtifact('Spoofax benchmarker JAR', glob(path.join(basedir, 'spoofax-benchmark/org.metaborg.spoofax.benchmark.cmd/target/org.metaborg.spoofax.benchmark.cmd-*.jar'))[0], 'spoofax-benchmark.jar'),
   ])
 
-def BuildEclipse(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
+def BuildLanguagePoms(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
+  phase = 'deploy' if deploy else 'install'
+  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.parentpoms.language', 'pom.xml')
+  Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
+
+def BuildLanguages(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
+  phase = 'deploy' if deploy else 'install'
+  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.languages', 'pom.xml')
+  Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
+
+def BuildEclipse(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
   phase = 'deploy' if deploy else 'install'
   if skipExpensive:
     kwargs.update({'skip-language-build' : True})
@@ -178,28 +188,24 @@ def BuildTestRunner(basedir, deploy, qualifier, buildStratego, bootstrapStratego
     BuildArtifact('Spoofax testrunner JAR', glob(path.join(basedir, 'spt/org.metaborg.spoofax.testrunner.cmd/target/org.metaborg.spoofax.testrunner.cmd-*.jar'))[0], 'spoofax-testrunner.jar'),
   ])
 
-def BuildMeta(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
-  phase = 'deploy' if deploy else 'install'
-  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.meta', 'pom.xml')
-  Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
-  return BuildResult([])
-
 '''Build dependencies must be topologically ordered, otherwise the algorithm will not work'''
 _buildDependencies = OrderedDict([
-  ('poms'        , []),
-  ('strategoxt'  , ['poms']),
-  ('java'        , ['poms', 'strategoxt']),
-  ('meta'        , ['poms', 'strategoxt', 'java']),
-  ('eclipse'     , ['poms', 'strategoxt', 'java', 'meta']),
-  ('pluginpoms'  , ['poms', 'strategoxt', 'java', 'meta', 'eclipse']),
-  ('spoofax-libs', ['poms', 'strategoxt', 'java']),
-  ('test-runner' , ['poms', 'strategoxt', 'java']),
+  ('poms'         , []),
+  ('strategoxt'   , ['poms']),
+  ('java'         , ['poms', 'strategoxt']),
+  ('languagepoms' , ['poms', 'strategoxt', 'java']),
+  ('languages'    , ['poms', 'strategoxt', 'java', 'languagepoms']),
+  ('eclipse'      , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages']),
+  ('pluginpoms'   , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages', 'eclipse']),
+  ('spoofax-libs' , ['poms', 'strategoxt', 'java']),
+  ('test-runner'  , ['poms', 'strategoxt', 'java']),
 ])
 _buildCommands = {
   'poms'         : BuildPoms,
   'strategoxt'   : BuildOrDownloadStrategoXt,
   'java'         : BuildJava,
-  'meta'         : BuildMeta,
+  'languagepoms' : BuildLanguagePoms,
+  'meta'         : BuildLanguages,
   'eclipse'      : BuildEclipse,
   'pluginpoms'   : BuildPluginPoms,
   'spoofax-libs' : BuildSpoofaxLibs,
