@@ -17,6 +17,7 @@
 	<modules>
 		<module>../org.metaborg.maven.parent</module>
 		<module>../org.metaborg.maven.parent.java</module>
+		<module>../org.metaborg.maven.parent.language</module>
 	</modules>
 
 	<developers>
