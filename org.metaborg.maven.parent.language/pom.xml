@@ -9,213 +9,113 @@
 
 	<parent>
 		<groupId>org.metaborg</groupId>
-		<artifactId>org.metaborg.maven.parent.plugin</artifactId>
+		<artifactId>org.metaborg.maven.parent</artifactId>
 		<version>1.5.0-SNAPSHOT</version>
-		<relativePath>../org.metaborg.maven.parent.plugin</relativePath>
+		<relativePath>../org.metaborg.maven.parent</relativePath>
 	</parent>
 
 	<dependencies>
+		<!-- Depend on all Java projects, so that they are findable by Maven. -->
+		<!-- Representation -->
 		<dependency>
 			<groupId>org.metaborg</groupId>
-			<artifactId>strategoxt-jar</artifactId>
+			<artifactId>org.spoofax.terms</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.spoofax.aterm</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.spoofax.interpreter.library.index</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
+		<!-- Execution -->
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.metaborg.util</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.spoofax.interpreter</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.spoofax.interpreter.core</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.spoofax.interpreter.library.interpreter</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.spoofax.interpreter.library.java</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.spoofax.interpreter.library.jline</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.spoofax.interpreter.library.xml</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.metaborg.runtime.task</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
+		<!-- Spoofax -->
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.metaborg.spoofax.core</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
+		<!-- Parser -->
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.spoofax.jsglr</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.spoofax.interpreter.library.jsglr</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
+		<!-- Strategoxt -->
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.strategoxt.strj</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
+		<!-- Interpretation -->
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.metaborg.meta.interpreter.framework</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
+		<!-- External dependencies -->
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.spoofax.interpreter.externaldeps</artifactId>
 			<version>${metaborg-version}</version>
 		</dependency>
 	</dependencies>
-
-	<properties>
-		<skip-language-build>false</skip-language-build>
-		<builddeps-location>${basedir}/builddeps/</builddeps-location>
-		<nativebundle-location>${builddeps-location}/native</nativebundle-location>
-		<generator-jars-location>${builddeps-location}/dist</generator-jars-location>
-		<strategoxt-jar-location>${maven.dependency.org.metaborg.strategoxt-jar.jar.path}</strategoxt-jar-location>
-	</properties>
-
-	<profiles>
-		<profile>
-			<id>linux-os-profile</id>
-			<activation>
-				<os>
-					<family>unix</family>
-				</os>
-			</activation>
-			<properties>
-				<nativebundle-os-location>${nativebundle-location}/linux/</nativebundle-os-location>
-			</properties>
-		</profile>
-		<!--
-			Order of profiles is important here because OSX is of both the unix and mac families, last profile that gets
-			activated overrides the value of the property.
-		-->
-		<profile>
-			<id>macosx-os-profile</id>
-			<activation>
-				<os>
-					<family>mac</family>
-				</os>
-			</activation>
-			<properties>
-				<nativebundle-os-location>${nativebundle-location}/macosx/</nativebundle-os-location>
-			</properties>
-		</profile>
-		<profile>
-			<id>windows-os-profile</id>
-			<activation>
-				<os>
-					<family>windows</family>
-				</os>
-			</activation>
-			<properties>
-				<nativebundle-os-location>${nativebundle-location}/cygwin/</nativebundle-os-location>
-			</properties>
-		</profile>
-	</profiles>
-
 	<build>
-		<sourceDirectory>editor/java</sourceDirectory>
 		<plugins>
-			<!-- Unpack generator JARs and native executables to project directory, to prepare for Ant build. -->
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>spoofax-unpack-build-dependencies</id>
-						<phase>initialize</phase>
-						<goals>
-							<goal>unpack</goal>
-						</goals>
-						<configuration>
-							<skip>${skip-language-build}</skip>
-							<artifactItems>
-								<artifactItem>
-									<groupId>org.metaborg</groupId>
-									<artifactId>org.strategoxt.imp.nativebundle</artifactId>
-									<version>${metaborg-version}</version>
-									<type>eclipse-plugin</type>
-									<includes>native/**/*</includes>
-								</artifactItem>
-								<artifactItem>
-									<groupId>org.metaborg</groupId>
-									<artifactId>org.strategoxt.imp.generator</artifactId>
-									<version>${metaborg-version}</version>
-									<type>jar</type>
-									<includes>dist/**/*</includes>
-								</artifactItem>
-							</artifactItems>
-							<outputDirectory>${builddeps-location}</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<!-- Run the Spoofax Ant build. -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<!-- Extra dependencies that should be put on the classpath for Ant. -->
-				<dependencies>
-					<dependency>
-						<groupId>org.metaborg</groupId>
-						<artifactId>org.strategoxt.imp.generator</artifactId>
-						<version>${metaborg-version}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.metaborg</groupId>
-						<artifactId>aster-jar</artifactId>
-						<version>${metaborg-version}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.metaborg</groupId>
-						<artifactId>strategoxt-jar</artifactId>
-						<version>${metaborg-version}</version>
-					</dependency>
-					<dependency>
-						<groupId>org.metaborg</groupId>
-						<artifactId>make-permissive-jar</artifactId>
-						<version>${metaborg-version}</version>
-					</dependency>
-				</dependencies>
-				<executions>
-					<execution>
-						<id>spoofax-clean</id>
-						<phase>clean</phase>
-						<configuration>
-							<skip>${skip-language-build}</skip>
-							<target>
-								<ant antfile="build.main.xml" inheritRefs="true">
-									<target name="clean" />
-								</ant>
-							</target>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>spoofax-generate-sources</id>
-						<phase>generate-sources</phase>
-						<configuration>
-							<skip>${skip-language-build}</skip>
-							<target>
-								<property name="externaljarx" refid="maven.compile.classpath" />
-								<property name="eclipse.spoofaximp.jars" value="${generator-jars-location}" />
-								<property name="eclipse.spoofaximp.strategojar" value="${strategoxt-jar-location}" />
-								<property name="eclipse.spoofaximp.nativeprefix" value="${nativebundle-os-location}" />
-								<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
-								<ant antfile="build.main.xml" inheritRefs="true">
-									<target name="generate-sources" />
-								</ant>
-							</target>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>spoofax-package</id>
-						<phase>prepare-package</phase>
-						<configuration>
-							<skip>${skip-language-build}</skip>
-							<target>
-								<property name="externaljarx" refid="maven.compile.classpath" />
-								<property name="eclipse.spoofaximp.jars" value="${generator-jars-location}" />
-								<property name="eclipse.spoofaximp.strategojar" value="${strategoxt-jar-location}" />
-								<property name="eclipse.spoofaximp.nativeprefix" value="${nativebundle-os-location}" />
-								<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
-								<ant antfile="build.main.xml" inheritRefs="true">
-									<target name="package" />
-								</ant>
-							</target>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<!-- Clean up unpacked build dependencies -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-clean-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>spoofax-clean-build-dependencies</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>clean</goal>
-						</goals>
-						<configuration>
-							<skip>${skip-language-build}</skip>
-							<excludeDefaultDirectories>true</excludeDefaultDirectories>
-							<filesets>
-								<fileset>
-									<directory>${builddeps-location}</directory>
-								</fileset>
-							</filesets>
-						</configuration>
-					</execution>
-				</executions>
+				<groupId>org.metaborg</groupId>
+				<artifactId>spoofax-maven-plugin</artifactId>
+				<version>${metaborg-version}</version>
+				<extensions>true</extensions>
 			</plugin>
 		</plugins>
 	</build>
