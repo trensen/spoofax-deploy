@@ -79,24 +79,22 @@ def BuildStrategoXt(basedir, profiles, deploy, bootstrap, runTests, **kwargs):
   buildKwargs.update({'strategoxt-skip-build': True, 'strategoxt-skip-assembly' : True})
   Mvn(pomFile = parent_pom_file, phase = phase, profiles = profiles, **buildKwargs)
 
-
 def BuildJava(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
   phase = 'deploy' if deploy else 'install'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.java', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
 
-def BuildLanguagePoms(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
+def BuildLanguagePoms(basedir, deploy, **kwargs):
   phase = 'deploy' if deploy else 'install'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.parentpoms.language', 'pom.xml')
-  Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
+  Mvn(pomFile = pomFile, phase = phase, **kwargs)
 
-def BuildLanguages(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
+def BuildLanguages(basedir, deploy, profiles, **kwargs):
   if '!add-metaborg-repositories' in profiles:
     profiles.remove('!add-metaborg-repositories')
-
   phase = 'deploy' if deploy else 'install'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.languages', 'pom.xml')
-  Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
+  Mvn(pomFile = pomFile, phase = phase, profiles = profiles, **kwargs)
 
 def BuildEclipse(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
   phase = 'deploy' if deploy else 'install'
