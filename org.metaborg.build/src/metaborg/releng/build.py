@@ -134,7 +134,7 @@ _buildCommands = {
   'strategoxt'   : BuildOrDownloadStrategoXt,
   'java'         : BuildJava,
   'languagepoms' : BuildLanguagePoms,
-  'meta'         : BuildLanguages,
+  'languages'    : BuildLanguages,
   'eclipse'      : BuildEclipse,
   'pluginpoms'   : BuildPluginPoms,
   'spoofax-libs' : BuildSpoofaxLibs,
