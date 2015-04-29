@@ -149,6 +149,9 @@ def BuildLanguagePoms(basedir, qualifier, deploy, buildStratego, bootstrapStrate
   Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
 
 def BuildLanguages(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
+  if '!add-metaborg-repositories' in profiles:
+    profiles.remove('!add-metaborg-repositories')
+
   phase = 'deploy' if deploy else 'install'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.languages', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
