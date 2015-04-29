@@ -15,13 +15,14 @@
 	</parent>
 
 	<modules>
-		<!-- Meta languages -->
+		<!-- Boostrapped meta languages -->
 		<module>../../esv/org.metaborg.meta.lang.esv</module>
-		<module>../../sdf/org.metaborg.meta.lang.sdf</module>
 		<module>../../sdf/org.metaborg.meta.lang.template</module>
 		<module>../../nabl/org.metaborg.meta.lang.nabl</module>
 		<module>../../ts/org.metaborg.meta.lang.ts</module>
 
+		<!-- Meta languages -->
+		<module>../../sdf/org.metaborg.meta.lang.sdf</module>
         <!--
 		<module>../../mb-rep/org.strategoxt.imp.editors.aterm</module>
 		<module>../../aster/org.strategoxt.imp.editors.aster</module>

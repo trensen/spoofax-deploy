@@ -131,7 +131,6 @@ def BuildStrategoXt(basedir, profiles, deploy, bootstrap, runTests, skipTests, s
     BuildArtifact('StrategoXT minified JAR', glob('{}/buildpoms/minjar/target/strategoxt-min-jar-*.jar'.format(strategoXtDir))[0], 'strategoxt-min.jar'),
   ])
 
-
 def BuildJava(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'install'
   if skipExpensive:
@@ -143,18 +142,17 @@ def BuildJava(basedir, qualifier, deploy, buildStratego, bootstrapStratego, stra
     BuildArtifact('Spoofax benchmarker JAR', glob(path.join(basedir, 'spoofax-benchmark/org.metaborg.spoofax.benchmark.cmd/target/org.metaborg.spoofax.benchmark.cmd-*.jar'))[0], 'spoofax-benchmark.jar'),
   ])
 
-def BuildLanguagePoms(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
+def BuildLanguagePoms(basedir, deploy, **kwargs):
   phase = 'deploy' if deploy else 'install'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.parentpoms.language', 'pom.xml')
-  Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
+  Mvn(pomFile = pomFile, phase = phase, **kwargs)
 
-def BuildLanguages(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
+def BuildLanguages(basedir, deploy, profiles, **kwargs):
   if '!add-metaborg-repositories' in profiles:
     profiles.remove('!add-metaborg-repositories')
-
   phase = 'deploy' if deploy else 'install'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.languages', 'pom.xml')
-  Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
+  Mvn(pomFile = pomFile, phase = phase, profiles = profiles, **kwargs)
 
 def BuildEclipse(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
   phase = 'deploy' if deploy else 'install'
