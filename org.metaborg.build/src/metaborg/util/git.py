@@ -23,23 +23,18 @@ def Branch(repo):
   return head.reference.name
 
 
-def Update(repo, submodule, init = False, remote = True, recursive = True, depth = None):
-  if not submodule.module_exists():
-    init = True
+def Update(repo, submodule, remote = True, recursive = True, depth = None):
+  args = ['update', '--recursive', '--rebase', '--init']
 
-  args = ['update', '--recursive', '--rebase']
-
-  if init:
-      args.append('--init')
   if remote:
-      args.append('--remote')
+    args.append('--remote')
   if recursive:
-      args.append('--recursive')
+    args.append('--recursive')
   if depth:
     args.append('--depth')
     args.append(depth)
 
-  if init:
+  if not submodule.module_exists():
     print('Initializing {}'.format(submodule.name))
   else:
     subrepo = submodule.module()
