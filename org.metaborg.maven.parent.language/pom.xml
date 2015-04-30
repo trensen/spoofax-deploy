@@ -117,6 +117,15 @@
 				<artifactId>spoofax-maven-plugin</artifactId>
 				<version>${metaborg-version}</version>
 				<extensions>true</extensions>
+				<configuration>
+					<strategoArgs>
+						<arg>-la</arg><arg>stratego-lib</arg>
+						<arg>-la</arg><arg>stratego-sglr</arg>
+						<arg>-la</arg><arg>stratego-gpp</arg>
+						<arg>-la</arg><arg>stratego-xtc</arg>
+						<arg>-la</arg><arg>stratego-aterm</arg>
+					</strategoArgs>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
