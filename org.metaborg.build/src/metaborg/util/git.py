@@ -24,7 +24,7 @@ def Branch(repo):
 
 
 def Update(repo, submodule, remote = True, recursive = True, depth = None):
-  args = ['update', '--rebase', '--init']
+  args = ['update', '--init', '--recursive']
 
   if remote:
     args.append('--remote')
@@ -41,12 +41,16 @@ def Update(repo, submodule, remote = True, recursive = True, depth = None):
     if head.is_detached:
       print('Updating {}'.format(submodule.name))
     else:
+      args.append('--rebase')
       print('Updating {} from {}/{}'.format(submodule.name, remote.name, head.reference.name))
 
-  repo.git.submodule(args, '--', submodule.name)
+  args.append('--')
+  args.append(submodule.name)
 
-  if recursive:
-    UpdateAll(submodule.module(), depth = depth)
+  repo.git.submodule(args)
+
+  # if recursive:
+  #   UpdateAll(submodule.module(), depth = depth)
 
 def UpdateAll(repo, depth = None):
   for submodule in repo.submodules:
