@@ -27,7 +27,7 @@ def Update(repo, submodule, init = False, remote = True, recursive = True, depth
   if not submodule.module_exists():
     init = True
 
-  args = ['update', '--recursive']
+  args = ['update', '--recursive', '--rebase']
 
   if init:
       args.append('--init')
