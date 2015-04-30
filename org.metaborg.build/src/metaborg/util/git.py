@@ -23,7 +23,7 @@ def Branch(repo):
   return head.reference.name
 
 
-def Update(submodule, depth = None):
+def Update(repo, submodule, depth = None):
   if not submodule.module_exists():
     print('Cannot update {}, it has not been initialized yet. Run "init" first.'.format(submodule.name))
     return
@@ -34,19 +34,37 @@ def Update(submodule, depth = None):
   if head.is_detached:
     print('Cannot update {}, it has a DETACHED HEAD. Resolve the detached head manually or run "checkout" to check out the correct branch.'.format(submodule.name))
   else:
-    print('Updating {} from {}/{}'.format(submodule.name, remote.name, head.reference.name))
-    args = ['update', '--remote', '--recursive']
-    if depth:
-      args.append('--depth {}'.format(depth))
-    subrepo.git.submodule(args)
-  #   submodule.update(init = False, recursive = False, to_latest_revision = True, keep_going = True)
-  #
-  # for submodule in subrepo.submodules:
-  #   Update(submodule)
+    _SubmoduleUpdate(repo, submodule, depth = depth)
 
 def UpdateAll(repo, depth = None):
   for submodule in repo.submodules:
-    Update(submodule, depth)
+    Update(repo, submodule, depth)
+
+def _SubmoduleUpdate(repo, submodule, init = False, remote = True, recursive = True, depth = None):
+  if not submodule.module_exists():
+    init = True
+
+  args = ['update', '--recursive']
+
+  if init:
+      args.append('--init')
+  if remote:
+      args.append('--remote')
+  if recursive:
+      args.append('--recursive')
+  if depth:
+    args.append('--depth')
+    args.append(depth)
+
+  if init:
+    print('Initializing {}'.format(submodule.name))
+  else:
+    subrepo = submodule.module()
+    remote = subrepo.remote('origin')
+    head = subrepo.head
+    print('Updating {} from {}/{}'.format(submodule.name, remote.name, head.reference.name))
+
+  repo.git.submodule(args, '--', submodule.name)
 
 
 def Checkout(submodule):
@@ -147,7 +165,5 @@ def TrackAll(repo):
 
 
 def InitAll(repo, depth = None):
-  args = ['update', '--init', '--recursive']
-  if depth:
-    args.append('--depth {}'.format(depth))
-  repo.git.submodule(args)
+  for submodule in repo.submodules:
+    _SubmoduleUpdate(repo, submodule, init = True, remote = False, recursive = True, depth = depth)

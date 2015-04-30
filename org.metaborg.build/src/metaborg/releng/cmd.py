@@ -6,7 +6,7 @@ from metaborg.releng.build import BuildAll, GetAllBuilds, GenerateMavenSettings,
 from metaborg.releng.versions import SetVersions
 from metaborg.releng.release import Release, ResetRelease
 from metaborg.releng.eclipse import GeneratePlainEclipse, GenerateSpoofaxEclipse, GenerateDevSpoofaxEclipse, _eclipseRepo, _eclipsePackage, _spoofaxRepo
-from metaborg.util.git import UpdateAll, TrackAll, MergeAll, TagAll, PushAll, CheckoutAll, CleanAll, ResetAll
+from metaborg.util.git import UpdateAll, TrackAll, MergeAll, TagAll, PushAll, CheckoutAll, CleanAll, ResetAll, InitAll
 from metaborg.util.prompt import YesNo, YesNoTwice, YesNoTrice
 from metaborg.util.path import CommonPrefix
 
@@ -46,7 +46,7 @@ class MetaborgRelengInit(cli.Application):
   depth = cli.SwitchAttr(names = ['-d', '--depth'], default = None, argtype = int, mandatory = False, help = 'Depth to initialize with')
 
   def main(self):
-    print('Updating all submodules')
+    print('Initializing all submodules')
     InitAll(self.parent.repo, depth = self.depth)
     return 0
 
