@@ -23,9 +23,9 @@ def Branch(repo):
   return head.reference.name
 
 
-def Update(submodule):
+def Update(submodule, depth = None):
   if not submodule.module_exists():
-    print('Cannot update {}, it has not been initialized yet. Run "git submodule update --init --recursive" first.'.format(submodule.name))
+    print('Cannot update {}, it has not been initialized yet. Run "init" first.'.format(submodule.name))
     return
 
   subrepo = submodule.module()
@@ -35,14 +35,18 @@ def Update(submodule):
     print('Cannot update {}, it has a DETACHED HEAD. Resolve the detached head manually or run "checkout" to check out the correct branch.'.format(submodule.name))
   else:
     print('Updating {} from {}/{}'.format(submodule.name, remote.name, head.reference.name))
-    submodule.update(init = False, recursive = False, to_latest_revision = True, keep_going = True)
+    args = ['update', '--remote', '--recursive']
+    if depth:
+      args.append('--depth {}'.format(depth))
+    subrepo.git.submodule(args)
+  #   submodule.update(init = False, recursive = False, to_latest_revision = True, keep_going = True)
+  #
+  # for submodule in subrepo.submodules:
+  #   Update(submodule)
 
-  for submodule in subrepo.submodules:
-    Update(submodule)
-
-def UpdateAll(repo):
+def UpdateAll(repo, depth = None):
   for submodule in repo.submodules:
-    Update(submodule)
+    Update(submodule, depth)
 
 
 def Checkout(submodule):
@@ -127,6 +131,7 @@ def PushAll(repo, **kwargs):
   for submodule in repo.submodules:
     Push(submodule, **kwargs)
 
+
 def Track(submodule):
   subrepo = submodule.module()
   head = subrepo.head
@@ -139,3 +144,10 @@ def Track(submodule):
 def TrackAll(repo):
   for submodule in repo.submodules:
     Track(submodule)
+
+
+def InitAll(repo, depth = None):
+  args = ['update', '--init', '--recursive']
+  if depth:
+    args.append('--depth {}'.format(depth))
+  repo.git.submodule(args)

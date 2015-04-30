@@ -37,15 +37,31 @@ class MetaborgReleng(cli.Application):
     return 0
 
 
+@MetaborgReleng.subcommand("init")
+class MetaborgRelengInit(cli.Application):
+  '''
+  Initializes all submodules
+  '''
+
+  depth = cli.SwitchAttr(names = ['-d', '--depth'], default = None, argtype = int, mandatory = False, help = 'Depth to initialize with')
+
+  def main(self):
+    print('Updating all submodules')
+    InitAll(self.parent.repo, depth = self.depth)
+    return 0
+
+
 @MetaborgReleng.subcommand("update")
 class MetaborgRelengUpdate(cli.Application):
   '''
   Updates all submodules to the latest commit on the remote repository
   '''
 
+  depth = cli.SwitchAttr(names = ['-d', '--depth'], default = None, argtype = int, mandatory = False, help = 'Depth to update with')
+
   def main(self):
     print('Updating all submodules')
-    UpdateAll(self.parent.repo)
+    UpdateAll(self.parent.repo, depth = self.depth)
     return 0
 
 
