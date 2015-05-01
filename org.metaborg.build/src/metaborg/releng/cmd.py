@@ -254,20 +254,25 @@ class MetaborgRelengBuild(cli.Application):
 
   USAGE = '    %(progname)s [SWITCHES] %(tailargs)s\n\n    with one or more components: {}\n'.format(', '.join(GetAllBuilds()))
 
-  buildStratego = cli.Flag(    names = ['-s', '--build-stratego'], default = False, help = 'Build StrategoXT instead of downloading it')
-  bootstrapStratego = cli.Flag(names = ['-b', '--bootstrap-stratego'], default = False, help = 'Bootstrap StrategoXT instead of building it')
-  noStrategoTest = cli.Flag(   names = ['-t', '--no-stratego-test'], default = False, help = 'Skip StrategoXT tests')
+  buildStratego = cli.Flag(       names = ['-s', '--build-stratego'], default = False, help = 'Build StrategoXT instead of downloading it', group = 'StrategoXT switches')
+  bootstrapStratego = cli.Flag(   names = ['-b', '--bootstrap-stratego'], default = False, help = 'Bootstrap StrategoXT instead of building it', group = 'StrategoXT switches')
+  noStrategoTest = cli.Flag(      names = ['-t', '--no-stratego-test'], default = False, help = 'Skip StrategoXT tests', group = 'StrategoXT switches')
 
-  cleanRepo = cli.Flag(        names = ['-c', '--clean-repo'], default = False, help = 'Clean MetaBorg artifacts from the local repository before building')
-  noDeps = cli.Flag(           names = ['-e', '--no-deps'], default = False, excludes = ['--clean-repo'], help = 'Do not build dependencies, just build given components')
-  resumeFrom = cli.SwitchAttr( names = ['-f', '--resume-from'], argtype = str, default = None, excludes = ['--clean-repo'], requires = ['--no-deps'], help = 'Resume build from given artifact')
-  deploy = cli.Flag(           names = ['-d', '--deploy'], default = False, help = 'Deploy after building')
-  release = cli.Flag(          names = ['-r', '--release'], default = False, help = 'Perform a release build. Checks whether all dependencies are release versions, fails the build if not')
+  cleanRepo = cli.Flag(           names = ['-c', '--clean-repo'], default = False, help = 'Clean MetaBorg artifacts from the local repository before building', group = 'Build switches')
+  noDeps = cli.Flag(              names = ['-e', '--no-deps'], default = False, excludes = ['--clean-repo'], help = 'Do not build dependencies, just build given components', group = 'Build switches')
+  deploy = cli.Flag(              names = ['-d', '--deploy'], default = False, help = 'Deploy after building', group = 'Build switches')
+  release = cli.Flag(             names = ['-r', '--release'], default = False, help = 'Perform a release build. Checks whether all dependencies are release versions, fails the build if not', group = 'Build switches')
+  skipExpensive = cli.Flag(       names = ['-k', '--skip-expensive'], default = False, requires = ['--no-clean'], excludes = ['--clean-repo'], help = 'Skip expensive build steps such as Ant builds. Typically used after a regular build to deploy more quickly', group = 'Build switches')
 
-  noClean = cli.Flag(          names = ['-u', '--no-clean'], default = False, help = 'Do not run the clean phase in Maven builds')
-  offline = cli.Flag(          names = ['-o', '--offline'], default = False, help = "Pass --offline flag to Maven")
-  debug = cli.Flag(            names = ['-x', '--debug'], default = False, excludes = ['--quiet'], help = "Pass --debug flag to Maven")
-  quiet = cli.Flag(            names = ['-q', '--quiet'], default = False, excludes = ['--debug'], help = "Pass --quiet flag to Maven")
+  resumeFrom = cli.SwitchAttr(    names = ['-f', '--resume-from'], argtype = str, default = None, excludes = ['--clean-repo'], requires = ['--no-deps'], help = 'Resume build from given artifact', group = 'Maven switches')
+  noClean = cli.Flag(             names = ['-u', '--no-clean'], default = False, help = 'Do not run the clean phase in Maven builds', group = 'Maven switches')
+  settings = cli.SwitchAttr(      names = ['-i', '--settings'], argtype = str, default = None, mandatory = False, help = 'Maven settings file location', group = 'Maven switches')
+  globalSettings = cli.SwitchAttr(names = ['-g', '--global-settings'], argtype = str, default = None, mandatory = False, help = 'Global Maven settings file location', group = 'Maven switches')
+  localRepo = cli.SwitchAttr(     names = ['-l', '--local-repository'], argtype = str, default = None, mandatory = False, help = 'Local Maven repository location', group = 'Maven switches')
+  offline = cli.Flag(             names = ['-o', '--offline'], default = False, help = "Pass --offline flag to Maven", group = 'Maven switches')
+  debug = cli.Flag(               names = ['-x', '--debug'], default = False, excludes = ['--quiet'], help = "Pass --debug and --errors flag to Maven", group = 'Maven switches')
+  quiet = cli.Flag(               names = ['-q', '--quiet'], default = False, excludes = ['--debug'], help = "Pass --quiet flag to Maven", group = 'Maven switches')
+  batch = cli.Flag(               names = ['-a', '--batch'], default = False, help = "Pass --batch-mode flag to Maven", group = 'Maven switches')
 
   def main(self, *components):
     if len(components) == 0:
@@ -280,8 +285,10 @@ class MetaborgRelengBuild(cli.Application):
     try:
       BuildAll(repo = repo, components = components, buildDeps = not self.noDeps, resumeFrom = self.resumeFrom,
         buildStratego = self.buildStratego, bootstrapStratego = self.bootstrapStratego,
-        strategoTest = not self.noStrategoTest, cleanRepo = self.cleanRepo, release = self.release,
-        deploy = self.deploy, clean = not self.noClean, offline = self.offline, debug = self.debug, quiet = self.quiet)
+        strategoTest = not self.noStrategoTest, cleanRepo = self.cleanRepo, deploy = self.deploy,
+        release = self.release, skipExpensive = self.skipExpensive, clean = not self.noClean, settingsFile = self.settings,
+        globalSettingsFile = self.globalSettings, localRepo = self.localRepo, offline = self.offline, debug = self.debug,
+        quiet = self.quiet, batch = self.batch)
       print('All done!')
       return 0
     except Exception as detail:
@@ -408,12 +415,13 @@ class MetaborgRelengGenMvnSettings(cli.Application):
   metaborgSnapshots = cli.SwitchAttr(names = ['-s', '--metaborg-snapshots'], argtype = str, mandatory = False, default = _metaborgSnapshots, help = 'Maven repository for MetaBorg snapshots')
   spoofaxUpdateSite = cli.SwitchAttr(names = ['-u', '--spoofax-update-site'], argtype = str, mandatory = False, default = _spoofaxUpdateSite, help = 'Eclipse update site for Spoofax plugins')
   centralMirror = cli.SwitchAttr(names = ['-m', '--central-mirror'], argtype = str, mandatory = False, default = _centralMirror, help = 'Maven repository for mirroring Maven central')
+  confirmPrompt = cli.Flag(names = ['-y', '--yes'], default = False, help = 'Answer warning prompts with yes automatically')
 
   def main(self):
     print('Generating Maven settings file')
 
-    if path.isfile(self.destination):
-      print('Maven settings file already exists at {}, do you want to overwrite it?'.format(self.destination))
+    if not self.confirmPrompt and path.isfile(self.destination):
+      print('Maven settings file already exists at {}, would you like to overwrite it?'.format(self.destination))
       if not YesNo():
         return 1
 

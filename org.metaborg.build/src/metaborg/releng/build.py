@@ -9,8 +9,8 @@ from metaborg.util.maven import Mvn, MvnSetingsGen, MvnUserSettingsLocation
 
 
 def BuildAll(repo, components = ['all'], buildDeps = True, resumeFrom = None, buildStratego = False,
-    bootstrapStratego = False, strategoTest = True, cleanRepo = True, release = False, deploy = False, clean = True,
-    profiles = [], **mavenArgs):
+    bootstrapStratego = False, strategoTest = True, cleanRepo = True, release = False, deploy = False,
+    skipExpensive = False, clean = True, profiles = [], **mavenArgs):
   basedir = repo.working_tree_dir
   if release:
     profiles.append('release')
@@ -40,28 +40,28 @@ def BuildAll(repo, components = ['all'], buildDeps = True, resumeFrom = None, bu
     cmd = GetBuildCommand(build)
     cmd(basedir = basedir, deploy = deploy, qualifier = qualifier, noSnapshotUpdates = True, clean = clean,
         profiles = profiles, buildStratego = buildStratego, bootstrapStratego = bootstrapStratego,
-        strategoTest = strategoTest, resumeFrom = resumeFrom, **mavenArgs)
+        strategoTest = strategoTest, skipExpensive = skipExpensive, resumeFrom = resumeFrom, **mavenArgs)
 
 
-def BuildPoms(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, **kwargs):
+def BuildPoms(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'install'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.parentpoms', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, **kwargs)
 
 
-def BuildOrDownloadStrategoXt(basedir, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
+def BuildOrDownloadStrategoXt(basedir, deploy, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   if buildStratego:
     BuildStrategoXt(basedir = basedir, deploy = deploy, bootstrap = bootstrapStratego, runTests = strategoTest, **kwargs)
   else:
     DownloadStrategoXt(basedir, **kwargs)
 
-def DownloadStrategoXt(basedir, clean, profiles, **kwargs):
+def DownloadStrategoXt(basedir, clean, profiles, skipExpensive, **kwargs):
   if '!add-metaborg-repositories' in profiles:
     profiles.remove('!add-metaborg-repositories')
   pomFile = path.join(basedir, 'strategoxt', 'strategoxt', 'download-pom.xml')
   Mvn(pomFile = pomFile, clean = False, profiles = profiles, phase = 'dependency:resolve', **kwargs)
 
-def BuildStrategoXt(basedir, profiles, deploy, bootstrap, runTests, **kwargs):
+def BuildStrategoXt(basedir, profiles, deploy, bootstrap, runTests, skipExpensive, **kwargs):
   if '!add-metaborg-repositories' in profiles:
     profiles.remove('!add-metaborg-repositories')
 
@@ -72,8 +72,13 @@ def BuildStrategoXt(basedir, profiles, deploy, bootstrap, runTests, **kwargs):
     pomFile = path.join(strategoXtDir, 'bootstrap-pom.xml')
   else:
     pomFile = path.join(strategoXtDir, 'build-pom.xml')
+
   buildKwargs = dict(kwargs)
-  buildKwargs.update({'strategoxt-skip-test': not runTests})
+  if skipExpensive:
+    buildKwargs.update({'strategoxt-skip-build': True, 'strategoxt-skip-assembly' : True, 'strategoxt-skip-test': True})
+  else:
+    buildKwargs.update({'strategoxt-skip-test': not runTests})
+
   Mvn(pomFile = pomFile, phase = phase, profiles = profiles, **buildKwargs)
 
   parent_pom_file = path.join(strategoXtDir, 'buildpoms', 'pom.xml')
@@ -82,29 +87,35 @@ def BuildStrategoXt(basedir, profiles, deploy, bootstrap, runTests, **kwargs):
   Mvn(pomFile = parent_pom_file, phase = phase, profiles = profiles, **buildKwargs)
 
 
-def BuildJava(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
+def BuildJava(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'install'
+  if skipExpensive:
+    kwargs.update({'skip-generator' : True})
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.java', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
 
-def BuildEclipse(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
+def BuildEclipse(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'install'
+  if skipExpensive:
+    kwargs.update({'skip-language-build' : True})
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.eclipse', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
 
-def BuildPluginPoms(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, **kwargs):
+def BuildPluginPoms(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'install'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.parentpoms.plugin', 'pom.xml')
   kwargs.update({'skip-language-build' : True})
   Mvn(pomFile = pomFile, phase = phase, **kwargs)
 
-def BuildSpoofaxLibs(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, **kwargs):
+def BuildSpoofaxLibs(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'verify'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.libs', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, **kwargs)
 
-def BuildTestRunner(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, **kwargs):
+def BuildTestRunner(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'verify'
+  if skipExpensive:
+    kwargs.update({'skip-language-build' : True})
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.testrunner', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, **kwargs)
 
@@ -195,10 +206,10 @@ def CleanLocalRepo():
 
 
 _mvnSettingsLocation = MvnUserSettingsLocation()
-_metaborgReleases = 'http://download.spoofax.org/update/artifacts/releases/'
-_metaborgSnapshots = None
+_metaborgReleases = 'http://artifacts.metaborg.org/content/repositories/releases/'
+_metaborgSnapshots = 'http://artifacts.metaborg.org/content/repositories/snapshots/'
 _spoofaxUpdateSite = 'http://download.spoofax.org/update/nightly/'
-_centralMirror = None
+_centralMirror = 'http://artifacts.metaborg.org/content/repositories/central/'
 
 def GenerateMavenSettings(location = _mvnSettingsLocation, metaborgReleases = _metaborgReleases,
     metaborgSnapshots = _metaborgSnapshots, spoofaxUpdateSite = _spoofaxUpdateSite, centralMirror = _centralMirror):
