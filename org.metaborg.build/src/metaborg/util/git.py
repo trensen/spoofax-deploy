@@ -152,8 +152,3 @@ def Track(submodule):
 def TrackAll(repo):
   for submodule in repo.submodules:
     Track(submodule)
-
-
-def InitAll(repo, depth = None):
-  for submodule in repo.submodules:
-    Update(repo, submodule, init = True, remote = False, recursive = True, depth = depth)

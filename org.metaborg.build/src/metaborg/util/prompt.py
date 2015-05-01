@@ -1,8 +1,8 @@
 def YesNo(message = None):
   if message != None:
-    print(message + ' [Y/n]')
+    print(message + ' [y/N]')
   else:
-    print('[Y/n]')
+    print('[y/N]')
   choice = input()
   if choice != 'Y':
     return False

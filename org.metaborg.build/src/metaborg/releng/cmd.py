@@ -6,7 +6,7 @@ from metaborg.releng.build import BuildAll, GetAllBuilds, GenerateMavenSettings,
 from metaborg.releng.versions import SetVersions
 from metaborg.releng.release import Release, ResetRelease
 from metaborg.releng.eclipse import GeneratePlainEclipse, GenerateSpoofaxEclipse, GenerateDevSpoofaxEclipse, _eclipseRepo, _eclipsePackage, _spoofaxRepo
-from metaborg.util.git import UpdateAll, TrackAll, MergeAll, TagAll, PushAll, CheckoutAll, CleanAll, ResetAll, InitAll
+from metaborg.util.git import UpdateAll, TrackAll, MergeAll, TagAll, PushAll, CheckoutAll, CleanAll, ResetAll
 from metaborg.util.prompt import YesNo, YesNoTwice, YesNoTrice
 from metaborg.util.path import CommonPrefix
 
@@ -37,20 +37,6 @@ class MetaborgReleng(cli.Application):
     return 0
 
 
-@MetaborgReleng.subcommand("init")
-class MetaborgRelengInit(cli.Application):
-  '''
-  Initializes all submodules
-  '''
-
-  depth = cli.SwitchAttr(names = ['-d', '--depth'], default = None, argtype = int, mandatory = False, help = 'Depth to initialize with')
-
-  def main(self):
-    print('Initializing all submodules')
-    InitAll(self.parent.repo, depth = self.depth)
-    return 0
-
-
 @MetaborgReleng.subcommand("update")
 class MetaborgRelengUpdate(cli.Application):
   '''
@@ -62,6 +48,29 @@ class MetaborgRelengUpdate(cli.Application):
   def main(self):
     print('Updating all submodules')
     UpdateAll(self.parent.repo, depth = self.depth)
+    return 0
+
+
+@MetaborgReleng.subcommand("clean-update")
+class MetaborgRelengCleanUpdate(cli.Application):
+  '''
+  Resets, cleans, and updates all submodules to the latest commit on the remote repository
+  '''
+
+  confirmPrompt = cli.Flag(names = ['-y', '--yes'], default = False, help = 'Answer warning prompts with yes automatically')
+
+  depth = cli.SwitchAttr(names = ['-d', '--depth'], default = None, argtype = int, mandatory = False, help = 'Depth to update with')
+
+  def main(self):
+    if not self.confirmPrompt:
+      print('WARNING: This will DELETE UNCOMMITED CHANGES, DELETE UNPUSHED COMMITS, and DELETE UNTRACKED FILES. Do you want to continue?')
+      if not YesNoTrice():
+        return 1
+    print('Resetting, cleaning, and updating all submodules')
+    repo = self.parent.repo
+    ResetAll(repo, toRemote = True)
+    CleanAll(repo)
+    UpdateAll(repo, depth = self.depth)
     return 0
 
 
