@@ -43,9 +43,34 @@ class MetaborgRelengUpdate(cli.Application):
   Updates all submodules to the latest commit on the remote repository
   '''
 
+  depth = cli.SwitchAttr(names = ['-d', '--depth'], default = None, argtype = int, mandatory = False, help = 'Depth to update with')
+
   def main(self):
     print('Updating all submodules')
-    UpdateAll(self.parent.repo)
+    UpdateAll(self.parent.repo, depth = self.depth)
+    return 0
+
+
+@MetaborgReleng.subcommand("clean-update")
+class MetaborgRelengCleanUpdate(cli.Application):
+  '''
+  Resets, cleans, and updates all submodules to the latest commit on the remote repository
+  '''
+
+  confirmPrompt = cli.Flag(names = ['-y', '--yes'], default = False, help = 'Answer warning prompts with yes automatically')
+
+  depth = cli.SwitchAttr(names = ['-d', '--depth'], default = None, argtype = int, mandatory = False, help = 'Depth to update with')
+
+  def main(self):
+    if not self.confirmPrompt:
+      print('WARNING: This will DELETE UNCOMMITED CHANGES, DELETE UNPUSHED COMMITS, and DELETE UNTRACKED FILES. Do you want to continue?')
+      if not YesNoTrice():
+        return 1
+    print('Resetting, cleaning, and updating all submodules')
+    repo = self.parent.repo
+    ResetAll(repo, toRemote = True)
+    CleanAll(repo)
+    UpdateAll(repo, depth = self.depth)
     return 0
 
 
@@ -229,20 +254,27 @@ class MetaborgRelengBuild(cli.Application):
 
   USAGE = '    %(progname)s [SWITCHES] %(tailargs)s\n\n    with one or more components: {}\n'.format(', '.join(GetAllBuilds()))
 
-  buildStratego = cli.Flag(    names = ['-s', '--build-stratego'], default = False, help = 'Build StrategoXT instead of downloading it')
-  bootstrapStratego = cli.Flag(names = ['-b', '--bootstrap-stratego'], default = False, help = 'Bootstrap StrategoXT instead of building it')
-  noStrategoTest = cli.Flag(   names = ['-t', '--no-stratego-test'], default = False, help = 'Skip StrategoXT tests')
+  buildStratego = cli.Flag(       names = ['-s', '--build-stratego'], default = False, help = 'Build StrategoXT instead of downloading it', group = 'StrategoXT switches')
+  bootstrapStratego = cli.Flag(   names = ['-b', '--bootstrap-stratego'], default = False, help = 'Bootstrap StrategoXT instead of building it', group = 'StrategoXT switches')
+  noStrategoTest = cli.Flag(      names = ['-t', '--no-stratego-test'], default = False, help = 'Skip StrategoXT tests', group = 'StrategoXT switches')
 
-  cleanRepo = cli.Flag(        names = ['-c', '--clean-repo'], default = False, help = 'Clean MetaBorg artifacts from the local repository before building')
-  noDeps = cli.Flag(           names = ['-e', '--no-deps'], default = False, excludes = ['--clean-repo'], help = 'Do not build dependencies, just build given components')
-  resumeFrom = cli.SwitchAttr( names = ['-f', '--resume-from'], argtype = str, default = None, excludes = ['--clean-repo'], requires = ['--no-deps'], help = 'Resume build from given artifact')
-  deploy = cli.Flag(           names = ['-d', '--deploy'], default = False, help = 'Deploy after building')
-  release = cli.Flag(          names = ['-r', '--release'], default = False, help = 'Perform a release build. Checks whether all dependencies are release versions, fails the build if not')
+  qualifier = cli.SwitchAttr(     names = ['-q', '--qualifier'], argtype = str, default = None, help = 'Qualifier to use', group = 'Build switches')
+  cleanRepo = cli.Flag(           names = ['-c', '--clean-repo'], default = False, help = 'Clean MetaBorg artifacts from the local repository before building', group = 'Build switches')
+  noDeps = cli.Flag(              names = ['-e', '--no-deps'], default = False, excludes = ['--clean-repo'], help = 'Do not build dependencies, just build given components', group = 'Build switches')
+  deploy = cli.Flag(              names = ['-d', '--deploy'], default = False, help = 'Deploy after building', group = 'Build switches')
+  release = cli.Flag(             names = ['-r', '--release'], default = False, help = 'Perform a release build. Checks whether all dependencies are release versions, fails the build if not', group = 'Build switches')
+  skipExpensive = cli.Flag(       names = ['-k', '--skip-expensive'], default = False, requires = ['--no-clean'], excludes = ['--clean-repo'], help = 'Skip expensive build steps such as Ant builds. Typically used after a regular build to deploy more quickly', group = 'Build switches')
+  skipComponents = cli.SwitchAttr(names = ['-m', '--skip-component'], argtype = str, list = True, help = 'Skips given components', group = 'Build switches')
 
-  noClean = cli.Flag(          names = ['-u', '--no-clean'], default = False, help = 'Do not run the clean phase in Maven builds')
-  offline = cli.Flag(          names = ['-o', '--offline'], default = False, help = "Pass --offline flag to Maven")
-  debug = cli.Flag(            names = ['-x', '--debug'], default = False, excludes = ['--quiet'], help = "Pass --debug flag to Maven")
-  quiet = cli.Flag(            names = ['-q', '--quiet'], default = False, excludes = ['--debug'], help = "Pass --quiet flag to Maven")
+  resumeFrom = cli.SwitchAttr(    names = ['-f', '--resume-from'], argtype = str, default = None, excludes = ['--clean-repo'], requires = ['--no-deps'], help = 'Resume build from given artifact', group = 'Maven switches')
+  noClean = cli.Flag(             names = ['-u', '--no-clean'], default = False, help = 'Do not run the clean phase in Maven builds', group = 'Maven switches')
+  skipTests = cli.Flag(           names = ['-y', '--skip-tests'], default = False, help = "Skip tests", group = 'Maven switches')
+  settings = cli.SwitchAttr(      names = ['-i', '--settings'], argtype = str, default = None, mandatory = False, help = 'Maven settings file location', group = 'Maven switches')
+  globalSettings = cli.SwitchAttr(names = ['-g', '--global-settings'], argtype = str, default = None, mandatory = False, help = 'Global Maven settings file location', group = 'Maven switches')
+  localRepo = cli.SwitchAttr(     names = ['-l', '--local-repository'], argtype = str, default = None, mandatory = False, help = 'Local Maven repository location', group = 'Maven switches')
+  offline = cli.Flag(             names = ['-o', '--offline'], default = False, help = "Pass --offline flag to Maven", group = 'Maven switches')
+  debug = cli.Flag(               names = ['-D', '--debug'], default = False, excludes = ['--quiet'], help = "Pass --debug and --errors flag to Maven", group = 'Maven switches')
+  quiet = cli.Flag(               names = ['-Q', '--quiet'], default = False, excludes = ['--debug'], help = "Pass --quiet flag to Maven", group = 'Maven switches')
 
   def main(self, *components):
     if len(components) == 0:
@@ -255,8 +287,10 @@ class MetaborgRelengBuild(cli.Application):
     try:
       BuildAll(repo = repo, components = components, buildDeps = not self.noDeps, resumeFrom = self.resumeFrom,
         buildStratego = self.buildStratego, bootstrapStratego = self.bootstrapStratego,
-        strategoTest = not self.noStrategoTest, cleanRepo = self.cleanRepo, release = self.release,
-        deploy = self.deploy, clean = not self.noClean, offline = self.offline, debug = self.debug, quiet = self.quiet)
+        strategoTest = not self.noStrategoTest, qualifier = self.qualifier, cleanRepo = self.cleanRepo, deploy = self.deploy,
+        release = self.release, skipExpensive = self.skipExpensive, skipComponents = self.skipComponents, clean = not self.noClean,
+        skipTests = self.skipTests, settingsFile = self.settings, globalSettingsFile = self.globalSettings, localRepo = self.localRepo,
+        offline = self.offline, debug = self.debug, quiet = self.quiet)
       print('All done!')
       return 0
     except Exception as detail:
@@ -383,12 +417,13 @@ class MetaborgRelengGenMvnSettings(cli.Application):
   metaborgSnapshots = cli.SwitchAttr(names = ['-s', '--metaborg-snapshots'], argtype = str, mandatory = False, default = _metaborgSnapshots, help = 'Maven repository for MetaBorg snapshots')
   spoofaxUpdateSite = cli.SwitchAttr(names = ['-u', '--spoofax-update-site'], argtype = str, mandatory = False, default = _spoofaxUpdateSite, help = 'Eclipse update site for Spoofax plugins')
   centralMirror = cli.SwitchAttr(names = ['-m', '--central-mirror'], argtype = str, mandatory = False, default = _centralMirror, help = 'Maven repository for mirroring Maven central')
+  confirmPrompt = cli.Flag(names = ['-y', '--yes'], default = False, help = 'Answer warning prompts with yes automatically')
 
   def main(self):
     print('Generating Maven settings file')
 
-    if path.isfile(self.destination):
-      print('Maven settings file already exists at {}, do you want to overwrite it?'.format(self.destination))
+    if not self.confirmPrompt and path.isfile(self.destination):
+      print('Maven settings file already exists at {}, would you like to overwrite it?'.format(self.destination))
       if not YesNo():
         return 1
 
@@ -417,9 +452,11 @@ class MetaborgRelengChanged(cli.Application):
 
   destination = cli.SwitchAttr(names = ['-d', '--destination'], argtype = str, mandatory = False, default = _qualifierLocation, help = 'Path to read/write the last qualifier to')
 
+  forceChange = cli.Flag(names = ['-f', '--force-change'], default = False, help = 'Force a change, always return 0')
+
   def main(self):
     changed, qualifier = RepoChanged(self.parent.repo, self.destination)
-    if changed:
+    if self.forceChange or changed:
       print(qualifier)
       return 0
     return 1

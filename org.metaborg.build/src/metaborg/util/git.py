@@ -23,32 +23,45 @@ def Branch(repo):
   return head.reference.name
 
 
-def Update(submodule):
+def Update(repo, submodule, remote = True, recursive = True, depth = None):
+  args = ['update', '--init', '--recursive']
+
+  if remote:
+    args.append('--remote')
+  if depth:
+    args.append('--depth')
+    args.append(depth)
+
   if not submodule.module_exists():
-    print('Cannot update {}, it has not been initialized yet. Run "git submodule update --init --recursive" first.'.format(submodule.name))
-    return
-
-  subrepo = submodule.module()
-  remote = subrepo.remote('origin')
-  head = subrepo.head
-  if head.is_detached:
-    print('Cannot update {}, it has a DETACHED HEAD. Resolve the detached head manually or run "checkout" to check out the correct branch.'.format(submodule.name))
+    print('Initializing {}'.format(submodule.name))
   else:
-    print('Updating {} from {}/{}'.format(submodule.name, remote.name, head.reference.name))
-    submodule.update(init = False, recursive = False, to_latest_revision = True, keep_going = True)
+    subrepo = submodule.module()
+    remote = subrepo.remote('origin')
+    head = subrepo.head
+    if head.is_detached:
+      print('Updating {}'.format(submodule.name))
+    else:
+      args.append('--rebase')
+      print('Updating {} from {}/{}'.format(submodule.name, remote.name, head.reference.name))
 
-  for submodule in subrepo.submodules:
-    Update(submodule)
+  args.append('--')
+  args.append(submodule.name)
 
-def UpdateAll(repo):
+  repo.git.submodule(args)
+
+def UpdateAll(repo, depth = None):
   for submodule in repo.submodules:
-    Update(submodule)
+    Update(repo, submodule, depth = depth)
 
 
 def Checkout(submodule):
   branch = submodule.branch
   print('Switching {} to {}'.format(submodule.name, branch.name))
   branch.checkout()
+
+  if not submodule.module_exists():
+    print('Cannot recursively checkout, {} has not been initialized yet.'.format(submodule.name))
+    return
 
   subrepo = submodule.module()
   for submodule in subrepo.submodules:
@@ -60,6 +73,10 @@ def CheckoutAll(repo):
 
 
 def Clean(submodule):
+  if not submodule.module_exists():
+    print('Cannot clean, {} has not been initialized yet.'.format(submodule.name))
+    return
+
   subrepo = submodule.module()
   print('Cleaning {}'.format(submodule.name))
   subrepo.git.clean('-fd')
@@ -70,6 +87,10 @@ def CleanAll(repo):
 
 
 def Reset(submodule, toRemote):
+  if not submodule.module_exists():
+    print('Cannot reset, {} has not been initialized yet.'.format(submodule.name))
+    return
+
   subrepo = submodule.module()
   if toRemote:
     head = subrepo.head
@@ -90,6 +111,10 @@ def ResetAll(repo, toRemote):
 
 
 def Merge(submodule, branchName):
+  if not submodule.module_exists():
+    print('Cannot merge, {} has not been initialized yet.'.format(submodule.name))
+    return
+
   subrepo = submodule.module()
   head = subrepo.head
   if head.is_detached:
@@ -108,6 +133,10 @@ def MergeAll(repo, branchName):
 
 
 def Tag(submodule, tagName, tagDescription):
+  if not submodule.module_exists():
+    print('Cannot tag, {} has not been initialized yet.'.format(submodule.name))
+    return
+
   print('Creating tag {} in {}'.format(tagName, submodule.name))
   subrepo = submodule.module()
   subrepo.create_tag(path = tagName, message = tagDescription)
@@ -118,6 +147,10 @@ def TagAll(repo, tagName, tagDescription):
 
 
 def Push(submodule, **kwargs):
+  if not submodule.module_exists():
+    print('Cannot push, {} has not been initialized yet.'.format(submodule.name))
+    return
+
   print('Pushing {}'.format(submodule.name))
   subrepo = submodule.module()
   remote = subrepo.remote('origin')
@@ -127,7 +160,12 @@ def PushAll(repo, **kwargs):
   for submodule in repo.submodules:
     Push(submodule, **kwargs)
 
+
 def Track(submodule):
+  if not submodule.module_exists():
+    print('Cannot set tracking branch, {} has not been initialized yet.'.format(submodule.name))
+    return
+
   subrepo = submodule.module()
   head = subrepo.head
   remote = subrepo.remote('origin')
