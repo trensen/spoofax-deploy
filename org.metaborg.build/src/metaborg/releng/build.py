@@ -10,7 +10,7 @@ from metaborg.util.maven import Mvn, MvnSetingsGen, MvnUserSettingsLocation
 
 def BuildAll(repo, components = ['all'], buildDeps = True, resumeFrom = None, buildStratego = False,
     bootstrapStratego = False, strategoTest = True, cleanRepo = True, release = False, deploy = False,
-    skipExpensive = False, clean = True, profiles = [], qualifier = None, **mavenArgs):
+    skipExpensive = False, skipComponents = [], clean = True, profiles = [], qualifier = None, **mavenArgs):
   basedir = repo.working_tree_dir
   if release:
     profiles.append('release')
@@ -34,6 +34,10 @@ def BuildAll(repo, components = ['all'], buildDeps = True, resumeFrom = None, bu
     buildOrder = GetBuildOrder(components)
   else:
     buildOrder = components
+
+  for component in skipComponents:
+    if component in buildOrder:
+      buildOrder.remove(component)
 
   print('Building component(s): {}'.format(', '.join(buildOrder)))
   for build in buildOrder:
@@ -62,7 +66,7 @@ def DownloadStrategoXt(basedir, clean, profiles, skipExpensive, **kwargs):
   pomFile = path.join(basedir, 'strategoxt', 'strategoxt', 'download-pom.xml')
   Mvn(pomFile = pomFile, clean = False, profiles = profiles, phase = 'dependency:resolve', **kwargs)
 
-def BuildStrategoXt(basedir, profiles, deploy, bootstrap, runTests, skipExpensive, **kwargs):
+def BuildStrategoXt(basedir, profiles, deploy, bootstrap, runTests, skipTests, skipExpensive, **kwargs):
   if '!add-metaborg-repositories' in profiles:
     profiles.remove('!add-metaborg-repositories')
 
@@ -78,14 +82,14 @@ def BuildStrategoXt(basedir, profiles, deploy, bootstrap, runTests, skipExpensiv
   if skipExpensive:
     buildKwargs.update({'strategoxt-skip-build': True, 'strategoxt-skip-assembly' : True, 'strategoxt-skip-test': True})
   else:
-    buildKwargs.update({'strategoxt-skip-test': not runTests})
+    buildKwargs.update({'strategoxt-skip-test': skipTests or not runTests})
 
-  Mvn(pomFile = pomFile, phase = phase, profiles = profiles, **buildKwargs)
+  Mvn(pomFile = pomFile, phase = phase, profiles = profiles, skipTests = skipTests, **buildKwargs)
 
   parent_pom_file = path.join(strategoXtDir, 'buildpoms', 'pom.xml')
   buildKwargs = dict(kwargs)
   buildKwargs.update({'strategoxt-skip-build': True, 'strategoxt-skip-assembly' : True})
-  Mvn(pomFile = parent_pom_file, phase = phase, profiles = profiles, **buildKwargs)
+  Mvn(pomFile = parent_pom_file, phase = phase, profiles = profiles, skipTests = skipTests, **buildKwargs)
 
 
 def BuildJava(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):

@@ -264,16 +264,17 @@ class MetaborgRelengBuild(cli.Application):
   deploy = cli.Flag(              names = ['-d', '--deploy'], default = False, help = 'Deploy after building', group = 'Build switches')
   release = cli.Flag(             names = ['-r', '--release'], default = False, help = 'Perform a release build. Checks whether all dependencies are release versions, fails the build if not', group = 'Build switches')
   skipExpensive = cli.Flag(       names = ['-k', '--skip-expensive'], default = False, requires = ['--no-clean'], excludes = ['--clean-repo'], help = 'Skip expensive build steps such as Ant builds. Typically used after a regular build to deploy more quickly', group = 'Build switches')
+  skipComponents = cli.SwitchAttr(names = ['-m', '--skip-component'], argtype = str, list = True, help = 'Skips given components', group = 'Build switches')
 
   resumeFrom = cli.SwitchAttr(    names = ['-f', '--resume-from'], argtype = str, default = None, excludes = ['--clean-repo'], requires = ['--no-deps'], help = 'Resume build from given artifact', group = 'Maven switches')
   noClean = cli.Flag(             names = ['-u', '--no-clean'], default = False, help = 'Do not run the clean phase in Maven builds', group = 'Maven switches')
+  skipTests = cli.Flag(           names = ['-y', '--skip-tests'], default = False, help = "Skip tests", group = 'Maven switches')
   settings = cli.SwitchAttr(      names = ['-i', '--settings'], argtype = str, default = None, mandatory = False, help = 'Maven settings file location', group = 'Maven switches')
   globalSettings = cli.SwitchAttr(names = ['-g', '--global-settings'], argtype = str, default = None, mandatory = False, help = 'Global Maven settings file location', group = 'Maven switches')
   localRepo = cli.SwitchAttr(     names = ['-l', '--local-repository'], argtype = str, default = None, mandatory = False, help = 'Local Maven repository location', group = 'Maven switches')
   offline = cli.Flag(             names = ['-o', '--offline'], default = False, help = "Pass --offline flag to Maven", group = 'Maven switches')
   debug = cli.Flag(               names = ['-D', '--debug'], default = False, excludes = ['--quiet'], help = "Pass --debug and --errors flag to Maven", group = 'Maven switches')
   quiet = cli.Flag(               names = ['-Q', '--quiet'], default = False, excludes = ['--debug'], help = "Pass --quiet flag to Maven", group = 'Maven switches')
-  batch = cli.Flag(               names = ['-B', '--batch'], default = False, help = "Pass --batch-mode flag to Maven", group = 'Maven switches')
 
   def main(self, *components):
     if len(components) == 0:
@@ -287,9 +288,9 @@ class MetaborgRelengBuild(cli.Application):
       BuildAll(repo = repo, components = components, buildDeps = not self.noDeps, resumeFrom = self.resumeFrom,
         buildStratego = self.buildStratego, bootstrapStratego = self.bootstrapStratego,
         strategoTest = not self.noStrategoTest, qualifier = self.qualifier, cleanRepo = self.cleanRepo, deploy = self.deploy,
-        release = self.release, skipExpensive = self.skipExpensive, clean = not self.noClean, settingsFile = self.settings,
-        globalSettingsFile = self.globalSettings, localRepo = self.localRepo, offline = self.offline, debug = self.debug,
-        quiet = self.quiet, batch = self.batch)
+        release = self.release, skipExpensive = self.skipExpensive, skipComponents = self.skipComponents, clean = not self.noClean,
+        skipTests = self.skipTests, settingsFile = self.settings, globalSettingsFile = self.globalSettings, localRepo = self.localRepo,
+        offline = self.offline, debug = self.debug, quiet = self.quiet)
       print('All done!')
       return 0
     except Exception as detail:

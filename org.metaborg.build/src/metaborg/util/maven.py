@@ -5,9 +5,9 @@ import pystache
 
 
 def Mvn(pomFile = 'pom.xml', settingsFile = None, globalSettingsFile = None, localRepo = None,
- noSnapshotUpdates = False, forceSnapshotUpdate = False, offline = False, profiles = [], debug = False,
- quiet = False, batch = False, extraArgs = None, clean = True, phase = 'verify', resumeFrom = None,
- mavenOpts = '-Xms512m -Xmx1024m -Xss32m -XX:MaxPermSize=512m', **kwargs):
+ noSnapshotUpdates = False, forceSnapshotUpdate = False, offline = False, skipTests = False,
+ profiles = [], debug = False, quiet = False, extraArgs = None, clean = True, phase = 'verify',
+ resumeFrom = None, mavenOpts = '-Xms512m -Xmx1024m -Xss32m -XX:MaxPermSize=512m', **kwargs):
   args = []
   if platform.system() == 'Windows':
     args.append('mvn.bat')
@@ -29,6 +29,9 @@ def Mvn(pomFile = 'pom.xml', settingsFile = None, globalSettingsFile = None, loc
     args.append('--update-snapshots')
   if offline:
     args.append('--offline')
+  if skipTests:
+    args.append('-Dmaven.test.skip=true')
+    args.append('-DskipTests=true')
 
   if len(profiles) != 0:
     args.append('--activate-profiles={}'.format(','.join(profiles)))
@@ -38,8 +41,6 @@ def Mvn(pomFile = 'pom.xml', settingsFile = None, globalSettingsFile = None, loc
     args.append('--errors')
   if quiet:
     args.append('--quiet')
-  if batch:
-    args.append('--batch-mode')
 
   if extraArgs != None:
     args.append(extraArgs)
