@@ -1,16 +1,29 @@
 from collections import OrderedDict
-from os import path
+from os import path, makedirs
 import shutil
 from datetime import datetime
 import time
+from glob import glob
 
 from metaborg.util.git import LatestDate, Branch
 from metaborg.util.maven import Mvn, MvnSetingsGen, MvnUserSettingsLocation
 
 
+class BuildResult:
+  def __init__(self, artifacts):
+    self.artifacts = artifacts
+
+class BuildArtifact:
+  def __init__(self, name, location, target):
+    self.name = name
+    self.location = location
+    self.target = target
+
+
 def BuildAll(repo, components = ['all'], buildDeps = True, resumeFrom = None, buildStratego = False,
     bootstrapStratego = False, strategoTest = True, cleanRepo = True, release = False, deploy = False,
-    skipExpensive = False, skipComponents = [], clean = True, profiles = [], qualifier = None, **mavenArgs):
+    skipExpensive = False, skipComponents = [], clean = True, profiles = [], qualifier = None,
+    copyArtifactsTo = None, **mavenArgs):
   basedir = repo.working_tree_dir
   if release:
     profiles.append('release')
@@ -39,32 +52,45 @@ def BuildAll(repo, components = ['all'], buildDeps = True, resumeFrom = None, bu
     if component in buildOrder:
       buildOrder.remove(component)
 
+  artifacts = []
   print('Building component(s): {}'.format(', '.join(buildOrder)))
   for build in buildOrder:
     print('Building: {}'.format(build))
     cmd = GetBuildCommand(build)
-    cmd(basedir = basedir, deploy = deploy, qualifier = qualifier, noSnapshotUpdates = True, clean = clean,
+    result = cmd(basedir = basedir, deploy = deploy, qualifier = qualifier, noSnapshotUpdates = True, clean = clean,
         profiles = profiles, buildStratego = buildStratego, bootstrapStratego = bootstrapStratego,
         strategoTest = strategoTest, skipExpensive = skipExpensive, resumeFrom = resumeFrom, **mavenArgs)
+    artifacts.extend(result.artifacts)
 
+  if copyArtifactsTo:
+    makedirs(copyArtifactsTo)
+  for artifact in artifacts:
+    if copyArtifactsTo:
+      copyLocation = '{}/{}'.format(copyArtifactsTo, artifact.target)
+      print('Produced artifact "{}" at {}, copying to {}'.format(artifact.name, artifact.location, copyLocation))
+      shutil.copyfile(artifact.location, copyLocation)
+    else:
+      print('Produced artifact "{}" at {}'.format(artifact.name, artifact.location))
 
 def BuildPoms(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'install'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.parentpoms', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, **kwargs)
+  return BuildResult([])
 
 
 def BuildOrDownloadStrategoXt(basedir, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
   if buildStratego:
-    BuildStrategoXt(basedir = basedir, deploy = deploy, bootstrap = bootstrapStratego, runTests = strategoTest, **kwargs)
+    return BuildStrategoXt(basedir = basedir, deploy = deploy, bootstrap = bootstrapStratego, runTests = strategoTest, **kwargs)
   else:
-    DownloadStrategoXt(basedir, **kwargs)
+    return DownloadStrategoXt(basedir, **kwargs)
 
 def DownloadStrategoXt(basedir, clean, profiles, skipExpensive, **kwargs):
   if '!add-metaborg-repositories' in profiles:
     profiles.remove('!add-metaborg-repositories')
   pomFile = path.join(basedir, 'strategoxt', 'strategoxt', 'download-pom.xml')
   Mvn(pomFile = pomFile, clean = False, profiles = profiles, phase = 'dependency:resolve', **kwargs)
+  return BuildResult([])
 
 def BuildStrategoXt(basedir, profiles, deploy, bootstrap, runTests, skipTests, skipExpensive, **kwargs):
   if '!add-metaborg-repositories' in profiles:
@@ -91,6 +117,16 @@ def BuildStrategoXt(basedir, profiles, deploy, bootstrap, runTests, skipTests, s
   buildKwargs.update({'strategoxt-skip-build': True, 'strategoxt-skip-assembly' : True})
   Mvn(pomFile = parent_pom_file, phase = phase, profiles = profiles, skipTests = skipTests, **buildKwargs)
 
+  if bootstrap:
+    distribDir = '{}/buildpoms/bootstrap3/target/'.format(strategoXtDir)
+  else:
+    distribDir = '{}/buildpoms/build/target/'.format(strategoXtDir)
+  return BuildResult([
+    BuildArtifact('StrategoXT distribution', glob('{}/strategoxt-distrib-*-bin.tar'.format(distribDir))[0], 'strategoxt-distrib.tar'),
+    BuildArtifact('StrategoXT JAR', '{}/dist/share/strategoxt/strategoxt/strategoxt.jar'.format(distribDir), 'strategoxt.jar'),
+    BuildArtifact('StrategoXT minified JAR', glob('{}/buildpoms/minjar/target/strategoxt-min-jar-*.jar'.format(strategoXtDir))[0], 'strategoxt-min.jar'),
+  ])
+
 
 def BuildJava(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'install'
@@ -98,6 +134,10 @@ def BuildJava(basedir, qualifier, deploy, buildStratego, bootstrapStratego, stra
     kwargs.update({'skip-generator' : True})
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.java', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
+  return BuildResult([
+    BuildArtifact('Spoofax sunshine JAR', glob(path.join(basedir, 'spoofax-sunshine/org.spoofax.sunshine/target/org.metaborg.sunshine-*-shaded.jar'))[0], 'spoofax-sunshine.jar'),
+    BuildArtifact('Spoofax benchmarker JAR', glob(path.join(basedir, 'spoofax-benchmark/org.metaborg.spoofax.benchmark.cmd/target/org.metaborg.spoofax.benchmark.cmd-*.jar'))[0], 'spoofax-benchmark.jar'),
+  ])
 
 def BuildEclipse(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'install'
@@ -105,17 +145,24 @@ def BuildEclipse(basedir, qualifier, deploy, buildStratego, bootstrapStratego, s
     kwargs.update({'skip-language-build' : True})
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.eclipse', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
+  return BuildResult([
+    BuildArtifact('Spoofax Eclipse update site', path.join(basedir, 'spoofax-deploy/org.strategoxt.imp.updatesite/target/site_assembly.zip'), 'spoofax-eclipse.zip'),
+  ])
 
 def BuildPluginPoms(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'install'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.parentpoms.plugin', 'pom.xml')
   kwargs.update({'skip-language-build' : True})
   Mvn(pomFile = pomFile, phase = phase, **kwargs)
+  return BuildResult([])
 
 def BuildSpoofaxLibs(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'verify'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.libs', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, **kwargs)
+  return BuildResult([
+    BuildArtifact('Spoofax libraries JAR', glob(path.join(basedir, 'spoofax-deploy/org.metaborg.maven.build.spoofax.libs/target/org.metaborg.maven.build.spoofax.libs-*.jar'))[0], 'spoofax-libs.jar'),
+  ])
 
 def BuildTestRunner(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'verify'
@@ -123,7 +170,9 @@ def BuildTestRunner(basedir, deploy, qualifier, buildStratego, bootstrapStratego
     kwargs.update({'skip-language-build' : True})
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.testrunner', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, **kwargs)
-
+  return BuildResult([
+    BuildArtifact('Spoofax testrunner JAR', glob(path.join(basedir, 'spt/org.metaborg.spoofax.testrunner.cmd/target/org.metaborg.spoofax.testrunner.cmd-*.jar'))[0], 'spoofax-testrunner.jar'),
+  ])
 
 '''Build dependencies must be topologically ordered, otherwise the algorithm will not work'''
 _buildDependencies = OrderedDict([
