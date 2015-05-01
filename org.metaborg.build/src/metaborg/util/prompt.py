@@ -4,7 +4,7 @@ def YesNo(message = None):
   else:
     print('[y/N]')
   choice = input()
-  if choice != 'Y':
+  if choice != 'y' and choice != 'Y':
     return False
   return True
 
