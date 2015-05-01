@@ -49,9 +49,6 @@ def Update(repo, submodule, remote = True, recursive = True, depth = None):
 
   repo.git.submodule(args)
 
-  # if recursive:
-  #   UpdateAll(submodule.module(), depth = depth)
-
 def UpdateAll(repo, depth = None):
   for submodule in repo.submodules:
     Update(repo, submodule, depth = depth)
@@ -61,6 +58,10 @@ def Checkout(submodule):
   branch = submodule.branch
   print('Switching {} to {}'.format(submodule.name, branch.name))
   branch.checkout()
+
+  if not submodule.module_exists():
+    print('Cannot recursively checkout, {} has not been initialized yet.'.format(submodule.name))
+    return
 
   subrepo = submodule.module()
   for submodule in subrepo.submodules:
@@ -72,6 +73,10 @@ def CheckoutAll(repo):
 
 
 def Clean(submodule):
+  if not submodule.module_exists():
+    print('Cannot clean, {} has not been initialized yet.'.format(submodule.name))
+    return
+
   subrepo = submodule.module()
   print('Cleaning {}'.format(submodule.name))
   subrepo.git.clean('-fd')
@@ -82,6 +87,10 @@ def CleanAll(repo):
 
 
 def Reset(submodule, toRemote):
+  if not submodule.module_exists():
+    print('Cannot reset, {} has not been initialized yet.'.format(submodule.name))
+    return
+
   subrepo = submodule.module()
   if toRemote:
     head = subrepo.head
@@ -102,6 +111,10 @@ def ResetAll(repo, toRemote):
 
 
 def Merge(submodule, branchName):
+  if not submodule.module_exists():
+    print('Cannot merge, {} has not been initialized yet.'.format(submodule.name))
+    return
+
   subrepo = submodule.module()
   head = subrepo.head
   if head.is_detached:
@@ -120,6 +133,10 @@ def MergeAll(repo, branchName):
 
 
 def Tag(submodule, tagName, tagDescription):
+  if not submodule.module_exists():
+    print('Cannot tag, {} has not been initialized yet.'.format(submodule.name))
+    return
+
   print('Creating tag {} in {}'.format(tagName, submodule.name))
   subrepo = submodule.module()
   subrepo.create_tag(path = tagName, message = tagDescription)
@@ -130,6 +147,10 @@ def TagAll(repo, tagName, tagDescription):
 
 
 def Push(submodule, **kwargs):
+  if not submodule.module_exists():
+    print('Cannot push, {} has not been initialized yet.'.format(submodule.name))
+    return
+
   print('Pushing {}'.format(submodule.name))
   subrepo = submodule.module()
   remote = subrepo.remote('origin')
@@ -141,6 +162,10 @@ def PushAll(repo, **kwargs):
 
 
 def Track(submodule):
+  if not submodule.module_exists():
+    print('Cannot set tracking branch, {} has not been initialized yet.'.format(submodule.name))
+    return
+
   subrepo = submodule.module()
   head = subrepo.head
   remote = subrepo.remote('origin')
