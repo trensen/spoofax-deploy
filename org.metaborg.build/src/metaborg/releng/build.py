@@ -10,7 +10,7 @@ from metaborg.util.maven import Mvn, MvnSetingsGen, MvnUserSettingsLocation
 
 def BuildAll(repo, components = ['all'], buildDeps = True, resumeFrom = None, buildStratego = False,
     bootstrapStratego = False, strategoTest = True, cleanRepo = True, release = False, deploy = False,
-    skipExpensive = False, clean = True, profiles = [], **mavenArgs):
+    skipExpensive = False, clean = True, profiles = [], qualifier = None, **mavenArgs):
   basedir = repo.working_tree_dir
   if release:
     profiles.append('release')
@@ -26,7 +26,8 @@ def BuildAll(repo, components = ['all'], buildDeps = True, resumeFrom = None, bu
 
   profiles.append('!add-metaborg-repositories')
 
-  qualifier = CreateQualifier(repo)
+  if not qualifier:
+    qualifier = CreateQualifier(repo)
   print('Using Eclipse qualifier {}.'.format(qualifier))
 
   if buildDeps:
