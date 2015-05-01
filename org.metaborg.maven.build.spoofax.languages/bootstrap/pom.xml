@@ -4,35 +4,21 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>org.metaborg.maven.build.spoofax.languages</artifactId>
 	<packaging>pom</packaging>
-	<description>Maven build for Spoofax Meta Languages</description>
+	<description>Maven build for Spoofax Meta Languages (bootstrap)</description>
 	<url>https://github.com/metaborg/spoofax-deploy</url>
 
 	<parent>
 		<groupId>org.metaborg</groupId>
 		<artifactId>org.metaborg.maven.parent</artifactId>
 		<version>1.5.0-SNAPSHOT</version>
-		<relativePath>../org.metaborg.maven.parent</relativePath>
+		<relativePath>../../org.metaborg.maven.parent</relativePath>
 	</parent>
 
 	<modules>
-		<module>../../sdf/org.metaborg.meta.lang.sdf</module>
-		<module>../../mb-rep/org.metaborg.meta.lang.aterm</module>
-		<module>../../stratego/org.metaborg.meta.lang.stratego</module>
-		<module>../../dynsem/dynsem</module>
-
-        <!--
-		<module>../../aster/org.strategoxt.imp.editors.aster</module>
-		<module>../../box/org.strategoxt.imp.editors.pp</module>
-		<module>../../rtg/org.strategoxt.imp.editors.rtg</module>
-		<module>../../runtime-libraries/org.metaborg.meta.lang.analysis</module>
-        -->
-
-        <!--
-		<module>../../spt/org.strategoxt.imp.testing</module>
-		<module>../../spt/org.strategoxt.imp.testing</module>
-		<module>../../spt/org.strategoxt.imp.testing.cmd</module>
-		<module>../../spt/org.strategoxt.imp.testing.ui</module>
-        -->
+		<module>../../../esv/org.metaborg.meta.lang.esv</module>
+		<module>../../../sdf/org.metaborg.meta.lang.template</module>
+		<module>../../../nabl/org.metaborg.meta.lang.nabl</module>
+		<module>../../../ts/org.metaborg.meta.lang.ts</module>
 	</modules>
 
 	<developers>
