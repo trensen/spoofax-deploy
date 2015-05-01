@@ -50,7 +50,7 @@ def BuildPoms(basedir, deploy, qualifier, buildStratego, bootstrapStratego, stra
   Mvn(pomFile = pomFile, phase = phase, **kwargs)
 
 
-def BuildOrDownloadStrategoXt(basedir, deploy, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
+def BuildOrDownloadStrategoXt(basedir, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
   if buildStratego:
     BuildStrategoXt(basedir = basedir, deploy = deploy, bootstrap = bootstrapStratego, runTests = strategoTest, **kwargs)
   else:
