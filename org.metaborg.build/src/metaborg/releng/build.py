@@ -146,7 +146,7 @@ def BuildEclipse(basedir, qualifier, deploy, buildStratego, bootstrapStratego, s
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.eclipse', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
   return BuildResult([
-    BuildArtifact('Spoofax Eclipse update site', path.join(basedir, 'spoofax-deploy/org.strategoxt.imp.updatesite/target/site_assembly.zip'), 'spoofax-eclipse.zip'),
+    BuildArtifact('Spoofax Eclipse update site', path.join(basedir, 'spoofax-deploy/org.metaborg.spoofax.eclipse.updatesite/target/site_assembly.zip'), 'spoofax-eclipse.zip'),
   ])
 
 def BuildPluginPoms(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
