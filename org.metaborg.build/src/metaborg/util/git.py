@@ -199,6 +199,8 @@ def SetRemote(submodule, toType):
   origin = subrepo.remote()
   currentUrl = origin.config_reader.get('url')
 
+  print(currentUrl)
+
   httpMatch = re.match('https?://([\w\.@\:\-~]+)/(.+)', currentUrl)
   sshMatch = re.match('(?:ssh://)?([\w\.@\:\-~]+)@([\w\.@\:\-~]+)[:/](.+)', currentUrl)
   if httpMatch:
@@ -206,14 +208,14 @@ def SetRemote(submodule, toType):
     host = httpMatch.group(1)
     path = httpMatch.group(2)
   elif sshMatch:
-    user = httpMatch.group(1)
-    host = httpMatch.group(2)
-    path = httpMatch.group(3)
+    user = sshMatch.group(1)
+    host = sshMatch.group(2)
+    path = sshMatch.group(3)
   else:
     print('Cannot set remote for {}, unknown URL format {}.'.format(name, currentUrl))
 
   if toType is RemoteType.SSH:
-    newUrl = '{}@{}:{}'.format(user, host, path)
+    newUrl = '{}@{}/{}'.format(user, host, path)
   elif toType is RemoteType.HTTP:
     newUrl = 'https://{}/{}'.format(host, path)
   else:
