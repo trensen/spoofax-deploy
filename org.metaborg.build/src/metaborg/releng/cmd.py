@@ -2,7 +2,7 @@ from os import path
 from git.repo.base import Repo
 from plumbum import cli
 
-from metaborg.releng.build import BuildAll, GetAllBuilds, GenerateMavenSettings, _mvnSettingsLocation, _metaborgReleases, _metaborgSnapshots, _spoofaxUpdateSite, _centralMirror, CreateQualifier, RepoChanged, _qualifierLocation
+from metaborg.releng.build import BuildAll, GetAllBuilds, GenerateMavenSettings, _mvnSettingsLocation, _metaborgReleases, _metaborgSnapshots, _spoofaxUpdateSite, _centralMirror, CreateQualifier, RepoChanged, _qualifierLocation, _defaultLocalRepo
 from metaborg.releng.versions import SetVersions
 from metaborg.releng.release import Release, ResetRelease
 from metaborg.releng.eclipse import GeneratePlainEclipse, GenerateSpoofaxEclipse, GenerateDevSpoofaxEclipse, _eclipseRepo, _eclipsePackage, _spoofaxRepo
@@ -272,7 +272,7 @@ class MetaborgRelengBuild(cli.Application):
   skipTests = cli.Flag(           names = ['-y', '--skip-tests'], default = False, help = "Skip tests", group = 'Maven switches')
   settings = cli.SwitchAttr(      names = ['-i', '--settings'], argtype = str, default = None, mandatory = False, help = 'Maven settings file location', group = 'Maven switches')
   globalSettings = cli.SwitchAttr(names = ['-g', '--global-settings'], argtype = str, default = None, mandatory = False, help = 'Global Maven settings file location', group = 'Maven switches')
-  localRepo = cli.SwitchAttr(     names = ['-l', '--local-repository'], argtype = str, default = None, mandatory = False, help = 'Local Maven repository location', group = 'Maven switches')
+  localRepo = cli.SwitchAttr(     names = ['-l', '--local-repository'], argtype = str, default = _defaultLocalRepo, mandatory = False, help = 'Local Maven repository location', group = 'Maven switches')
   offline = cli.Flag(             names = ['-o', '--offline'], default = False, help = "Pass --offline flag to Maven", group = 'Maven switches')
   debug = cli.Flag(               names = ['-D', '--debug'], default = False, excludes = ['--quiet'], help = "Pass --debug and --errors flag to Maven", group = 'Maven switches')
   quiet = cli.Flag(               names = ['-Q', '--quiet'], default = False, excludes = ['--debug'], help = "Pass --quiet flag to Maven", group = 'Maven switches')
