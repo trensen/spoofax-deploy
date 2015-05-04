@@ -2,11 +2,11 @@ from os import path
 from git.repo.base import Repo
 from plumbum import cli
 
-from metaborg.releng.build import BuildAll, GetAllBuilds, GenerateMavenSettings, _mvnSettingsLocation, _metaborgReleases, _metaborgSnapshots, _spoofaxUpdateSite, _centralMirror, CreateQualifier, RepoChanged, _qualifierLocation
+from metaborg.releng.build import BuildAll, GetAllBuilds, GenerateMavenSettings, _mvnSettingsLocation, _metaborgReleases, _metaborgSnapshots, _spoofaxUpdateSite, _centralMirror, CreateQualifier, RepoChanged, _qualifierLocation, _defaultLocalRepo
 from metaborg.releng.versions import SetVersions
 from metaborg.releng.release import Release, ResetRelease
 from metaborg.releng.eclipse import GeneratePlainEclipse, GenerateSpoofaxEclipse, GenerateDevSpoofaxEclipse, _eclipseRepo, _eclipsePackage, _spoofaxRepo
-from metaborg.util.git import UpdateAll, TrackAll, MergeAll, TagAll, PushAll, CheckoutAll, CleanAll, ResetAll
+from metaborg.util.git import UpdateAll, TrackAll, MergeAll, TagAll, PushAll, CheckoutAll, CleanAll, ResetAll, RemoteType, SetRemoteAll
 from metaborg.util.prompt import YesNo, YesNoTwice, YesNoTrice
 from metaborg.util.path import CommonPrefix
 
@@ -48,6 +48,30 @@ class MetaborgRelengUpdate(cli.Application):
   def main(self):
     print('Updating all submodules')
     UpdateAll(self.parent.repo, depth = self.depth)
+    return 0
+
+
+@MetaborgReleng.subcommand("set-remote")
+class MetaborgRelengSetRemote(cli.Application):
+  '''
+  Changes the remote for all submodules to an SSH or HTTP remote.
+  '''
+
+  toSsh = cli.Flag(names = ['-s', '--ssh'], default = False, excludes = ['--http'], help = 'Set remotes to SSH remotes')
+  toHttp = cli.Flag(names = ['-h', '--http'], default = False, excludes = ['--ssh'], help = 'Set remotes to HTTP remotes')
+
+  def main(self):
+    if not self.toSsh and not self.toHttp:
+      print('Must choose between SSH (-s) or HTTP (-h)')
+      return 1
+
+    if self.toSsh:
+      toType = RemoteType.SSH
+    elif self.toHttp:
+      toType = RemoteType.HTTP
+
+    print('Setting remotes for all submodules')
+    SetRemoteAll(self.parent.repo, toType = toType)
     return 0
 
 
@@ -272,7 +296,7 @@ class MetaborgRelengBuild(cli.Application):
   skipTests = cli.Flag(           names = ['-y', '--skip-tests'], default = False, help = "Skip tests", group = 'Maven switches')
   settings = cli.SwitchAttr(      names = ['-i', '--settings'], argtype = str, default = None, mandatory = False, help = 'Maven settings file location', group = 'Maven switches')
   globalSettings = cli.SwitchAttr(names = ['-g', '--global-settings'], argtype = str, default = None, mandatory = False, help = 'Global Maven settings file location', group = 'Maven switches')
-  localRepo = cli.SwitchAttr(     names = ['-l', '--local-repository'], argtype = str, default = None, mandatory = False, help = 'Local Maven repository location', group = 'Maven switches')
+  localRepo = cli.SwitchAttr(     names = ['-l', '--local-repository'], argtype = str, default = _defaultLocalRepo, mandatory = False, help = 'Local Maven repository location', group = 'Maven switches')
   offline = cli.Flag(             names = ['-o', '--offline'], default = False, help = "Pass --offline flag to Maven", group = 'Maven switches')
   debug = cli.Flag(               names = ['-D', '--debug'], default = False, excludes = ['--quiet'], help = "Pass --debug and --errors flag to Maven", group = 'Maven switches')
   quiet = cli.Flag(               names = ['-Q', '--quiet'], default = False, excludes = ['--debug'], help = "Pass --quiet flag to Maven", group = 'Maven switches')

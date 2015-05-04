@@ -20,10 +20,13 @@ class BuildArtifact:
     self.target = target
 
 
+_defaultLocalRepo = path.join(path.expanduser('~'), '.m2', 'repository')
+
+
 def BuildAll(repo, components = ['all'], buildDeps = True, resumeFrom = None, buildStratego = False,
     bootstrapStratego = False, strategoTest = True, cleanRepo = True, release = False, deploy = False,
     skipExpensive = False, skipComponents = [], clean = True, profiles = [], qualifier = None,
-    copyArtifactsTo = None, **mavenArgs):
+    copyArtifactsTo = None, localRepo = _defaultLocalRepo, **mavenArgs):
   basedir = repo.working_tree_dir
   if release:
     profiles.append('release')
@@ -35,7 +38,7 @@ def BuildAll(repo, components = ['all'], buildDeps = True, resumeFrom = None, bu
     buildStratego = True
 
   if cleanRepo:
-    CleanLocalRepo()
+    CleanLocalRepo(localRepo)
 
   profiles.append('!add-metaborg-repositories')
 
@@ -58,9 +61,10 @@ def BuildAll(repo, components = ['all'], buildDeps = True, resumeFrom = None, bu
     print('Building: {}'.format(build))
     cmd = GetBuildCommand(build)
     result = cmd(basedir = basedir, deploy = deploy, qualifier = qualifier, noSnapshotUpdates = True, clean = clean,
-        profiles = profiles, buildStratego = buildStratego, bootstrapStratego = bootstrapStratego,
-        strategoTest = strategoTest, skipExpensive = skipExpensive, resumeFrom = resumeFrom, **mavenArgs)
-    artifacts.extend(result.artifacts)
+      profiles = profiles, buildStratego = buildStratego, bootstrapStratego = bootstrapStratego,
+      strategoTest = strategoTest, skipExpensive = skipExpensive, resumeFrom = resumeFrom, localRepo = localRepo, **mavenArgs)
+    if result:
+      artifacts.extend(result.artifacts)
 
   if copyArtifactsTo:
     makedirs(copyArtifactsTo)
@@ -272,9 +276,8 @@ def RepoChanged(repo, qualifierLocation = _qualifierLocation):
   return changed, FormatQualifier(timestamp, branch)
 
 
-def CleanLocalRepo():
+def CleanLocalRepo(localRepo):
   print('Cleaning artifacts from local repository')
-  localRepo = path.join(path.expanduser('~'), '.m2', 'repository')
   metaborgPath = path.join(localRepo, 'org', 'metaborg')
   print('Deleting {}'.format(metaborgPath))
   shutil.rmtree(metaborgPath, ignore_errors = True)
@@ -295,7 +298,7 @@ def GenerateMavenSettings(location = _mvnSettingsLocation, metaborgReleases = _m
   if metaborgReleases:
     repositories.append(('add-metaborg-repositories', 'metaborg-nexus-releases', metaborgReleases, None, True, False, True))
   if metaborgSnapshots:
-    repositories.append(('add-metaborg-repositories', 'metaborg-nexus-snapshots', metaborgSnapshots, None, True, False, True))
+    repositories.append(('add-metaborg-repositories', 'metaborg-nexus-snapshots', metaborgSnapshots, None, False, True, True))
   if spoofaxUpdateSite:
     repositories.append(('add-metaborg-repositories', 'spoofax-nightly', spoofaxUpdateSite, 'p2', False, False, False))
 
