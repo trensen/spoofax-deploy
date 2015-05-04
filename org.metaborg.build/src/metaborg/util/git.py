@@ -198,9 +198,7 @@ def SetRemote(submodule, toType):
   subrepo = submodule.module()
   origin = subrepo.remote()
   currentUrl = origin.config_reader.get('url')
-
-  print(currentUrl)
-
+  
   httpMatch = re.match('https?://([\w\.@\:\-~]+)/(.+)', currentUrl)
   sshMatch = re.match('(?:ssh://)?([\w\.@\:\-~]+)@([\w\.@\:\-~]+)[:/](.+)', currentUrl)
   if httpMatch:
