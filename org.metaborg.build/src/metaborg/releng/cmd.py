@@ -6,7 +6,7 @@ from metaborg.releng.build import BuildAll, GetAllBuilds, GenerateMavenSettings,
 from metaborg.releng.versions import SetVersions
 from metaborg.releng.release import Release, ResetRelease
 from metaborg.releng.eclipse import GeneratePlainEclipse, GenerateSpoofaxEclipse, GenerateDevSpoofaxEclipse, _eclipseRepo, _eclipsePackage, _spoofaxRepo
-from metaborg.util.git import UpdateAll, TrackAll, MergeAll, TagAll, PushAll, CheckoutAll, CleanAll, ResetAll
+from metaborg.util.git import UpdateAll, TrackAll, MergeAll, TagAll, PushAll, CheckoutAll, CleanAll, ResetAll, RemoteType, SetRemoteAll
 from metaborg.util.prompt import YesNo, YesNoTwice, YesNoTrice
 from metaborg.util.path import CommonPrefix
 
@@ -48,6 +48,30 @@ class MetaborgRelengUpdate(cli.Application):
   def main(self):
     print('Updating all submodules')
     UpdateAll(self.parent.repo, depth = self.depth)
+    return 0
+
+
+@MetaborgReleng.subcommand("set-remote")
+class MetaborgRelengSetRemote(cli.Application):
+  '''
+  Changes the remote for all submodules to an SSH or HTTP remote.
+  '''
+
+  toSsh = cli.Flag(names = ['-s', '--ssh'], default = False, excludes = ['--http'], help = 'Set remotes to SSH remotes')
+  toHttp = cli.Flag(names = ['-h', '--http'], default = False, excludes = ['--ssh'], help = 'Set remotes to HTTP remotes')
+
+  def main(self):
+    if not self.toSsh and not self.toHttp:
+      print('Must choose between SSH (-s) or HTTP (-h)')
+      return 1
+
+    if self.toSsh:
+      toType = RemoteType.SSH
+    elif self.toHttp:
+      toType = RemoteType.HTTP
+
+    print('Setting remotes for all submodules')
+    SetRemoteAll(self.parent.repo, toType = toType)
     return 0
 
 

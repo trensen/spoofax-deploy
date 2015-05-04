@@ -1,4 +1,6 @@
 from datetime import datetime
+from enum import Enum, unique
+import re
 
 
 def LatestDate(repo):
@@ -36,7 +38,7 @@ def Update(repo, submodule, remote = True, recursive = True, depth = None):
     print('Initializing {}'.format(submodule.name))
   else:
     subrepo = submodule.module()
-    remote = subrepo.remote('origin')
+    remote = subrepo.remote()
     head = subrepo.head
     if head.is_detached:
       print('Updating {}'.format(submodule.name))
@@ -97,7 +99,7 @@ def Reset(submodule, toRemote):
     if head.is_detached:
       print('Cannot reset, {} has a DETACHED HEAD.'.format(submodule.name))
       return
-    remote = subrepo.remote('origin')
+    remote = subrepo.remote()
     branchName = '{}/{}'.format(remote.name, head.reference.name)
     print('Resetting {} to {}'.format(submodule.name, branchName))
     subrepo.git.reset('--hard', branchName)
@@ -153,7 +155,7 @@ def Push(submodule, **kwargs):
 
   print('Pushing {}'.format(submodule.name))
   subrepo = submodule.module()
-  remote = subrepo.remote('origin')
+  remote = subrepo.remote()
   remote.push(**kwargs)
 
 def PushAll(repo, **kwargs):
@@ -168,7 +170,7 @@ def Track(submodule):
 
   subrepo = submodule.module()
   head = subrepo.head
-  remote = subrepo.remote('origin')
+  remote = subrepo.remote()
   localBranchName = head.reference.name
   remoteBranchName = '{}/{}'.format(remote.name, localBranchName)
   print('Setting tracking branch for {} to {}'.format(localBranchName, remoteBranchName))
@@ -177,3 +179,45 @@ def Track(submodule):
 def TrackAll(repo):
   for submodule in repo.submodules:
     Track(submodule)
+
+
+@unique
+class RemoteType(Enum):
+  SSH = 1
+  HTTP = 2
+
+def SetRemoteAll(repo, toType = RemoteType.SSH):
+  for submodule in repo.submodules:
+    SetRemote(submodule, toType)
+
+def SetRemote(submodule, toType):
+  if not submodule.module_exists():
+    print('Cannot set remote, {} has not been initialized yet.'.format(submodule.name))
+    return
+  name = submodule.name
+  subrepo = submodule.module()
+  origin = subrepo.remote()
+  currentUrl = origin.config_reader.get('url')
+
+  httpMatch = re.match('https?://([\w\.@\:\-~]+)/(.+)', currentUrl)
+  sshMatch = re.match('(?:ssh://)?([\w\.@\:\-~]+)@([\w\.@\:\-~]+)[:/](.+)', currentUrl)
+  if httpMatch:
+    user = 'git'
+    host = httpMatch.group(1)
+    path = httpMatch.group(2)
+  elif sshMatch:
+    user = httpMatch.group(1)
+    host = httpMatch.group(2)
+    path = httpMatch.group(3)
+  else:
+    print('Cannot set remote for {}, unknown URL format {}.'.format(name, currentUrl))
+
+  if toType is RemoteType.SSH:
+    newUrl = '{}@{}:{}'.format(user, host, path)
+  elif toType is RemoteType.HTTP:
+    newUrl = 'https://{}/{}'.format(host, path)
+  else:
+    print('Cannot set remote for {}, unknown URL type {}.'.format(name, str(toType)))
+
+  print('Setting remote for {} to {}'.format(name, newUrl))
+  origin.config_writer.set('url', newUrl)
