@@ -274,7 +274,7 @@ def GenerateMavenSettings(location = _mvnSettingsLocation, metaborgReleases = _m
   if metaborgReleases:
     repositories.append(('add-metaborg-repositories', 'metaborg-nexus-releases', metaborgReleases, None, True, False, True))
   if metaborgSnapshots:
-    repositories.append(('add-metaborg-repositories', 'metaborg-nexus-snapshots', metaborgSnapshots, None, True, False, True))
+    repositories.append(('add-metaborg-repositories', 'metaborg-nexus-snapshots', metaborgSnapshots, None, False, True, True))
   if spoofaxUpdateSite:
     repositories.append(('add-metaborg-repositories', 'spoofax-nightly', spoofaxUpdateSite, 'p2', False, False, False))
 
