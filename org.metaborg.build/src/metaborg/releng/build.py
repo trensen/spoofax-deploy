@@ -146,6 +146,7 @@ def BuildLanguagePoms(basedir, deploy, **kwargs):
   phase = 'deploy' if deploy else 'install'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.parentpoms.language', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, **kwargs)
+  return BuildResult([])
 
 def BuildLanguages(basedir, deploy, profiles, **kwargs):
   phase = 'deploy' if deploy else 'install'
@@ -158,6 +159,8 @@ def BuildLanguages(basedir, deploy, profiles, **kwargs):
 
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.languages', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, profiles = profiles, **kwargs)
+
+  return BuildResult([])
 
 def BuildEclipse(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
   phase = 'deploy' if deploy else 'install'
