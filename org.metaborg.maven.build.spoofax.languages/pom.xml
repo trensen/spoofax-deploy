@@ -15,7 +15,6 @@
 	</parent>
 
 	<modules>
-		<module>../../sdf/org.metaborg.meta.lang.sdf</module>
 		<module>../../mb-rep/org.metaborg.meta.lang.aterm</module>
 		<module>../../stratego/org.metaborg.meta.lang.stratego</module>
 		<module>../../dynsem/dynsem</module>

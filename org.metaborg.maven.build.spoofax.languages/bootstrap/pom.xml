@@ -16,6 +16,7 @@
 
 	<modules>
 		<module>../../../esv/org.metaborg.meta.lang.esv</module>
+		<module>../../../sdf/org.metaborg.meta.lang.sdf</module>
 		<module>../../../sdf/org.metaborg.meta.lang.template</module>
 		<module>../../../nabl/org.metaborg.meta.lang.nabl</module>
 		<module>../../../ts/org.metaborg.meta.lang.ts</module>

@@ -137,6 +137,12 @@
 			<organization>Delft University of Technology</organization>
 			<organizationUrl>http://www.ewi.tudelft.nl/en</organizationUrl>
 		</developer>
+		<developer>
+			<name>Hendrik van Antwerpen</name>
+			<email>h.vanantwerpen@tudelft.nl</email>
+			<organization>Delft University of Technology</organization>
+			<organizationUrl>http://www.ewi.tudelft.nl/en</organizationUrl>
+		</developer>
 	</developers>
 
 	<scm>
