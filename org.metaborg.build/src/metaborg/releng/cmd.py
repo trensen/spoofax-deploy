@@ -472,7 +472,7 @@ class MetaborgRelengQualifier(cli.Application):
 @MetaborgReleng.subcommand("changed")
 class MetaborgRelengChanged(cli.Application):
   '''
-  Returns 0 and prints the qualifer when repository has changed since last invocation of this command, based on the current branch and latest commit date in all submodules. Returns 1 otherwise.
+  Returns 0 and prints the qualifer if repository has changed since last invocation of this command, based on the current branch and latest commit date in all submodules. Returns 1 otherwise.
   '''
 
   destination = cli.SwitchAttr(names = ['-d', '--destination'], argtype = str, mandatory = False, default = _qualifierLocation, help = 'Path to read/write the last qualifier to')
