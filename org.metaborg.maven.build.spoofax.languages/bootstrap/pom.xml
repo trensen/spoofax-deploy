@@ -15,6 +15,7 @@
 	</parent>
 
 	<modules>
+		<module>../../../runtime-libraries/org.spoofax.meta.runtime.libraries</module>
 		<module>../../../esv/org.metaborg.meta.lang.esv</module>
 		<module>../../../sdf/org.metaborg.meta.lang.sdf</module>
 		<module>../../../sdf/org.metaborg.meta.lang.template</module>
