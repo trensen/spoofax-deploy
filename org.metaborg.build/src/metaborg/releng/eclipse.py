@@ -30,38 +30,40 @@ _m2eFeatures = [
 ]
 
 
-def GeneratePlainEclipse(destination, eclipseOS = None, eclipseRepo = _eclipseRepo, eclipsePackage = _eclipsePackage, **kwargs):
+def GeneratePlainEclipse(destination, eclipseOS = None, eclipseRepo = _eclipseRepo, eclipsePackage = _eclipsePackage, repositories = [], installUnits = [], **kwargs):
   if not eclipseOS:
     eclipseOS = CurrentEclipseOS()
 
-  EclipseGen(destination = destination, eclipseOS = eclipseOS, repositories = [eclipseRepo], installUnits = [eclipsePackage], **kwargs)
+  repositories.append(eclipseRepo)
+  installUnits.append(eclipsePackage)
+
+  EclipseGen(destination = destination, eclipseOS = eclipseOS, repositories = repositories, installUnits = installUnits, **kwargs)
   EclipseIniFix(destination = destination, eclipseOS = eclipseOS, requiredJavaVersion = None)
 
 def GenerateSpoofaxEclipse(destination, eclipseOS = None, eclipseRepo = _eclipseRepo, eclipsePackage = _eclipsePackage,
-    spoofaxRepo = _spoofaxRepo, installMeta = True, installModelware = True, **kwargs):
-  repositories = [eclipseRepo, spoofaxRepo]
-
-  installUnits = [eclipsePackage] + _spoofaxRuntime
-  if installMeta:
-    installUnits += _spoofaxMeta
-  if installModelware:
-    installUnits += _modelwareRuntime
-    if installMeta:
-      installUnits += _modelwareMeta
-
+    spoofaxRepo = _spoofaxRepo, repositories = [], installUnits = [], installMeta = True, installModelware = True, **kwargs):
   if not eclipseOS:
     eclipseOS = CurrentEclipseOS()
+
+  repositories.extend([eclipseRepo, spoofaxRepo]);
+  installUnits.extend([eclipsePackage] + _spoofaxRuntime)
+  if installMeta:
+    installUnits.extend(_spoofaxMeta)
+  if installModelware:
+    installUnits.extend(_modelwareRuntime)
+    if installMeta:
+      installUnits.extend(_modelwareMeta)
 
   EclipseGen(destination = destination, eclipseOS = eclipseOS, repositories = repositories, installUnits = installUnits, **kwargs)
   EclipseIniFix(destination = destination, eclipseOS = eclipseOS)
 
 def GenerateDevSpoofaxEclipse(destination, eclipseOS = None, eclipseRepo = _eclipseRepo, eclipsePackage = _eclipsePackage,
-    spoofaxRepo = _spoofaxRepo, **kwargs):
-  repositories = [eclipseRepo, spoofaxRepo] + _m2eRepos
-  installUnits = [eclipsePackage] + _spoofaxRuntime + _spoofaxMeta + _modelwareRuntime + _modelwareMeta + _m2eFeatures
-
+    spoofaxRepo = _spoofaxRepo, repositories = [], installUnits = [], **kwargs):
   if not eclipseOS:
     eclipseOS = CurrentEclipseOS()
+
+  repositories.extend([eclipseRepo, spoofaxRepo] + _m2eRepos)
+  installUnits.extend([eclipsePackage] + _spoofaxRuntime + _spoofaxMeta + _modelwareRuntime + _modelwareMeta + _m2eFeatures)
 
   EclipseGen(destination = destination, eclipseOS = eclipseOS, repositories = repositories, installUnits = installUnits, **kwargs)
   EclipseIniFix(destination = destination, eclipseOS = eclipseOS)

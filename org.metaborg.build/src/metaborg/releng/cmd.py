@@ -9,6 +9,7 @@ from metaborg.releng.eclipse import GeneratePlainEclipse, GenerateSpoofaxEclipse
 from metaborg.util.git import UpdateAll, TrackAll, MergeAll, TagAll, PushAll, CheckoutAll, CleanAll, ResetAll, RemoteType, SetRemoteAll
 from metaborg.util.prompt import YesNo, YesNoTwice, YesNoTrice
 from metaborg.util.path import CommonPrefix
+from metaborg.util.eclipse import EclipseAddJre
 
 
 class MetaborgReleng(cli.Application):
@@ -365,10 +366,17 @@ class MetaborgRelengGenEclipse(cli.Application):
   eclipsePackage = cli.SwitchAttr(names = ['--eclipse-package'],   argtype = str, mandatory = False, default = _eclipsePackage, help = 'Base Eclipse package to install')
   eclipseRepo =    cli.SwitchAttr(names = ['--eclipse-repo'],      argtype = str, mandatory = False, default = _eclipseRepo,    help = 'Eclipse repository used to install the base Eclipse package')
 
+  os   = cli.SwitchAttr(names = ['-o', '--os'], argtype = str, default = None, help = 'OS to generate Eclipse for. Defaults to OS of this computer. Choose from: macosx, linux, win32')
+  arch = cli.SwitchAttr(names = ['-a', '--arch'], argtype = str, default = None, help = 'Processor architecture to generate Eclipse for. Defaults to architecture of this computer. Choose from: x86, x86_64')
+
+  additionalRepos       = cli.SwitchAttr(names = ['-r', '--repo'], argtype = str, list = True, help = 'Additional repositories to install units from')
+  additionalInstalUnits = cli.SwitchAttr(names = ['-i', '--install'], argtype = str, list = True, help = 'Additional units to install')
+
   def main(self):
     print('Generating plain Eclipse instance')
 
-    GeneratePlainEclipse(self.destination, eclipsePackage = self.eclipsePackage, eclipseRepo = self.eclipseRepo)
+    GeneratePlainEclipse(self.destination, eclipseOS = self.os, eclipseArch = self.arch, eclipsePackage = self.eclipsePackage, eclipseRepo = self.eclipseRepo,
+      repositories = self.additionalRepos, installUnits = self.additionalInstalUnits)
     return 0
 
 
@@ -387,6 +395,12 @@ class MetaborgRelengGenSpoofax(cli.Application):
   noModelware =  cli.Flag(names = ['-w', '--nomodelware'],        default = False, help = "Don't install Spoofax modelware plugins. Results in a smaller Eclipse instance, but modelware components cannot be used.")
   localSpoofax = cli.Flag(names = ['-l', '--local-spoofax-repo'], default = False, help = "Use locally built Spoofax repository at spoofax-deploy/org.strategoxt.imp.updatesite/target/site")
 
+  os   = cli.SwitchAttr(names = ['-o', '--os'], argtype = str, default = None, help = 'OS to generate Eclipse for. Defaults to OS of this computer. Choose from: macosx, linux, win32')
+  arch = cli.SwitchAttr(names = ['-a', '--arch'], argtype = str, default = None, help = 'Processor architecture to generate Eclipse for. Defaults to architecture of this computer. Choose from: x86, x86_64')
+
+  additionalRepos       = cli.SwitchAttr(names = ['-r', '--repo'], argtype = str, list = True, help = 'Additional repositories to install units from')
+  additionalInstalUnits = cli.SwitchAttr(names = ['-i', '--install'], argtype = str, list = True, help = 'Additional units to install')
+
   def main(self):
     print('Generating Eclipse instance for Spoofax users')
 
@@ -397,9 +411,8 @@ class MetaborgRelengGenSpoofax(cli.Application):
     else:
       spoofaxRepo = self.spoofaxRepo
 
-    GenerateSpoofaxEclipse(self.destination, eclipsePackage = self.eclipsePackage, eclipseRepo = self.eclipseRepo,
-                           spoofaxRepo = spoofaxRepo, installMeta = not self.noMeta,
-                           installModelware = not self.noModelware)
+    GenerateSpoofaxEclipse(self.destination, eclipseOS = self.os, eclipseArch = self.arch, eclipsePackage = self.eclipsePackage, eclipseRepo = self.eclipseRepo,
+      spoofaxRepo = spoofaxRepo, installMeta = not self.noMeta, installModelware = not self.noModelware, repositories = self.additionalRepos, installUnits = self.additionalInstalUnits)
     return 0
 
 
@@ -416,6 +429,12 @@ class MetaborgRelengGenDevSpoofax(cli.Application):
 
   localSpoofax = cli.Flag(names = ['-l', '--local-spoofax-repo'], default = False, help = "Use locally built Spoofax repository at spoofax-deploy/org.strategoxt.imp.updatesite/target/site")
 
+  os   = cli.SwitchAttr(names = ['-o', '--os'], argtype = str, default = None, help = 'OS to generate Eclipse for. Defaults to OS of this computer. Choose from: macosx, linux, win32')
+  arch = cli.SwitchAttr(names = ['-a', '--arch'], argtype = str, default = None, help = 'Processor architecture to generate Eclipse for. Defaults to architecture of this computer. Choose from: x86, x86_64')
+
+  additionalRepos       = cli.SwitchAttr(names = ['-r', '--repo'], argtype = str, list = True, help = 'Additional repositories to install units from')
+  additionalInstalUnits = cli.SwitchAttr(names = ['-i', '--install'], argtype = str, list = True, help = 'Additional units to install')
+
   def main(self):
     print('Generating Eclipse instance for Spoofax developers')
 
@@ -426,8 +445,24 @@ class MetaborgRelengGenDevSpoofax(cli.Application):
     else:
       spoofaxRepo = self.spoofaxRepo
 
-    GenerateDevSpoofaxEclipse(self.destination, eclipsePackage = self.eclipsePackage, eclipseRepo = self.eclipseRepo,
-                              spoofaxRepo = spoofaxRepo)
+    GenerateDevSpoofaxEclipse(self.destination, eclipseOS = self.os, eclipseArch = self.arch, eclipsePackage = self.eclipsePackage, eclipseRepo = self.eclipseRepo,
+      spoofaxRepo = spoofaxRepo, repositories = self.additionalRepos, installUnits = self.additionalInstalUnits)
+    return 0
+
+
+@MetaborgReleng.subcommand("add-jre-eclipse")
+class MetaborgRelengAddJreEclipse(cli.Application):
+  '''
+  Adds a preinstalled JRE to an Eclipse instance
+  '''
+
+  destination = cli.SwitchAttr(names = ['-d', '--destination'], argtype = str, mandatory = True, help = 'Path of the Eclipse instance')
+  os   = cli.SwitchAttr(names = ['-o', '--os'], argtype = str, default = None, help = 'OS of the JRE to add, must be the same as the Eclipse OS. Defaults to OS of this computer. Choose from: macosx, linux, win32')
+  arch = cli.SwitchAttr(names = ['-a', '--arch'], argtype = str, default = None, help = 'Processor architecture of the JRE to add, must be the same as the Eclipse architecture. Defaults to architecture of this computer. Choose from: x86, x86_64')
+
+  def main(self):
+    print('Adding JRE to Eclipse instance')
+    EclipseAddJre(self.destination, eclipseOS = self.os, eclipseArch = self.arch)
     return 0
 
 
