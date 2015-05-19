@@ -204,8 +204,8 @@ _buildDependencies = OrderedDict([
   ('java'         , ['poms', 'strategoxt']),
   ('languagepoms' , ['poms', 'strategoxt', 'java']),
   ('languages'    , ['poms', 'strategoxt', 'java', 'languagepoms']),
-  ('eclipse'      , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages']),
-  ('pluginpoms'   , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages', 'eclipse']),
+  ('pluginpoms'   , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages']),
+  ('eclipse'      , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages', 'pluginpoms']),
   ('spoofax-libs' , ['poms', 'strategoxt', 'java']),
   ('test-runner'  , ['poms', 'strategoxt', 'java']),
 ])
@@ -215,8 +215,8 @@ _buildCommands = {
   'java'         : BuildJava,
   'languagepoms' : BuildLanguagePoms,
   'languages'    : BuildLanguages,
-  'eclipse'      : BuildEclipse,
   'pluginpoms'   : BuildPluginPoms,
+  'eclipse'      : BuildEclipse,
   'spoofax-libs' : BuildSpoofaxLibs,
   'test-runner'  : BuildTestRunner,
 }

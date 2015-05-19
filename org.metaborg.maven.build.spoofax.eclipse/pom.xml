@@ -41,6 +41,7 @@
 		<module>../../modelware/org.spoofax.modelware.gmf.codegenextension</module>
 
 		<!-- Meta languages -->
+		<module>../../dynsem/dynsem.eclipse</module>
 		<!--
 		<module>../../mb-rep/org.strategoxt.imp.editors.aterm</module>
 		<module>../../aster/org.strategoxt.imp.editors.aster</module>
