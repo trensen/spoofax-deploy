@@ -162,7 +162,7 @@ def BuildLanguages(basedir, deploy, profiles, **kwargs):
 
   return BuildResult([])
 
-def BuildEclipse(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
+def BuildEclipse(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'install'
   if skipExpensive:
     kwargs.update({'skip-language-build' : True})
