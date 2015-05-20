@@ -24,22 +24,22 @@ def EclipseGen(destination, eclipseOS = None, eclipseWS = None, eclipseArch = No
 
   args = []
   args.append(_DirectorExecutable())
-  args.append('-destination {}'.format(destination))
-  args.append('-bundlepool {}'.format(destination))
-  args.append('-p2.os {}'.format(eclipseOS))
-  args.append('-p2.ws {}'.format(eclipseWS))
-  args.append('-p2.arch {}'.format(eclipseArch))
-  args.append('-tag InitialState')
-  args.append('-profile SDKProfile')
-  args.append('-profileProperties org.eclipse.update.install.features=true')
-  args.append('-roaming')
 
   if len(repositories) != 0:
     repositories = map(_LocationToURI, repositories)
     args.append('-repository {}'.format(','.join(repositories)))
-
   if len(installUnits) != 0:
     args.append('-installIU {}'.format(','.join(installUnits)))
+
+  args.append('-tag InitialState')
+  args.append('-destination {}'.format(destination))
+  args.append('-profile SDKProfile')
+  args.append('-profileProperties org.eclipse.update.install.features=true')
+  args.append('-bundlepool {}'.format(destination))
+  args.append('-p2.os {}'.format(eclipseOS))
+  args.append('-p2.ws {}'.format(eclipseWS))
+  args.append('-p2.arch {}'.format(eclipseArch))
+  args.append('-roaming')
 
   cmd = ' '.join(args)
   print(cmd)
@@ -61,6 +61,7 @@ def EclipseIniFix(destination, eclipseOS, stackSize = '16M', heapSize = '1G', ma
     iniText = iniFile.read()
 
   iniText = re.sub(r'--launcher\.XXMaxPermSize\n[0-9]+[g|G|m|M|k|K]', '', iniText, flags = re.MULTILINE)
+  iniText = re.sub(r'-install\n.+', '', iniText, flags = re.MULTILINE)
   iniText = re.sub(r'-showsplash\norg.eclipse.platform', '', iniText, flags = re.MULTILINE)
 
   launcherPattern = r'--launcher\.defaultAction\nopenFile'
