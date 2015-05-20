@@ -23,7 +23,7 @@ Most Spoofax/IMP code is licensed under the GNU Lesser General Public License (L
    </license>
 
    <url>
-      <update label="Spoofax updates" url="http://spoofax.org/update/stable/"/>
+      <update label="Spoofax updates" url="http://download.spoofax.org/update/in4303/"/>
    </url>
 
    <requires>
