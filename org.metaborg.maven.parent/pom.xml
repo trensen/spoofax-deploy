@@ -359,6 +359,23 @@
                     <ignore></ignore>
                   </action>
                 </pluginExecution>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.metaborg</groupId>
+                    <artifactId>spoofax-maven-plugin</artifactId>
+                    <versionRange>[1.5.0-SNAPSHOT,)</versionRange>
+                    <goals>
+                      <goal>generate-sources</goal>
+                      <goal>initialize</goal>
+                      <goal>pre-compile</goal>
+                      <goal>post-compile</goal>
+                      <goal>run</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <ignore></ignore>
+                  </action>
+                </pluginExecution>
               </pluginExecutions>
             </lifecycleMappingMetadata>
           </configuration>
