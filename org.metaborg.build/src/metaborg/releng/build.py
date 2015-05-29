@@ -131,7 +131,6 @@ def BuildStrategoXt(basedir, profiles, deploy, bootstrap, runTests, skipTests, s
     BuildArtifact('StrategoXT minified JAR', glob('{}/buildpoms/minjar/target/strategoxt-min-jar-*.jar'.format(strategoXtDir))[0], 'strategoxt-min.jar'),
   ])
 
-
 def BuildJava(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'install'
   if skipExpensive:
@@ -142,6 +141,26 @@ def BuildJava(basedir, qualifier, deploy, buildStratego, bootstrapStratego, stra
     BuildArtifact('Spoofax sunshine JAR', glob(path.join(basedir, 'spoofax-sunshine/org.spoofax.sunshine/target/org.metaborg.sunshine-*-shaded.jar'))[0], 'spoofax-sunshine.jar'),
     BuildArtifact('Spoofax benchmarker JAR', glob(path.join(basedir, 'spoofax-benchmark/org.metaborg.spoofax.benchmark.cmd/target/org.metaborg.spoofax.benchmark.cmd-*.jar'))[0], 'spoofax-benchmark.jar'),
   ])
+
+def BuildLanguagePoms(basedir, deploy, **kwargs):
+  phase = 'deploy' if deploy else 'install'
+  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.parentpoms.language', 'pom.xml')
+  Mvn(pomFile = pomFile, phase = phase, **kwargs)
+  return BuildResult([])
+
+def BuildLanguages(basedir, deploy, profiles, **kwargs):
+  phase = 'deploy' if deploy else 'install'
+
+  bootstrapProfiles = list(profiles)
+  if '!add-metaborg-repositories' in bootstrapProfiles:
+    bootstrapProfiles.remove('!add-metaborg-repositories')
+  bootstrapPomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.languages', 'bootstrap', 'pom.xml')
+  Mvn(pomFile = bootstrapPomFile, phase = phase, profiles = bootstrapProfiles, **kwargs)
+
+  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.languages', 'pom.xml')
+  Mvn(pomFile = pomFile, phase = phase, profiles = profiles, **kwargs)
+
+  return BuildResult([])
 
 def BuildEclipse(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'install'
@@ -180,20 +199,24 @@ def BuildTestRunner(basedir, deploy, qualifier, buildStratego, bootstrapStratego
 
 '''Build dependencies must be topologically ordered, otherwise the algorithm will not work'''
 _buildDependencies = OrderedDict([
-  ('poms'        , []),
-  ('strategoxt'  , ['poms']),
-  ('java'        , ['poms', 'strategoxt']),
-  ('eclipse'     , ['poms', 'strategoxt', 'java']),
-  ('pluginpoms'  , ['poms', 'strategoxt', 'java', 'eclipse']),
-  ('spoofax-libs', ['poms', 'strategoxt', 'java']),
-  ('test-runner' , ['poms', 'strategoxt', 'java']),
+  ('poms'         , []),
+  ('strategoxt'   , ['poms']),
+  ('java'         , ['poms', 'strategoxt']),
+  ('languagepoms' , ['poms', 'strategoxt', 'java']),
+  ('languages'    , ['poms', 'strategoxt', 'java', 'languagepoms']),
+  ('pluginpoms'   , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages']),
+  ('eclipse'      , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages', 'pluginpoms']),
+  ('spoofax-libs' , ['poms', 'strategoxt', 'java']),
+  ('test-runner'  , ['poms', 'strategoxt', 'java']),
 ])
 _buildCommands = {
   'poms'         : BuildPoms,
   'strategoxt'   : BuildOrDownloadStrategoXt,
   'java'         : BuildJava,
-  'eclipse'      : BuildEclipse,
+  'languagepoms' : BuildLanguagePoms,
+  'languages'    : BuildLanguages,
   'pluginpoms'   : BuildPluginPoms,
+  'eclipse'      : BuildEclipse,
   'spoofax-libs' : BuildSpoofaxLibs,
   'test-runner'  : BuildTestRunner,
 }
