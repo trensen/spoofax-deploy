@@ -15,7 +15,7 @@
 	</parent>
 
 	<modules>
-		<module>../../runtime-libraries/org.metaborg.meta.runtime.libanalysis2</module>
+		<!--module>../../runtime-libraries/org.metaborg.meta.runtime.libanalysis2</module-->
 		<module>../../mb-rep/org.metaborg.meta.lang.aterm</module>
 		<module>../../stratego/org.metaborg.meta.lang.stratego</module>
 		<module>../../dynsem/dynsem</module>
