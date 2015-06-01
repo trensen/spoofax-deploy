@@ -24,7 +24,13 @@
     <module>../../../../spoofax-eclipse/org.metaborg.spoofax.eclipse.meta.legacy</module>
     <module>../../../../spoofax-eclipse/org.metaborg.spoofax.eclipse.util</module>
 
-    <!-- Meta languages -->
+    <module>../../../../spoofax-eclipse/org.metaborg.spoofax.eclipse.feature</module>
+    <module>../../../../spoofax-eclipse/org.metaborg.spoofax.eclipse.meta.feature</module>
+    <module>../../../../spoofax-eclipse/org.metaborg.spoofax.eclipse.updatesite</module>
+
+    <!-- Meta language Eclipse plugins -->
+    <module>../../../../sdf/org.metaborg.meta.lang.sdf.eclipse</module>
+    <!--
     <module>../../../../mb-rep/org.strategoxt.imp.editors.aterm</module>
     <module>../../../../sdf/org.strategoxt.imp.editors.sdf</module>
     <module>../../../../stratego/org.strategoxt.imp.editors.stratego</module>
@@ -34,11 +40,7 @@
     <module>../../../../ts/org.metaborg.meta.lang.ts</module>
     <module>../../../../dynsem/dynsem</module>
     <module>../../../../runtime-libraries/org.metaborg.meta.lang.analysis</module>
-
-    <!-- Eclipse update site -->
-    <module>../../../../spoofax-eclipse/org.metaborg.spoofax.eclipse.feature</module>
-    <module>../../../../spoofax-eclipse/org.metaborg.spoofax.eclipse.meta.feature</module>
-    <module>../../../../spoofax-eclipse/org.metaborg.spoofax.eclipse.updatesite</module>
+    -->
   </modules>
 
   <developers>

@@ -56,9 +56,6 @@
 		<module>../../org.metaborg.maven.parent</module>
 		<module>../../org.metaborg.maven.parent.java</module>
 
-		<!-- External dependencies -->
-		<module>../../../mb-exec-deps/org.spoofax.interpreter.externaldeps</module>
-
 		<!-- Spoofax Sunshine -->
 		<module>../../../spoofax-sunshine/org.spoofax.sunshine</module>
 

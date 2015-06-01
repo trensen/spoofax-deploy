@@ -162,6 +162,12 @@ def BuildLanguages(basedir, deploy, profiles, **kwargs):
 
   return BuildResult([])
 
+def BuildEclipseDeps(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
+  phase = 'deploy' if deploy else 'install'
+  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'spoofax', 'eclipsedeps', 'pom.xml')
+  Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
+  return BuildResult([])
+
 def BuildEclipse(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'install'
   if skipExpensive:
@@ -205,7 +211,8 @@ _buildDependencies = OrderedDict([
   ('languagepoms' , ['poms', 'strategoxt', 'java']),
   ('languages'    , ['poms', 'strategoxt', 'java', 'languagepoms']),
   ('pluginpoms'   , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages']),
-  ('eclipse'      , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages', 'pluginpoms']),
+  ('eclipsedeps'  , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages', 'pluginpoms']),
+  ('eclipse'      , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages', 'pluginpoms', 'eclipsedeps']),
   ('spoofax-libs' , ['poms', 'strategoxt', 'java']),
   ('test-runner'  , ['poms', 'strategoxt', 'java']),
 ])
@@ -216,6 +223,7 @@ _buildCommands = {
   'languagepoms' : BuildLanguagePoms,
   'languages'    : BuildLanguages,
   'pluginpoms'   : BuildPluginPoms,
+  'eclipsedeps'  : BuildEclipseDeps,
   'eclipse'      : BuildEclipse,
   'spoofax-libs' : BuildSpoofaxLibs,
   'test-runner'  : BuildTestRunner,
