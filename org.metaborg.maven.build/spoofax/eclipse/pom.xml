@@ -29,18 +29,14 @@
     <module>../../../../spoofax-eclipse/org.metaborg.spoofax.eclipse.updatesite</module>
 
     <!-- Meta language Eclipse plugins -->
+    <module>../../../../dynsem/dynsem.eclipse</module>
+    <module>../../../../esv/org.metaborg.meta.lang.esv.eclipse</module>
+    <module>../../../../mb-rep/org.metaborg.meta.lang.aterm.eclipse</module>
+    <module>../../../../nabl/org.metaborg.meta.lang.nabl.eclipse</module>
     <module>../../../../sdf/org.metaborg.meta.lang.sdf.eclipse</module>
-    <!--
-    <module>../../../../mb-rep/org.strategoxt.imp.editors.aterm</module>
-    <module>../../../../sdf/org.strategoxt.imp.editors.sdf</module>
-    <module>../../../../stratego/org.strategoxt.imp.editors.stratego</module>
-    <module>../../../../esv/org.strategoxt.imp.editors.editorservice</module>
-    <module>../../../../sdf/org.strategoxt.imp.editors.template</module>
-    <module>../../../../nabl/org.metaborg.meta.lang.nabl</module>
-    <module>../../../../ts/org.metaborg.meta.lang.ts</module>
-    <module>../../../../dynsem/dynsem</module>
-    <module>../../../../runtime-libraries/org.metaborg.meta.lang.analysis</module>
-    -->
+    <module>../../../../sdf/org.metaborg.meta.lang.template.eclipse</module>
+    <module>../../../../stratego/org.metaborg.meta.lang.stratego.eclipse</module>
+    <module>../../../../ts/org.metaborg.meta.lang.ts.eclipse</module>
   </modules>
 
   <developers>
