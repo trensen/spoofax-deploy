@@ -27,11 +27,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.metaborg</groupId>
-			<artifactId>org.spoofax.interpreter.library.interpreter</artifactId>
-			<version>${metaborg-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.metaborg</groupId>
 			<artifactId>org.spoofax.interpreter.library.java</artifactId>
 			<version>${metaborg-version}</version>
 		</dependency>
@@ -43,6 +38,11 @@
 		<dependency>
 			<groupId>org.metaborg</groupId>
 			<artifactId>org.spoofax.interpreter.library.index</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.metaborg</groupId>
+			<artifactId>org.spoofax.interpreter.library.jsglr</artifactId>
 			<version>${metaborg-version}</version>
 		</dependency>
 		<dependency>

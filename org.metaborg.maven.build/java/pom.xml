@@ -17,16 +17,12 @@
 	<modules>
 		<!-- Representation -->
 		<module>../../../mb-rep/org.spoofax.terms</module>
-		<module>../../../mb-rep/org.spoofax.aterm</module>
 		<module>../../../mb-rep/org.spoofax.interpreter.library.index</module>
 
 		<!-- Execution -->
 		<module>../../../mb-exec/org.metaborg.util</module>
-		<module>../../../mb-exec/org.spoofax.interpreter</module>
 		<module>../../../mb-exec/org.spoofax.interpreter.core</module>
-		<module>../../../mb-exec/org.spoofax.interpreter.library.interpreter</module>
 		<module>../../../mb-exec/org.spoofax.interpreter.library.java</module>
-		<module>../../../mb-exec/org.spoofax.interpreter.library.jline</module>
 		<module>../../../mb-exec/org.spoofax.interpreter.library.xml</module>
 		<module>../../../runtime-libraries/org.metaborg.runtime.task</module>
 
