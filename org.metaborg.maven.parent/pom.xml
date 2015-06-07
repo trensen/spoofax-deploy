@@ -24,7 +24,7 @@
     <java-version>1.7</java-version>
     <maven-eclipse-compiler-version>2.3</maven-eclipse-compiler-version>
     <metaborg-version>1.5.0-SNAPSHOT</metaborg-version>
-    <metaborg-baseline-version>1.5.0-baseline-20150519</metaborg-baseline-version>
+    <metaborg-baseline-version>1.5.0-baseline-20150607</metaborg-baseline-version>
     <jline-version>0.9.94</jline-version>
   </properties>
 
