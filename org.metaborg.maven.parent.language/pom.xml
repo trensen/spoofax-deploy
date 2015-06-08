@@ -24,11 +24,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.metaborg</groupId>
-			<artifactId>org.spoofax.aterm</artifactId>
-			<version>${metaborg-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.metaborg</groupId>
 			<artifactId>org.spoofax.interpreter.library.index</artifactId>
 			<version>${metaborg-version}</version>
 		</dependency>
@@ -40,27 +35,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.metaborg</groupId>
-			<artifactId>org.spoofax.interpreter</artifactId>
-			<version>${metaborg-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.metaborg</groupId>
 			<artifactId>org.spoofax.interpreter.core</artifactId>
 			<version>${metaborg-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.metaborg</groupId>
-			<artifactId>org.spoofax.interpreter.library.interpreter</artifactId>
-			<version>${metaborg-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.metaborg</groupId>
 			<artifactId>org.spoofax.interpreter.library.java</artifactId>
-			<version>${metaborg-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.metaborg</groupId>
-			<artifactId>org.spoofax.interpreter.library.jline</artifactId>
 			<version>${metaborg-version}</version>
 		</dependency>
 		<dependency>
@@ -100,12 +80,6 @@
 		<dependency>
 			<groupId>org.metaborg</groupId>
 			<artifactId>org.metaborg.meta.interpreter.framework</artifactId>
-			<version>${metaborg-version}</version>
-		</dependency>
-		<!-- External dependencies -->
-		<dependency>
-			<groupId>org.metaborg</groupId>
-			<artifactId>org.spoofax.interpreter.externaldeps</artifactId>
 			<version>${metaborg-version}</version>
 		</dependency>
 	</dependencies>
