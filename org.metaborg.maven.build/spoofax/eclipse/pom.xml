@@ -37,6 +37,7 @@
     <module>../../../../sdf/org.metaborg.meta.lang.template.eclipse</module>
     <module>../../../../stratego/org.metaborg.meta.lang.stratego.eclipse</module>
     <module>../../../../ts/org.metaborg.meta.lang.ts.eclipse</module>
+    <module>../../../../runtime-libraries/org.metaborg.meta.lang.analysis.eclipse</module>
   </modules>
 
   <developers>

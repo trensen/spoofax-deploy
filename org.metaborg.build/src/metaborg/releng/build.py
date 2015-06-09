@@ -178,13 +178,6 @@ def BuildEclipse(basedir, qualifier, deploy, buildStratego, bootstrapStratego, s
     BuildArtifact('Spoofax Eclipse update site', path.join(basedir, 'spoofax-eclipse/org.metaborg.spoofax.eclipse.updatesite/target/site_assembly.zip'), 'spoofax-eclipse.zip'),
   ])
 
-def BuildPluginPoms(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
-  phase = 'deploy' if deploy else 'install'
-  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'parentpoms', 'plugin', 'pom.xml')
-  kwargs.update({'skip-language-build' : True})
-  Mvn(pomFile = pomFile, phase = phase, **kwargs)
-  return BuildResult([])
-
 def BuildSpoofaxLibs(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'verify'
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'spoofax', 'libs', 'pom.xml')
@@ -210,9 +203,8 @@ _buildDependencies = OrderedDict([
   ('java'         , ['poms', 'strategoxt']),
   ('languagepoms' , ['poms', 'strategoxt', 'java']),
   ('languages'    , ['poms', 'strategoxt', 'java', 'languagepoms']),
-  ('pluginpoms'   , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages']),
-  ('eclipsedeps'  , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages', 'pluginpoms']),
-  ('eclipse'      , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages', 'pluginpoms', 'eclipsedeps']),
+  ('eclipsedeps'  , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages']),
+  ('eclipse'      , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages', 'eclipsedeps']),
   ('spoofax-libs' , ['poms', 'strategoxt', 'java']),
   ('test-runner'  , ['poms', 'strategoxt', 'java']),
 ])
@@ -222,7 +214,6 @@ _buildCommands = {
   'java'         : BuildJava,
   'languagepoms' : BuildLanguagePoms,
   'languages'    : BuildLanguages,
-  'pluginpoms'   : BuildPluginPoms,
   'eclipsedeps'  : BuildEclipseDeps,
   'eclipse'      : BuildEclipse,
   'spoofax-libs' : BuildSpoofaxLibs,

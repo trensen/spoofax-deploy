@@ -19,20 +19,7 @@
 		<module>../../../../mb-rep/org.metaborg.meta.lang.aterm</module>
 		<module>../../../../stratego/org.metaborg.meta.lang.stratego</module>
 		<module>../../../../dynsem/dynsem</module>
-
-        <!--
-		<module>../../../../aster/org.strategoxt.imp.editors.aster</module>
-		<module>../../../../box/org.strategoxt.imp.editors.pp</module>
-		<module>../../../../rtg/org.strategoxt.imp.editors.rtg</module>
 		<module>../../../../runtime-libraries/org.metaborg.meta.lang.analysis</module>
-        -->
-
-        <!--
-		<module>../../../../spt/org.strategoxt.imp.testing</module>
-		<module>../../../../spt/org.strategoxt.imp.testing</module>
-		<module>../../../../spt/org.strategoxt.imp.testing.cmd</module>
-		<module>../../../../spt/org.strategoxt.imp.testing.ui</module>
-        -->
 	</modules>
 
 	<developers>

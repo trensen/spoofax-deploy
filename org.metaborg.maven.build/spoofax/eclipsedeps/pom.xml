@@ -18,6 +18,8 @@
   </parent>
 
   <modules>
+    <module>../../../org.metaborg.maven.parent.plugin</module>
+    <module>../../../../spoofax-eclipse/org.metaborg.spoofax.eclipse.parent.language</module>
     <module>../../../../spoofax/org.strategoxt.imp.generator/morepoms/make-permissive-jar</module>
     <module>../../../../spoofax-eclipse/org.metaborg.spoofax.eclipse.externaldeps</module>
   </modules>
