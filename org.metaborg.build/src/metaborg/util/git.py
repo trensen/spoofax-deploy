@@ -59,7 +59,7 @@ def UpdateAll(repo, depth = None):
 def Checkout(repo, submodule):
   if not submodule.module_exists():
     Update(repo, submodule)
-  
+
   branch = submodule.branch
   print('Switching {} to {}'.format(submodule.name, branch.name))
   branch.checkout()
@@ -84,7 +84,7 @@ def Clean(submodule):
 
   subrepo = submodule.module()
   print('Cleaning {}'.format(submodule.name))
-  subrepo.git.clean('-fd')
+  subrepo.git.clean('-dfx', '-e', '.project', '-e', '.classpath', '-e', '.settings', '-e', 'META-INF')
 
 def CleanAll(repo):
   for submodule in repo.submodules:
