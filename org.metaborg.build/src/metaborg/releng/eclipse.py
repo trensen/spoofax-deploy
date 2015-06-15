@@ -6,8 +6,8 @@ _eclipsePackage = 'epp.package.standard'
 
 
 _spoofaxRepo = 'http://download.spoofax.org/update/nightly/'
-_spoofaxRuntime = ['org.strategoxt.imp.feature.group']
-_spoofaxMeta = ['org.strategoxt.imp.meta.feature.group']
+_spoofaxRuntime = ['org.metaborg.spoofax.eclipse.feature.feature.group']
+_spoofaxMeta = ['org.metaborg.spoofax.eclipse.meta.feature.feature.group']
 _modelwareRuntime = [
   'org.metaborg.modelware.gmf.feature.group',
   'org.metaborg.modelware.gmf.headless.feature.group',
