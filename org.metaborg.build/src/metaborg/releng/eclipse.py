@@ -8,7 +8,7 @@ _eclipsePackage = 'epp.package.standard'
 _spoofaxRepo = 'http://download.spoofax.org/update/nightly/'
 _spoofaxRuntime = ['org.metaborg.spoofax.eclipse.feature.feature.group']
 _spoofaxMeta = ['org.metaborg.spoofax.eclipse.meta.feature.feature.group']
-_spoofaxUpdateLocation = 'spoofax-deploy/org.metaborg.spoofax.eclipse.updatesite/target/site'
+_spoofaxUpdateLocation = 'spoofax-eclipse/org.metaborg.spoofax.eclipse.updatesite/target/site'
 _modelwareRuntime = [
   'org.metaborg.modelware.gmf.feature.group',
   'org.metaborg.modelware.gmf.headless.feature.group',
