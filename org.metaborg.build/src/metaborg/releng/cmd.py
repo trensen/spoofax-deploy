@@ -2,7 +2,7 @@ from os import path
 from git.repo.base import Repo
 from plumbum import cli
 
-from metaborg.releng.build import BuildAll, GetAllBuilds, GenerateMavenSettings, _mvnSettingsLocation, _metaborgReleases, _metaborgSnapshots, _spoofaxUpdateSite, _centralMirror, CreateQualifier, RepoChanged, _qualifierLocation, _defaultLocalRepo
+from metaborg.releng.build import BuildAll, GetAllBuilds, GenerateMavenSettings, _mvnSettingsLocation, _metaborgReleases, _metaborgSnapshots, _spoofaxUpdateSite, _centralMirror, CreateQualifier, RepoChanged, _qualifierLocation, _defaultLocalRepo, _spoofaxUpdateLocation
 from metaborg.releng.versions import SetVersions
 from metaborg.releng.release import Release, ResetRelease
 from metaborg.releng.eclipse import GeneratePlainEclipse, GenerateSpoofaxEclipse, GenerateDevSpoofaxEclipse, _eclipseRepo, _eclipsePackage, _spoofaxRepo
@@ -407,7 +407,7 @@ class MetaborgRelengGenSpoofax(cli.Application):
     if self.localSpoofax:
       repo = self.parent.repo
       repoDir = repo.working_tree_dir
-      spoofaxRepo = '{}/{}'.format(repoDir, 'spoofax-deploy/org.strategoxt.imp.updatesite/target/site')
+      spoofaxRepo = '{}/{}'.format(repoDir, _spoofaxUpdateLocation)
     else:
       spoofaxRepo = self.spoofaxRepo
 
@@ -441,7 +441,7 @@ class MetaborgRelengGenDevSpoofax(cli.Application):
     if self.localSpoofax:
       repo = self.parent.repo
       repoDir = repo.working_tree_dir
-      spoofaxRepo = '{}/{}'.format(repoDir, 'spoofax-deploy/org.strategoxt.imp.updatesite/target/site')
+      spoofaxRepo = '{}/{}'.format(repoDir, _spoofaxUpdateLocation)
     else:
       spoofaxRepo = self.spoofaxRepo
 
