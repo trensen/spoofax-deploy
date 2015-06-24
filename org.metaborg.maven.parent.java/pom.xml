@@ -19,10 +19,12 @@
 
   <build>
     <plugins>
+      <!-- Enable Java compilation -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
       </plugin>
+
       <!-- Generate MANIFEST.MF, to make project available as an Eclipse plugin. -->
       <plugin>
         <groupId>org.apache.felix</groupId>
@@ -73,6 +75,7 @@
           </execution>
         </executions>
       </plugin>
+      
       <!-- Add the generated MANIFEST.MF to the resulting JAR file. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

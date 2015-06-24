@@ -21,7 +21,6 @@
     <!-- Spoofax Eclipse -->
     <module>../../../../spoofax-eclipse/org.metaborg.spoofax.eclipse</module>
     <module>../../../../spoofax-eclipse/org.metaborg.spoofax.eclipse.meta</module>
-    <module>../../../../spoofax-eclipse/org.metaborg.spoofax.eclipse.meta.legacy</module>
     <module>../../../../spoofax-eclipse/org.metaborg.spoofax.eclipse.util</module>
 
     <module>../../../../spoofax-eclipse/org.metaborg.spoofax.eclipse.feature</module>
