@@ -46,8 +46,8 @@ def GenerateSpoofaxEclipse(destination, eclipseOS = None, eclipseRepo = _eclipse
   if not eclipseOS:
     eclipseOS = CurrentEclipseOS()
 
-  repositories.extend([eclipseRepo, spoofaxRepo]);
-  installUnits.extend([eclipsePackage] + _spoofaxRuntime)
+  repositories.extend([eclipseRepo, spoofaxRepo] + _m2eRepos)
+  installUnits.extend([eclipsePackage] + _spoofaxRuntime + _m2eFeatures)
   if installMeta:
     installUnits.extend(_spoofaxMeta)
   #if installModelware:
