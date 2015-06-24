@@ -19,10 +19,12 @@
 
   <build>
     <plugins>
+      <!-- Enable Java compilation -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
       </plugin>
+
       <!-- Generate MANIFEST.MF, to make project available as an Eclipse plugin. -->
       <plugin>
         <groupId>org.apache.felix</groupId>
@@ -36,12 +38,27 @@
             <Bundle-Version>$(replace;${project.version};-SNAPSHOT;.${forceContextQualifier})</Bundle-Version>
             <!-- Also export packages that contain '.impl', because it would exclude '.imploder' in jsglr. -->
             <Export-Package>*</Export-Package>
-            <!-- Don't declare dependency on sun packages, they should be provided by the JVM. -->
+            <!-- Don't declare dependency on Java library packages. -->
+            <!-- Allow dependencies to Metaborg artifacts without a provider. -->
+            <!-- Use M2E provider for Maven, because M2E embeds Maven and we want to use it. -->
+            <!-- Use Metaborg provider for rest of the packages, these are external dependencies that should not 
+              conflict with other Eclipse plugins. -->
             <Import-Package>
               !sun.misc,
               !sun.nio.cs,
-              *
+              !org.junit,
+              !javax*,
+              !org.xml*,
+              org.spoofax*,
+              org.metaborg*,
+              org.strategoxt.*,
+              org.apache.tools.ant,
+              org.apache.maven*;provider=m2e;mandatory:=provider,
+              org.codehaus.plexus*;provider=m2e;mandatory:=provider,
+              *;provider=metaborg;mandatory:=provider
             </Import-Package>
+            <!-- Allow buddy loading -->
+            <Eclipse-BuddyPolicy>registered</Eclipse-BuddyPolicy>
             <!-- Don't generate uses declarations in exported packages. -->
             <_nouses>true</_nouses>
           </instructions>
@@ -58,6 +75,7 @@
           </execution>
         </executions>
       </plugin>
+      
       <!-- Add the generated MANIFEST.MF to the resulting JAR file. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

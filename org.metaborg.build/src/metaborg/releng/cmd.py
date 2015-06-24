@@ -2,7 +2,7 @@ from os import path
 from git.repo.base import Repo
 from plumbum import cli
 
-from metaborg.releng.build import BuildAll, GetAllBuilds, GenerateMavenSettings, _mvnSettingsLocation, _metaborgReleases, _metaborgSnapshots, _spoofaxUpdateSite, _centralMirror, CreateQualifier, RepoChanged, _qualifierLocation, _defaultLocalRepo
+from metaborg.releng.build import BuildAll, GetAllBuilds, GenerateMavenSettings, _mvnSettingsLocation, _metaborgReleases, _metaborgSnapshots, _spoofaxUpdateSite, _centralMirror, CreateQualifier, RepoChanged, _qualifierLocation, _defaultLocalRepo, CreateNowQualifier
 from metaborg.releng.versions import SetVersions
 from metaborg.releng.release import Release, ResetRelease
 from metaborg.releng.eclipse import GeneratePlainEclipse, GenerateSpoofaxEclipse, GenerateDevSpoofaxEclipse, _eclipseRepo, _eclipsePackage, _spoofaxRepo, _spoofaxUpdateLocation
@@ -283,7 +283,8 @@ class MetaborgRelengBuild(cli.Application):
   bootstrapStratego = cli.Flag(   names = ['-b', '--bootstrap-stratego'], default = False, help = 'Bootstrap StrategoXT instead of building it', group = 'StrategoXT switches')
   noStrategoTest = cli.Flag(      names = ['-t', '--no-stratego-test'], default = False, help = 'Skip StrategoXT tests', group = 'StrategoXT switches')
 
-  qualifier = cli.SwitchAttr(     names = ['-q', '--qualifier'], argtype = str, default = None, help = 'Qualifier to use', group = 'Build switches')
+  qualifier = cli.SwitchAttr(     names = ['-q', '--qualifier'], argtype = str, default = None, excludes = ['--now-qualifier'], help = 'Qualifier to use', group = 'Build switches')
+  nowQualifier = cli.Flag(        names = ['-n', '--now-qualifier'], default = None, excludes = ['--qualifier'], help = 'Use current time as qualifier instead of latest commit date', group = 'Build switches')
   cleanRepo = cli.Flag(           names = ['-c', '--clean-repo'], default = False, help = 'Clean MetaBorg artifacts from the local repository before building', group = 'Build switches')
   noDeps = cli.Flag(              names = ['-e', '--no-deps'], default = False, excludes = ['--clean-repo'], help = 'Do not build dependencies, just build given components', group = 'Build switches')
   deploy = cli.Flag(              names = ['-d', '--deploy'], default = False, help = 'Deploy after building', group = 'Build switches')
@@ -310,10 +311,17 @@ class MetaborgRelengBuild(cli.Application):
 
     repo = self.parent.repo
 
+    if self.qualifier:
+      qualifier = self.qualifier
+    elif self.nowQualifier:
+      qualifier = CreateNowQualifier(repo)
+    else:
+      qualifier = None
+
     try:
       BuildAll(repo = repo, components = components, buildDeps = not self.noDeps, resumeFrom = self.resumeFrom,
         buildStratego = self.buildStratego, bootstrapStratego = self.bootstrapStratego,
-        strategoTest = not self.noStrategoTest, qualifier = self.qualifier, cleanRepo = self.cleanRepo, deploy = self.deploy,
+        strategoTest = not self.noStrategoTest, qualifier = qualifier, cleanRepo = self.cleanRepo, deploy = self.deploy,
         release = self.release, skipExpensive = self.skipExpensive, skipComponents = self.skipComponents, copyArtifactsTo = self.copyArtifacts,
         clean = not self.noClean, skipTests = self.skipTests, settingsFile = self.settings, globalSettingsFile = self.globalSettings,
         localRepo = self.localRepo, offline = self.offline, debug = self.debug, quiet = self.quiet)
