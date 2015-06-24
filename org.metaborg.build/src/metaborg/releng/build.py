@@ -249,6 +249,12 @@ def CreateQualifier(repo, branch = None):
     branch = Branch(repo)
   return FormatQualifier(timestamp, branch)
 
+def CreateNowQualifier(repo, branch = None):
+  timestamp = datetime.now()
+  if not branch:
+    branch = Branch(repo)
+  return FormatQualifier(timestamp, branch)
+
 _qualifierFormat = '%Y%m%d-%H%M%S'
 def FormatQualifier(timestamp, branch):
   return '{}-{}'.format(timestamp.strftime(_qualifierFormat), branch)
