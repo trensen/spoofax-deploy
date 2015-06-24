@@ -78,7 +78,7 @@ def BuildAll(repo, components = ['all'], buildDeps = True, resumeFrom = None, bu
 
 def BuildPoms(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'install'
-  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.parentpoms', 'pom.xml')
+  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'parentpoms', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, **kwargs)
   return BuildResult([])
 
@@ -131,48 +131,66 @@ def BuildStrategoXt(basedir, profiles, deploy, bootstrap, runTests, skipTests, s
     BuildArtifact('StrategoXT minified JAR', glob('{}/buildpoms/minjar/target/strategoxt-min-jar-*.jar'.format(strategoXtDir))[0], 'strategoxt-min.jar'),
   ])
 
-
 def BuildJava(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'install'
   if skipExpensive:
     kwargs.update({'skip-generator' : True})
-  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.java', 'pom.xml')
+  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'java', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
   return BuildResult([
     BuildArtifact('Spoofax sunshine JAR', glob(path.join(basedir, 'spoofax-sunshine/org.spoofax.sunshine/target/org.metaborg.sunshine-*-shaded.jar'))[0], 'spoofax-sunshine.jar'),
     BuildArtifact('Spoofax benchmarker JAR', glob(path.join(basedir, 'spoofax-benchmark/org.metaborg.spoofax.benchmark.cmd/target/org.metaborg.spoofax.benchmark.cmd-*.jar'))[0], 'spoofax-benchmark.jar'),
   ])
 
+def BuildLanguagePoms(basedir, deploy, **kwargs):
+  phase = 'deploy' if deploy else 'install'
+  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'parentpoms', 'language', 'pom.xml')
+  Mvn(pomFile = pomFile, phase = phase, **kwargs)
+  return BuildResult([])
+
+def BuildLanguages(basedir, deploy, profiles, **kwargs):
+  phase = 'deploy' if deploy else 'install'
+
+  bootstrapProfiles = list(profiles)
+  if '!add-metaborg-repositories' in bootstrapProfiles:
+    bootstrapProfiles.remove('!add-metaborg-repositories')
+  bootstrapPomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'spoofax', 'languages', 'bootstrap', 'pom.xml')
+  Mvn(pomFile = bootstrapPomFile, phase = phase, profiles = bootstrapProfiles, **kwargs)
+
+  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'spoofax', 'languages', 'pom.xml')
+  Mvn(pomFile = pomFile, phase = phase, profiles = profiles, **kwargs)
+
+  return BuildResult([])
+
+def BuildEclipseDeps(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
+  phase = 'deploy' if deploy else 'install'
+  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'spoofax', 'eclipsedeps', 'pom.xml')
+  Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
+  return BuildResult([])
+
 def BuildEclipse(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'install'
   if skipExpensive:
     kwargs.update({'skip-language-build' : True})
-  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.eclipse', 'pom.xml')
+  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'spoofax', 'eclipse', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
   return BuildResult([
-    BuildArtifact('Spoofax Eclipse update site', path.join(basedir, 'spoofax-deploy/org.metaborg.spoofax.eclipse.updatesite/target/site_assembly.zip'), 'spoofax-eclipse.zip'),
+    BuildArtifact('Spoofax Eclipse update site', path.join(basedir, 'spoofax-eclipse/org.metaborg.spoofax.eclipse.updatesite/target/site_assembly.zip'), 'spoofax-eclipse.zip'),
   ])
-
-def BuildPluginPoms(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
-  phase = 'deploy' if deploy else 'install'
-  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.parentpoms.plugin', 'pom.xml')
-  kwargs.update({'skip-language-build' : True})
-  Mvn(pomFile = pomFile, phase = phase, **kwargs)
-  return BuildResult([])
 
 def BuildSpoofaxLibs(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'verify'
-  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.libs', 'pom.xml')
+  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'spoofax', 'libs', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, **kwargs)
   return BuildResult([
-    BuildArtifact('Spoofax libraries JAR', glob(path.join(basedir, 'spoofax-deploy/org.metaborg.maven.build.spoofax.libs/target/org.metaborg.maven.build.spoofax.libs-*.jar'))[0], 'spoofax-libs.jar'),
+    BuildArtifact('Spoofax libraries JAR', glob(path.join(basedir, 'spoofax-deploy/org.metaborg.maven.build/spoofax/libs/target/org.metaborg.maven.build.spoofax.libs-*.jar'))[0], 'spoofax-libs.jar'),
   ])
 
 def BuildTestRunner(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'verify'
   if skipExpensive:
     kwargs.update({'skip-language-build' : True})
-  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build.spoofax.testrunner', 'pom.xml')
+  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'spoofax', 'testrunner', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, **kwargs)
   return BuildResult([
     BuildArtifact('Spoofax testrunner JAR', glob(path.join(basedir, 'spt/org.metaborg.spoofax.testrunner.cmd/target/org.metaborg.spoofax.testrunner.cmd-*.jar'))[0], 'spoofax-testrunner.jar'),
@@ -180,20 +198,24 @@ def BuildTestRunner(basedir, deploy, qualifier, buildStratego, bootstrapStratego
 
 '''Build dependencies must be topologically ordered, otherwise the algorithm will not work'''
 _buildDependencies = OrderedDict([
-  ('poms'        , []),
-  ('strategoxt'  , ['poms']),
-  ('java'        , ['poms', 'strategoxt']),
-  ('eclipse'     , ['poms', 'strategoxt', 'java']),
-  ('pluginpoms'  , ['poms', 'strategoxt', 'java', 'eclipse']),
-  ('spoofax-libs', ['poms', 'strategoxt', 'java']),
-  ('test-runner' , ['poms', 'strategoxt', 'java']),
+  ('poms'         , []),
+  ('strategoxt'   , ['poms']),
+  ('java'         , ['poms', 'strategoxt']),
+  ('languagepoms' , ['poms', 'strategoxt', 'java']),
+  ('languages'    , ['poms', 'strategoxt', 'java', 'languagepoms']),
+  ('eclipsedeps'  , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages']),
+  ('eclipse'      , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages', 'eclipsedeps']),
+  ('spoofax-libs' , ['poms', 'strategoxt', 'java']),
+  ('test-runner'  , ['poms', 'strategoxt', 'java']),
 ])
 _buildCommands = {
   'poms'         : BuildPoms,
   'strategoxt'   : BuildOrDownloadStrategoXt,
   'java'         : BuildJava,
+  'languagepoms' : BuildLanguagePoms,
+  'languages'    : BuildLanguages,
+  'eclipsedeps'  : BuildEclipseDeps,
   'eclipse'      : BuildEclipse,
-  'pluginpoms'   : BuildPluginPoms,
   'spoofax-libs' : BuildSpoofaxLibs,
   'test-runner'  : BuildTestRunner,
 }
@@ -223,6 +245,12 @@ def GetBuildCommand(build):
 
 def CreateQualifier(repo, branch = None):
   timestamp = LatestDate(repo)
+  if not branch:
+    branch = Branch(repo)
+  return FormatQualifier(timestamp, branch)
+
+def CreateNowQualifier(repo, branch = None):
+  timestamp = datetime.now()
   if not branch:
     branch = Branch(repo)
   return FormatQualifier(timestamp, branch)

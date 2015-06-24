@@ -8,7 +8,7 @@ _eclipsePackage = 'epp.package.standard'
 _spoofaxRepo = 'http://download.spoofax.org/update/nightly/'
 _spoofaxRuntime = ['org.metaborg.spoofax.eclipse.feature.feature.group']
 _spoofaxMeta = ['org.metaborg.spoofax.eclipse.meta.feature.feature.group']
-_spoofaxUpdateLocation = 'spoofax-deploy/org.metaborg.spoofax.eclipse.updatesite/target/site'
+_spoofaxUpdateLocation = 'spoofax-eclipse/org.metaborg.spoofax.eclipse.updatesite/target/site'
 _modelwareRuntime = [
   'org.metaborg.modelware.gmf.feature.group',
   'org.metaborg.modelware.gmf.headless.feature.group',
@@ -46,14 +46,14 @@ def GenerateSpoofaxEclipse(destination, eclipseOS = None, eclipseRepo = _eclipse
   if not eclipseOS:
     eclipseOS = CurrentEclipseOS()
 
-  repositories.extend([eclipseRepo, spoofaxRepo]);
-  installUnits.extend([eclipsePackage] + _spoofaxRuntime)
+  repositories.extend([eclipseRepo, spoofaxRepo] + _m2eRepos)
+  installUnits.extend([eclipsePackage] + _spoofaxRuntime + _m2eFeatures)
   if installMeta:
     installUnits.extend(_spoofaxMeta)
-  if installModelware:
-    installUnits.extend(_modelwareRuntime)
-    if installMeta:
-      installUnits.extend(_modelwareMeta)
+  #if installModelware:
+  #  installUnits.extend(_modelwareRuntime)
+  #  if installMeta:
+  #    installUnits.extend(_modelwareMeta)
 
   EclipseGen(destination = destination, eclipseOS = eclipseOS, repositories = repositories, installUnits = installUnits, **kwargs)
   EclipseIniFix(destination = destination, eclipseOS = eclipseOS)
@@ -64,7 +64,9 @@ def GenerateDevSpoofaxEclipse(destination, eclipseOS = None, eclipseRepo = _ecli
     eclipseOS = CurrentEclipseOS()
 
   repositories.extend([eclipseRepo, spoofaxRepo] + _m2eRepos)
-  installUnits.extend([eclipsePackage] + _spoofaxRuntime + _spoofaxMeta + _modelwareRuntime + _modelwareMeta + _m2eFeatures)
+  installUnits.extend([eclipsePackage] + _spoofaxRuntime + _spoofaxMeta
+  #+ _modelwareRuntime + _modelwareMeta
+  + _m2eFeatures)
 
   EclipseGen(destination = destination, eclipseOS = eclipseOS, repositories = repositories, installUnits = installUnits, **kwargs)
   EclipseIniFix(destination = destination, eclipseOS = eclipseOS)

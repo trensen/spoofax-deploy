@@ -2,35 +2,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>org.metaborg.maven.parent.language</artifactId>
-	<packaging>pom</packaging>
-	<description>Maven parent POM for Spoofax language projects</description>
+	<artifactId>org.metaborg.maven.build.spoofax.libs</artifactId>
+	<packaging>jar</packaging>
+	<description>Maven build for library JAR required by Stratego/XT</description>
 	<url>https://github.com/metaborg/spoofax-deploy</url>
 
 	<parent>
 		<groupId>org.metaborg</groupId>
 		<artifactId>org.metaborg.maven.parent</artifactId>
 		<version>1.5.0-SNAPSHOT</version>
-		<relativePath>../org.metaborg.maven.parent</relativePath>
+		<relativePath>../../../org.metaborg.maven.parent</relativePath>
 	</parent>
 
 	<dependencies>
-		<!-- Depend on all Java projects, so that they are findable by Maven. -->
-		<!-- Representation -->
 		<dependency>
 			<groupId>org.metaborg</groupId>
 			<artifactId>org.spoofax.terms</artifactId>
-			<version>${metaborg-version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.metaborg</groupId>
-			<artifactId>org.spoofax.interpreter.library.index</artifactId>
-			<version>${metaborg-version}</version>
-		</dependency>
-		<!-- Execution -->
-		<dependency>
-			<groupId>org.metaborg</groupId>
-			<artifactId>org.metaborg.util</artifactId>
 			<version>${metaborg-version}</version>
 		</dependency>
 		<dependency>
@@ -50,19 +37,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.metaborg</groupId>
-			<artifactId>org.metaborg.runtime.task</artifactId>
-			<version>${metaborg-version}</version>
-		</dependency>
-		<!-- Spoofax -->
-		<dependency>
-			<groupId>org.metaborg</groupId>
-			<artifactId>org.metaborg.spoofax.core</artifactId>
-			<version>${metaborg-version}</version>
-		</dependency>
-		<!-- Parser -->
-		<dependency>
-			<groupId>org.metaborg</groupId>
-			<artifactId>org.spoofax.jsglr</artifactId>
+			<artifactId>org.spoofax.interpreter.library.index</artifactId>
 			<version>${metaborg-version}</version>
 		</dependency>
 		<dependency>
@@ -70,16 +45,14 @@
 			<artifactId>org.spoofax.interpreter.library.jsglr</artifactId>
 			<version>${metaborg-version}</version>
 		</dependency>
-		<!-- Strategoxt -->
 		<dependency>
 			<groupId>org.metaborg</groupId>
-			<artifactId>org.strategoxt.strj</artifactId>
+			<artifactId>org.metaborg.runtime.task</artifactId>
 			<version>${metaborg-version}</version>
 		</dependency>
-		<!-- Interpretation -->
 		<dependency>
 			<groupId>org.metaborg</groupId>
-			<artifactId>org.metaborg.meta.interpreter.framework</artifactId>
+			<artifactId>org.spoofax.jsglr</artifactId>
 			<version>${metaborg-version}</version>
 		</dependency>
 	</dependencies>
@@ -87,19 +60,27 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.metaborg</groupId>
-				<artifactId>spoofax-maven-plugin</artifactId>
-				<version>${metaborg-version}</version>
-				<extensions>true</extensions>
-				<configuration>
-					<strategoArgs>
-						<arg>-la</arg><arg>stratego-lib</arg>
-						<arg>-la</arg><arg>stratego-sglr</arg>
-						<arg>-la</arg><arg>stratego-gpp</arg>
-						<arg>-la</arg><arg>stratego-xtc</arg>
-						<arg>-la</arg><arg>stratego-aterm</arg>
-					</strategoArgs>
-				</configuration>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<createDependencyReducedPom>false</createDependencyReducedPom>
+							<filters>
+								<filter>
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>META-INF/**/*</exclude>
+									</excludes>
+								</filter>
+							</filters>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -108,12 +89,6 @@
 		<developer>
 			<name>Gabriël Konat</name>
 			<email>g.d.p.konat@tudelft.nl</email>
-			<organization>Delft University of Technology</organization>
-			<organizationUrl>http://www.ewi.tudelft.nl/en</organizationUrl>
-		</developer>
-		<developer>
-			<name>Hendrik van Antwerpen</name>
-			<email>h.vanantwerpen@tudelft.nl</email>
 			<organization>Delft University of Technology</organization>
 			<organizationUrl>http://www.ewi.tudelft.nl/en</organizationUrl>
 		</developer>

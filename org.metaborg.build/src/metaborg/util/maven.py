@@ -7,7 +7,7 @@ import pystache
 def Mvn(pomFile = 'pom.xml', settingsFile = None, globalSettingsFile = None, localRepo = None,
  noSnapshotUpdates = False, forceSnapshotUpdate = False, offline = False, skipTests = False,
  profiles = [], debug = False, quiet = False, extraArgs = None, clean = True, phase = 'verify',
- resumeFrom = None, mavenOpts = '-Xms512m -Xmx1024m -Xss32m -XX:MaxPermSize=512m', **kwargs):
+ resumeFrom = None, mavenOpts = '-Xms512m -Xmx2048m -Xss32m -XX:MaxPermSize=512m', **kwargs):
   args = []
   if platform.system() == 'Windows':
     args.append('mvn.bat')
