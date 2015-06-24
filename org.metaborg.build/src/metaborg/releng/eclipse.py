@@ -50,10 +50,10 @@ def GenerateSpoofaxEclipse(destination, eclipseOS = None, eclipseRepo = _eclipse
   installUnits.extend([eclipsePackage] + _spoofaxRuntime)
   if installMeta:
     installUnits.extend(_spoofaxMeta)
-  if installModelware:
-    installUnits.extend(_modelwareRuntime)
-    if installMeta:
-      installUnits.extend(_modelwareMeta)
+  #if installModelware:
+  #  installUnits.extend(_modelwareRuntime)
+  #  if installMeta:
+  #    installUnits.extend(_modelwareMeta)
 
   EclipseGen(destination = destination, eclipseOS = eclipseOS, repositories = repositories, installUnits = installUnits, **kwargs)
   EclipseIniFix(destination = destination, eclipseOS = eclipseOS)
@@ -64,7 +64,9 @@ def GenerateDevSpoofaxEclipse(destination, eclipseOS = None, eclipseRepo = _ecli
     eclipseOS = CurrentEclipseOS()
 
   repositories.extend([eclipseRepo, spoofaxRepo] + _m2eRepos)
-  installUnits.extend([eclipsePackage] + _spoofaxRuntime + _spoofaxMeta + _modelwareRuntime + _modelwareMeta + _m2eFeatures)
+  installUnits.extend([eclipsePackage] + _spoofaxRuntime + _spoofaxMeta
+  #+ _modelwareRuntime + _modelwareMeta
+  + _m2eFeatures)
 
   EclipseGen(destination = destination, eclipseOS = eclipseOS, repositories = repositories, installUnits = installUnits, **kwargs)
   EclipseIniFix(destination = destination, eclipseOS = eclipseOS)
