@@ -27,6 +27,7 @@
 		<module>../../../runtime-libraries/org.metaborg.runtime.task</module>
 
 		<!-- Spoofax -->
+		<module>../../../spoofax/org.metaborg.core</module>
 		<module>../../../spoofax/org.metaborg.spoofax.core</module>
 		<module>../../../spoofax/org.metaborg.spoofax.meta.core</module>
 		<module>../../../spoofax/org.metaborg.spoofax.nativebundle</module>
