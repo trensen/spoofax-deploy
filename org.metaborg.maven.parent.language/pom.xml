@@ -93,6 +93,8 @@
   </dependencies>
 
   <build>
+    <sourceDirectory>editor/java</sourceDirectory>
+
     <plugins>
       <plugin>
         <groupId>org.metaborg</groupId>
