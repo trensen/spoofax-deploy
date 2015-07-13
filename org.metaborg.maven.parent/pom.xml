@@ -22,10 +22,13 @@
     <deployRepositoryId>metaborg-nexus</deployRepositoryId>
 
     <java-version>1.7</java-version>
+
     <maven-eclipse-compiler-version>2.5</maven-eclipse-compiler-version>
     <metaborg-version>1.5.0-SNAPSHOT</metaborg-version>
     <metaborg-baseline-version>1.5.0-baseline-20150607</metaborg-baseline-version>
+
     <jline-version>0.9.94</jline-version>
+    <maven.version>3.3.3</maven.version>
   </properties>
 
   <dependencyManagement>
@@ -178,7 +181,7 @@
       <dependency>
         <groupId>org.apache.maven</groupId>
         <artifactId>maven-core</artifactId>
-        <version>3.3.3</version>
+        <version>${maven.version}</version>
       </dependency>
       <dependency>
         <groupId>com.carrotsearch</groupId>
