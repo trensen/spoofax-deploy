@@ -403,6 +403,7 @@
                       <goal>pre-compile</goal>
                       <goal>post-compile</goal>
                       <goal>run</goal>
+                      <goal>package</goal>
                     </goals>
                   </pluginExecutionFilter>
                   <action>
