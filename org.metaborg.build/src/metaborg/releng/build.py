@@ -138,7 +138,7 @@ def BuildJava(basedir, qualifier, deploy, buildStratego, bootstrapStratego, stra
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'java', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
   return BuildResult([
-    BuildArtifact('Spoofax sunshine JAR', glob(path.join(basedir, 'spoofax-sunshine/org.spoofax.sunshine/target/org.metaborg.sunshine-*-shaded.jar'))[0], 'spoofax-sunshine.jar'),
+    BuildArtifact('Spoofax sunshine JAR', glob(path.join(basedir, 'spoofax-sunshine/org.metaborg.sunshine/target/org.metaborg.sunshine-*-shaded.jar'))[0], 'spoofax-sunshine.jar'),
     BuildArtifact('Spoofax benchmarker JAR', glob(path.join(basedir, 'spoofax-benchmark/org.metaborg.spoofax.benchmark.cmd/target/org.metaborg.spoofax.benchmark.cmd-*.jar'))[0], 'spoofax-benchmark.jar'),
   ])
 
@@ -161,6 +161,16 @@ def BuildLanguages(basedir, deploy, profiles, **kwargs):
   Mvn(pomFile = pomFile, phase = phase, profiles = profiles, **kwargs)
 
   return BuildResult([])
+
+def BuildSPT(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
+  phase = 'deploy' if deploy else 'verify'
+  if skipExpensive:
+    kwargs.update({'skip-language-build' : True})
+  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'spoofax', 'spt', 'pom.xml')
+  Mvn(pomFile = pomFile, phase = phase, **kwargs)
+  return BuildResult([
+    BuildArtifact('SPT testrunner JAR', glob(path.join(basedir, 'spt/org.metaborg.meta.lang.spt.testrunner.cmd/target/org.metaborg.meta.lang.spt.testrunner.cmd-*.jar'))[0], 'spoofax-testrunner.jar'),
+  ])
 
 def BuildEclipseDeps(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'install'
@@ -186,16 +196,6 @@ def BuildSpoofaxLibs(basedir, deploy, qualifier, buildStratego, bootstrapStrateg
     BuildArtifact('Spoofax libraries JAR', glob(path.join(basedir, 'spoofax-deploy/org.metaborg.maven.build/spoofax/libs/target/org.metaborg.maven.build.spoofax.libs-*.jar'))[0], 'spoofax-libs.jar'),
   ])
 
-def BuildTestRunner(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
-  phase = 'deploy' if deploy else 'verify'
-  if skipExpensive:
-    kwargs.update({'skip-language-build' : True})
-  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'spoofax', 'testrunner', 'pom.xml')
-  Mvn(pomFile = pomFile, phase = phase, **kwargs)
-  return BuildResult([
-    BuildArtifact('Spoofax testrunner JAR', glob(path.join(basedir, 'spt/org.metaborg.spoofax.testrunner.cmd/target/org.metaborg.spoofax.testrunner.cmd-*.jar'))[0], 'spoofax-testrunner.jar'),
-  ])
-
 '''Build dependencies must be topologically ordered, otherwise the algorithm will not work'''
 _buildDependencies = OrderedDict([
   ('poms'         , []),
@@ -203,10 +203,10 @@ _buildDependencies = OrderedDict([
   ('java'         , ['poms', 'strategoxt']),
   ('languagepoms' , ['poms', 'strategoxt', 'java']),
   ('languages'    , ['poms', 'strategoxt', 'java', 'languagepoms']),
+  ('spt'          , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages']),
   ('eclipsedeps'  , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages']),
   ('eclipse'      , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages', 'eclipsedeps']),
   ('spoofax-libs' , ['poms', 'strategoxt', 'java']),
-  ('test-runner'  , ['poms', 'strategoxt', 'java']),
 ])
 _buildCommands = {
   'poms'         : BuildPoms,
@@ -214,10 +214,10 @@ _buildCommands = {
   'java'         : BuildJava,
   'languagepoms' : BuildLanguagePoms,
   'languages'    : BuildLanguages,
+  'spt'          : BuildSPT,
   'eclipsedeps'  : BuildEclipseDeps,
   'eclipse'      : BuildEclipse,
   'spoofax-libs' : BuildSpoofaxLibs,
-  'test-runner'  : BuildTestRunner,
 }
 
 def GetAllBuilds():

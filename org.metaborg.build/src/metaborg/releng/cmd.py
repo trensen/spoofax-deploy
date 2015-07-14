@@ -327,7 +327,7 @@ class MetaborgRelengBuild(cli.Application):
         localRepo = self.localRepo, offline = self.offline, debug = self.debug, quiet = self.quiet)
       print('All done!')
       return 0
-    except Exception as detail:
+    except RuntimeError as detail:
       print(str(detail))
       return 1
 

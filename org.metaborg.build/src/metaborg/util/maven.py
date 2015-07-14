@@ -64,10 +64,10 @@ def Mvn(pomFile = 'pom.xml', settingsFile = None, globalSettingsFile = None, loc
     process = subprocess.Popen(cmd, env = mvnEnv, shell = True)
     process.communicate()
   except KeyboardInterrupt:
-    raise Exception("Maven build interrupted")
+    raise RuntimeError("Maven build interrupted")
 
   if process.returncode != 0:
-    raise Exception("Maven build failed")
+    raise RuntimeError("Maven build failed")
 
 
 def MvnSetingsGen(location, repositories = [], mirrors = []):
