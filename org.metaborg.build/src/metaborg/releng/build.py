@@ -110,7 +110,7 @@ def BuildStrategoXt(basedir, profiles, deploy, bootstrap, runTests, skipTests, s
 
   buildKwargs = dict(kwargs)
   if skipExpensive:
-    buildKwargs.update({'strategoxt-skip-build': True, 'strategoxt-skip-assembly' : True, 'strategoxt-skip-test': True})
+    buildKwargs.update({'strategoxt-skip-build': True, 'strategoxt-skip-test': True})
   else:
     buildKwargs.update({'strategoxt-skip-test': skipTests or not runTests})
 
