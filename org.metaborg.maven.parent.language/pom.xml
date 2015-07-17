@@ -114,6 +114,10 @@
             <arg>-la</arg>
             <arg>stratego-aterm</arg>
           </strategoArgs>
+          <pardonedLanguages>
+            <pardonedLanguage>ESV</pardonedLanguage>
+            <pardonedLanguage>Stratego-Sugar</pardonedLanguage>
+          </pardonedLanguages>
         </configuration>
       </plugin>
     </plugins>
