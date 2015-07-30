@@ -10,7 +10,6 @@ from metaborg.util.git import UpdateAll, TrackAll, MergeAll, TagAll, PushAll, Ch
 from metaborg.util.prompt import YesNo, YesNoTwice, YesNoTrice
 from metaborg.util.path import CommonPrefix
 from metaborg.util.eclipse import EclipseAddJre
-from metaborg.util.maven import _mavenOpts
 
 
 class MetaborgReleng(cli.Application):
@@ -299,16 +298,22 @@ class MetaborgRelengBuild(cli.Application):
   settings = cli.SwitchAttr(      names = ['-i', '--settings'], argtype = str, default = None, mandatory = False, help = 'Maven settings file location', group = 'Maven switches')
   globalSettings = cli.SwitchAttr(names = ['-g', '--global-settings'], argtype = str, default = None, mandatory = False, help = 'Global Maven settings file location', group = 'Maven switches')
   localRepo = cli.SwitchAttr(     names = ['-l', '--local-repository'], argtype = str, default = _defaultLocalRepo, mandatory = False, help = 'Local Maven repository location', group = 'Maven switches')
-  opts = cli.SwitchAttr(          names = ['-o', '--options'], argtype = str, default = _mavenOpts, mandatory = False, help = 'Maven process options', group = 'Maven switches')
   offline = cli.Flag(             names = ['-O', '--offline'], default = False, help = "Pass --offline flag to Maven", group = 'Maven switches')
   debug = cli.Flag(               names = ['-D', '--debug'], default = False, excludes = ['--quiet'], help = "Pass --debug and --errors flag to Maven", group = 'Maven switches')
   quiet = cli.Flag(               names = ['-Q', '--quiet'], default = False, excludes = ['--debug'], help = "Pass --quiet flag to Maven", group = 'Maven switches')
+
+  stack   = cli.SwitchAttr(names = ['--stack'], default = "16M", help = "JVM stack size", group = 'JVM switches')
+  minHeap = cli.SwitchAttr(names = ['--min-heap'], default = "512M", help = "JVM minimum heap size", group = 'JVM switches')
+  maxHeap = cli.SwitchAttr(names = ['--max-heap'], default = "1024M", help = "JVM maximum heap size", group = 'JVM switches')
+  permGen = cli.SwitchAttr(names = ['--perm-gen'], default = "512M", help = "JVM maximum PermGen space", group = 'JVM switches')
 
   def main(self, *components):
     if len(components) == 0:
       print('No components specified, pass one or more of the following components to build:')
       print(', '.join(GetAllBuilds()))
       return 1
+
+    mavenOpts = '-Xms{} -Xmx{} -Xss{} -XX:MaxPermSize={}'.format(self.stack, self.minHeap, self.maxHeap, self.permGen)
 
     repo = self.parent.repo
 
@@ -318,7 +323,7 @@ class MetaborgRelengBuild(cli.Application):
         strategoTest = not self.noStrategoTest, qualifier = self.qualifier, cleanRepo = self.cleanRepo, deploy = self.deploy,
         release = self.release, skipExpensive = self.skipExpensive, skipComponents = self.skipComponents, copyArtifactsTo = self.copyArtifacts,
         clean = not self.noClean, skipTests = self.skipTests, settingsFile = self.settings, globalSettingsFile = self.globalSettings,
-        localRepo = self.localRepo, mavenOpts = self.opts, offline = self.offline, debug = self.debug, quiet = self.quiet)
+        localRepo = self.localRepo, mavenOpts = mavenOpts, offline = self.offline, debug = self.debug, quiet = self.quiet)
       print('All done!')
       return 0
     except Exception as detail:
