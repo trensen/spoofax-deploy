@@ -313,7 +313,7 @@ class MetaborgRelengBuild(cli.Application):
       print(', '.join(GetAllBuilds()))
       return 1
 
-    mavenOpts = '-Xms{} -Xmx{} -Xss{} -XX:MaxPermSize={}'.format(self.stack, self.minHeap, self.maxHeap, self.permGen)
+    mavenOpts = '-Xss{} -Xms{} -Xmx{} -XX:MaxPermSize={}'.format(self.stack, self.minHeap, self.maxHeap, self.permGen)
 
     repo = self.parent.repo
 

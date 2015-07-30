@@ -58,7 +58,7 @@ def Mvn(pomFile = 'pom.xml', settingsFile = None, globalSettingsFile = None, loc
   mvnEnv['CYGWIN'] = 'nodosfilewarning'
 
   cmd = ' '.join(args)
-  print(cmd)
+  print('MAVEN_OPTS={} {}'.format(mavenOpts, cmd))
   try:
     process = subprocess.Popen(cmd, env = mvnEnv, shell = True)
     process.communicate()
