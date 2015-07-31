@@ -61,7 +61,7 @@ def BuildAll(repo, components = ['all'], buildDeps = True, resumeFrom = None, bu
     print('Building: {}'.format(build))
     cmd = GetBuildCommand(build)
     result = cmd(basedir = basedir, deploy = deploy, qualifier = qualifier, noSnapshotUpdates = True, clean = clean,
-      profiles = profiles, buildStratego = buildStratego, bootstrapStratego = bootstrapStratego,
+      profiles = list(profiles), buildStratego = buildStratego, bootstrapStratego = bootstrapStratego,
       strategoTest = strategoTest, skipExpensive = skipExpensive, resumeFrom = resumeFrom, localRepo = localRepo, **mavenArgs)
     if result:
       artifacts.extend(result.artifacts)
