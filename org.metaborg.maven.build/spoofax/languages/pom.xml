@@ -19,6 +19,8 @@
         <module>../../../../stratego/org.metaborg.meta.lang.stratego</module>
         <module>../../../../dynsem/dynsem</module>
         <module>../../../../runtime-libraries/org.metaborg.meta.lang.analysis</module>
+        <module>../../../../nabl/org.metaborg.meta.lang.nabl2</module>
+        <module>../../../../runtime-libraries/org.metaborg.meta.runtime.libanalysis2</module>
     </modules>
 
     <developers>
