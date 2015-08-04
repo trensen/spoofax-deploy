@@ -59,9 +59,11 @@
         <module>../../../spoofax-sunshine/org.metaborg.sunshine</module>
 
         <!-- Spoofax benchmarker -->
+        <!--
     	<module>../../../spoofax-benchmark/org.metaborg.spoofax.benchmark.core</module>
         <module>../../../spoofax-benchmark/org.metaborg.spoofax.benchmark.cmd</module>
-
+        -->
+        
         <!-- SPT test listener -->
         <module>../../../spt/org.metaborg.meta.lang.spt.listener</module>
     </modules>
