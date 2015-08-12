@@ -27,6 +27,29 @@
     <jline-version>0.9.94</jline-version>
   </properties>
 
+  <repositories>
+    <repository>
+      <id>pluto-build</id>
+      <url>https://raw.githubusercontent.com/pluto-build/pluto-build.github.io/master/mvnrepository/</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+    <repository>
+      <id>sugar-lang</id>
+      <url>http://sugar-lang.github.io/mvnrepository/</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
