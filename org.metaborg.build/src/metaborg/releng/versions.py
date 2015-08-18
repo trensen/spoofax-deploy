@@ -2,11 +2,10 @@ import os
 import xml.etree.ElementTree as ET
 
 from os import path
-from metaborg.util.maven import Mvn
 from metaborg.util.path import CommonPrefix
 
 
-def SetVersions(repo, oldMavenVersion, newMavenVersion, dryRun = False, commit = False):
+def SetVersions(repo, oldMavenVersion, newMavenVersion, setEclipseVersions = True, dryRun = False, commit = False):
   baseDir = repo.working_tree_dir
   ignoreDirs = ['eclipse-installations', 'target', '_attic']
 
@@ -75,19 +74,20 @@ def SetVersions(repo, oldMavenVersion, newMavenVersion, dryRun = False, commit =
   ReplaceInFile(createMavenPomFile, oldMavenVersion, oldMavenVersion)
 
 
-  print('Setting Eclipse versions in MANIFEST.MF files')
-  for file in FindFiles(baseDir, 'MANIFEST.MF'):
-    if not IsGeneratedManifestFile(file):
+  if setEclipseVersions:
+    print('Setting Eclipse versions in MANIFEST.MF files')
+    for file in FindFiles(baseDir, 'MANIFEST.MF'):
+      if not IsGeneratedManifestFile(file):
+        ReplaceInFile(file, oldEclipseVersion, newEclipseVersion)
+
+    print('Setting Eclipse versions in feature.xml files')
+    spoofaxDeployDir = path.join(baseDir, 'spoofax-deploy')
+    for file in FindFiles(spoofaxDeployDir, 'feature.xml'):
       ReplaceInFile(file, oldEclipseVersion, newEclipseVersion)
 
-  print('Setting Eclipse versions in feature.xml files')
-  spoofaxDeployDir = path.join(baseDir, 'spoofax-deploy')
-  for file in FindFiles(spoofaxDeployDir, 'feature.xml'):
-    ReplaceInFile(file, oldEclipseVersion, newEclipseVersion)
-
-  print('Setting Eclipse versions in site.xml files')
-  for file in FindFiles(spoofaxDeployDir, 'site.xml'):
-    ReplaceInFile(file, oldEclipseVersion, newEclipseVersion)
+    print('Setting Eclipse versions in site.xml files')
+    for file in FindFiles(spoofaxDeployDir, 'site.xml'):
+      ReplaceInFile(file, oldEclipseVersion, newEclipseVersion)
 
 
   if commit:

@@ -1,7 +1,6 @@
 import shelve
 import os
 import git
-import traceback
 
 from os import path
 from metaborg.util.git import CheckoutAll, UpdateAll, TagAll, PushAll

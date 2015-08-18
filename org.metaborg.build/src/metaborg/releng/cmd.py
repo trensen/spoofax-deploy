@@ -4,12 +4,13 @@ from plumbum import cli
 
 from metaborg.releng.build import BuildAll, GetAllBuilds, GenerateMavenSettings, _mvnSettingsLocation, _metaborgReleases, _metaborgSnapshots, _spoofaxUpdateSite, _centralMirror, CreateQualifier, RepoChanged, _qualifierLocation, _defaultLocalRepo, CreateNowQualifier
 from metaborg.releng.versions import SetVersions
-from metaborg.releng.release import Release, ResetRelease
+from metaborg.releng.release import Release
 from metaborg.releng.eclipse import GeneratePlainEclipse, GenerateSpoofaxEclipse, GenerateDevSpoofaxEclipse, _eclipseRepo, _eclipsePackage, _spoofaxRepo, _spoofaxUpdateLocation
 from metaborg.util.git import UpdateAll, TrackAll, MergeAll, TagAll, PushAll, CheckoutAll, CleanAll, ResetAll, RemoteType, SetRemoteAll
 from metaborg.util.prompt import YesNo, YesNoTwice, YesNoTrice
 from metaborg.util.path import CommonPrefix
 from metaborg.util.eclipse import EclipseAddJre
+from metaborg.releng.bootstrap import Bootstrap
 
 
 class MetaborgReleng(cli.Application):
@@ -335,7 +336,7 @@ class MetaborgRelengBuild(cli.Application):
 @MetaborgReleng.subcommand("release")
 class MetaborgRelengRelease(cli.Application):
   '''
-  Performs an interactive release
+  Performs an interactive release to deploy a new release version
   '''
 
   releaseBranch = cli.SwitchAttr(names = ['--rel-branch'], argtype = str, mandatory = True,
@@ -361,6 +362,26 @@ class MetaborgRelengRelease(cli.Application):
       return 1
 
     Release(repo, self.releaseBranch, self.developBranch, self.curDevelopVersion, self.nextReleaseVersion, self.nextDevelopVersion)
+    return 0
+
+
+@MetaborgReleng.subcommand("bootstrap")
+class MetaborgRelengBootstrap(cli.Application):
+  '''
+  Performs an interactive bootstrap to deploy a new baseline
+  '''
+
+  curVersion = cli.SwitchAttr(names = ['--cur-ver'], argtype = str, mandatory = True,
+                                     help = "Current Maven version")
+  curBaselineVersion = cli.SwitchAttr(names = ['--cur-base-ver'], argtype = str, mandatory = True,
+                                      help = "Next Maven baseline version")
+
+  def main(self):
+    print('Performing interactive bootstrap')
+
+    repo = self.parent.repo
+
+    Bootstrap(repo, self.curVersion, self.curBaselineVersion)
     return 0
 
 
