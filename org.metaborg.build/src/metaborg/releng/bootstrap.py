@@ -35,7 +35,7 @@ def Bootstrap(repo, curVersion, curBaselineVersion):
         if not YesNo():
           return
       print('Step 1: for each submodule: set version from the current version to the next baseline version')
-      SetVersions(repo, curVersion, nextBaselineVersion, setEclipseVersions = False, dryRun = False, commit = True)
+      SetVersions(repo, curVersion, nextBaselineVersion, setEclipseVersions = False, dryRun = False, commit = False)
       print('Updating submodule revisions')
       repo.git.add('--all')
       repo.index.commit('Update submodule revisions')
@@ -47,7 +47,7 @@ def Bootstrap(repo, curVersion, curBaselineVersion):
       print('Step 2: perform a test release build')
       try:
         BuildAll(repo = repo, components = ['languages'], buildStratego = True, bootstrapStratego = True,
-                 strategoTest = True, release = True)
+                 strategoTest = True, cleanRepo = True, release = True)
       except Exception as detail:
         print('Test release build failed, not continuing to the next step')
         print(str(detail))
@@ -58,13 +58,14 @@ def Bootstrap(repo, curVersion, curBaselineVersion):
     def Step2():
       print('Step 3: perform release deployment')
       BuildAll(repo = repo, components = ['languages'], buildStratego = True, bootstrapStratego = True,
-               strategoTest = True, release = True, deploy = True)
+               strategoTest = False, skipTests = True, skipExpensive = True, clean = False, release = True, deploy = True)
       db['state'] = 3
       print('Please check if deploying succeeded, and manually deploy extra artifacts, then continue')
 
     def Step3():
       print('Step 4: for each submodule: revert to previous version, and update baseline version to the next baseline version')
-      SetVersions(repo, curVersion, nextBaselineVersion, setEclipseVersions = False, dryRun = False, commit = True)
+      SetVersions(repo, nextBaselineVersion, curVersion, setEclipseVersions = False, dryRun = False, commit = False)
+      SetVersions(repo, curBaselineVersion, nextBaselineVersion, setEclipseVersions = False, dryRun = False, commit = True)
       print('Updating submodule revisions')
       repo.git.add('--all')
       repo.index.commit('Update submodule revisions')
@@ -78,7 +79,10 @@ def Bootstrap(repo, curVersion, curBaselineVersion):
       remote = repo.remote('origin')
       remote.push()
       print('All done!')
-      ResetBaseline()
+      Reset()
+
+    def Reset():
+      os.remove(_ShelveLocation())
 
     steps = {
        0 :  Step0,
@@ -90,8 +94,6 @@ def Bootstrap(repo, curVersion, curBaselineVersion):
 
     steps[state]()
 
-def ResetBaseline():
-  os.remove(_ShelveLocation())
 
 def _ShelveLocation():
-  return path.join(path.expanduser('~'), '.spoofax-releng-baseline-state')
+  return path.join(path.expanduser('~'), '.spoofax-releng-bootstrap-state')

@@ -24,8 +24,8 @@ _defaultLocalRepo = path.join(path.expanduser('~'), '.m2', 'repository')
 
 
 def BuildAll(repo, components = ['all'], buildDeps = True, resumeFrom = None, buildStratego = False,
-    bootstrapStratego = False, strategoTest = True, cleanRepo = True, release = False, deploy = False,
-    skipExpensive = False, skipComponents = [], clean = True, profiles = [], qualifier = None,
+    bootstrapStratego = False, strategoTest = True, cleanRepo = False, release = False, deploy = False,
+    skipTests = False, skipExpensive = False, skipComponents = [], clean = True, profiles = [], qualifier = None,
     copyArtifactsTo = None, localRepo = _defaultLocalRepo, **mavenArgs):
   basedir = repo.working_tree_dir
   if release:
@@ -33,7 +33,6 @@ def BuildAll(repo, components = ['all'], buildDeps = True, resumeFrom = None, bu
     buildStratego = True
     bootstrapStratego = True
     strategoTest = True
-    clean = True
   if bootstrapStratego:
     buildStratego = True
 
@@ -62,7 +61,7 @@ def BuildAll(repo, components = ['all'], buildDeps = True, resumeFrom = None, bu
     cmd = GetBuildCommand(build)
     result = cmd(basedir = basedir, deploy = deploy, qualifier = qualifier, noSnapshotUpdates = True, clean = clean,
       profiles = list(profiles), buildStratego = buildStratego, bootstrapStratego = bootstrapStratego,
-      strategoTest = strategoTest, skipExpensive = skipExpensive, resumeFrom = resumeFrom, localRepo = localRepo, **mavenArgs)
+      strategoTest = strategoTest, skipExpensive = skipExpensive, skipTests = skipTests, resumeFrom = resumeFrom, localRepo = localRepo, **mavenArgs)
     if result:
       artifacts.extend(result.artifacts)
 
