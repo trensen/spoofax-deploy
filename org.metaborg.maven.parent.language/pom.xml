@@ -116,6 +116,7 @@
           </strategoArgs>
           <pardonedLanguages>
             <pardonedLanguage>ESV</pardonedLanguage>
+            <pardonedLanguage>SDF</pardonedLanguage>
             <pardonedLanguage>Stratego-Sugar</pardonedLanguage>
           </pardonedLanguages>
         </configuration>
