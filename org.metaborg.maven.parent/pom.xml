@@ -21,6 +21,8 @@
     <deployFileUrl>${project.distributionManagement.snapshotRepository.url}</deployFileUrl>
     <deployRepositoryId>metaborg-nexus</deployRepositoryId>
 
+    <metaborg-meta-lang-scope>compile</metaborg-meta-lang-scope>
+
     <java-version>1.7</java-version>
 
     <maven-eclipse-compiler-version>2.5</maven-eclipse-compiler-version>
@@ -28,7 +30,7 @@
     <metaborg-baseline-version>1.5.0-baseline-20150818-143639</metaborg-baseline-version>
 
     <jline-version>0.9.94</jline-version>
-    <maven.version>3.3.3</maven.version>
+    <maven.version>3.2.5</maven.version>
   </properties>
 
   <dependencyManagement>
@@ -36,7 +38,7 @@
       <dependency>
         <groupId>com.google.guava</groupId>
         <artifactId>guava</artifactId>
-        <version>17.0</version>
+        <version>18.0</version>
       </dependency>
       <dependency>
         <groupId>org.functionaljava</groupId>

@@ -115,7 +115,7 @@
             <arg>stratego-aterm</arg>
           </strategoArgs>
           <pardonedLanguages>
-            <pardonedLanguage>ESV</pardonedLanguage>
+            <pardonedLanguage>EditorService</pardonedLanguage>
             <pardonedLanguage>SDF</pardonedLanguage>
             <pardonedLanguage>Stratego-Sugar</pardonedLanguage>
           </pardonedLanguages>
