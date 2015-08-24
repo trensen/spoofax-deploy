@@ -94,7 +94,9 @@ class MetaborgRelengCleanUpdate(cli.Application):
         return 1
     print('Resetting, cleaning, and updating all submodules')
     repo = self.parent.repo
+    CheckoutAll(repo)
     ResetAll(repo, toRemote = True)
+    CheckoutAll(repo)
     CleanAll(repo)
     UpdateAll(repo, depth = self.depth)
     return 0
