@@ -150,14 +150,15 @@ def BuildLanguagePoms(basedir, deploy, **kwargs):
 def BuildLanguages(basedir, deploy, profiles, **kwargs):
   phase = 'deploy' if deploy else 'install'
 
-  bootstrapProfiles = list(profiles)
-  if '!add-metaborg-repositories' in bootstrapProfiles:
-    bootstrapProfiles.remove('!add-metaborg-repositories')
+  buildProfiles = list(profiles)
+  if '!add-metaborg-repositories' in buildProfiles:
+    buildProfiles.remove('!add-metaborg-repositories')
+    
   bootstrapPomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'spoofax', 'languages', 'bootstrap', 'pom.xml')
-  Mvn(pomFile = bootstrapPomFile, phase = phase, profiles = bootstrapProfiles, **kwargs)
+  Mvn(pomFile = bootstrapPomFile, phase = phase, profiles = buildProfiles, **kwargs)
 
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'spoofax', 'languages', 'pom.xml')
-  Mvn(pomFile = pomFile, phase = phase, profiles = profiles, **kwargs)
+  Mvn(pomFile = pomFile, phase = phase, profiles = buildProfiles, **kwargs)
 
   return BuildResult([])
 
