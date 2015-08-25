@@ -163,7 +163,7 @@ def BuildLanguages(basedir, deploy, profiles, **kwargs):
   return BuildResult([])
 
 def BuildSPT(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
-  phase = 'deploy' if deploy else 'verify'
+  phase = 'deploy' if deploy else 'install'
   if skipExpensive:
     kwargs.update({'skip-language-build' : True})
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'spoofax', 'spt', 'pom.xml')
