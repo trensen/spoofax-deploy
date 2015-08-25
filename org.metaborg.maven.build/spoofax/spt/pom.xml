@@ -16,6 +16,7 @@
 
     <modules>
         <module>../../../../spt/org.metaborg.meta.lang.spt</module>
+        <module>../../../../spt/org.metaborg.meta.lang.spt.eclipse</module>
         <module>../../../../spt/org.metaborg.meta.lang.spt.listener</module>
         <module>../../../../spt/org.metaborg.meta.lang.spt.testrunner.core</module>
         <module>../../../../spt/org.metaborg.meta.lang.spt.testrunner.cmd</module>
