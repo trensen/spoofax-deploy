@@ -153,7 +153,7 @@ def BuildLanguages(basedir, deploy, profiles, **kwargs):
   buildProfiles = list(profiles)
   if '!add-metaborg-repositories' in buildProfiles:
     buildProfiles.remove('!add-metaborg-repositories')
-    
+
   bootstrapPomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'spoofax', 'languages', 'bootstrap', 'pom.xml')
   Mvn(pomFile = bootstrapPomFile, phase = phase, profiles = buildProfiles, **kwargs)
 
@@ -292,8 +292,8 @@ def CleanLocalRepo(localRepo):
 
 _mvnSettingsLocation = MvnUserSettingsLocation()
 _metaborgReleases = 'http://artifacts.metaborg.org/content/repositories/releases/'
-_metaborgSnapshots = 'http://artifacts.metaborg.org/content/repositories/snapshots/'
-_spoofaxUpdateSite = 'http://download.spoofax.org/update/nightly/'
+_metaborgSnapshots = 'http://artifacts.metaborg.org/content/repositories/core-snapshots/'
+_spoofaxUpdateSite = 'http://download.spoofax.org/update/newplugin-nightly/'
 _centralMirror = 'http://artifacts.metaborg.org/content/repositories/central/'
 
 def GenerateMavenSettings(location = _mvnSettingsLocation, metaborgReleases = _metaborgReleases,
