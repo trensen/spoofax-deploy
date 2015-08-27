@@ -96,8 +96,9 @@ def DownloadStrategoXt(basedir, clean, profiles, skipExpensive, **kwargs):
   return BuildResult([])
 
 def BuildStrategoXt(basedir, profiles, deploy, bootstrap, runTests, skipTests, skipExpensive, **kwargs):
-  if '!add-metaborg-repositories' in profiles:
-    profiles.remove('!add-metaborg-repositories')
+  buildProfiles = list(profiles)
+  if '!add-metaborg-repositories' in buildProfiles:
+    buildProfiles.remove('!add-metaborg-repositories')
 
   strategoXtDir = path.join(basedir, 'strategoxt', 'strategoxt')
   phase = 'deploy' if deploy else 'install'
@@ -113,12 +114,12 @@ def BuildStrategoXt(basedir, profiles, deploy, bootstrap, runTests, skipTests, s
   else:
     buildKwargs.update({'strategoxt-skip-test': skipTests or not runTests})
 
-  Mvn(pomFile = pomFile, phase = phase, profiles = profiles, skipTests = skipTests, **buildKwargs)
+  Mvn(pomFile = pomFile, phase = phase, profiles = buildProfiles, skipTests = skipTests, **buildKwargs)
 
   parent_pom_file = path.join(strategoXtDir, 'buildpoms', 'pom.xml')
   buildKwargs = dict(kwargs)
   buildKwargs.update({'strategoxt-skip-build': True, 'strategoxt-skip-assembly' : True})
-  Mvn(pomFile = parent_pom_file, phase = phase, profiles = profiles, skipTests = skipTests, **buildKwargs)
+  Mvn(pomFile = parent_pom_file, phase = phase, profiles = buildProfiles, skipTests = skipTests, **buildKwargs)
 
   if bootstrap:
     distribDir = '{}/buildpoms/bootstrap3/target/'.format(strategoXtDir)
@@ -178,12 +179,18 @@ def BuildEclipseDeps(basedir, qualifier, deploy, buildStratego, bootstrapStrateg
   Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
   return BuildResult([])
 
-def BuildEclipse(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
+def BuildEclipse(basedir, qualifier, deploy, profiles, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'install'
+
+  buildProfiles = list(profiles)
+  if '!add-metaborg-repositories' in buildProfiles:
+    buildProfiles.remove('!add-metaborg-repositories')
+
   if skipExpensive:
     kwargs.update({'skip-language-build' : True})
+
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'spoofax', 'eclipse', 'pom.xml')
-  Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
+  Mvn(pomFile = pomFile, phase = phase, profiles = buildProfiles, forceContextQualifier = qualifier, **kwargs)
   return BuildResult([
     BuildArtifact('Spoofax Eclipse update site', path.join(basedir, 'spoofax-eclipse/org.metaborg.spoofax.eclipse.updatesite/target/site_assembly.zip'), 'spoofax-eclipse.zip'),
   ])
