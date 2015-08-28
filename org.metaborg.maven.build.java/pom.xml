@@ -64,6 +64,9 @@
 
         <!-- Spoofax SPT test listener -->
         <module>../../spt/org.metaborg.spt.listener</module>
+
+		<!-- Uber JAR with Spoofax dependencies, without external dependencies  -->
+		<module>../org.metaborg.uber</module>
 	</modules>
 
 	<developers>
