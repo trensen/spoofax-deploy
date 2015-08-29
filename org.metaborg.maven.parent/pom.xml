@@ -14,6 +14,9 @@
   <url>https://github.com/metaborg/spoofax-deploy</url>
 
   <properties>
+    <metaborg-version>1.5.0-SNAPSHOT</metaborg-version>
+    <metaborg-baseline-version>1.5.0-baseline-20150818-143639</metaborg-baseline-version>
+    
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <manifest-location>META-INF</manifest-location>
@@ -24,12 +27,7 @@
     <metaborg-meta-lang-scope>compile</metaborg-meta-lang-scope>
 
     <java-version>1.7</java-version>
-
     <maven-eclipse-compiler-version>2.5</maven-eclipse-compiler-version>
-    <metaborg-version>1.5.0-SNAPSHOT</metaborg-version>
-    <metaborg-baseline-version>1.5.0-baseline-20150818-143639</metaborg-baseline-version>
-
-    <jline-version>0.9.94</jline-version>
     <maven.version>3.2.5</maven.version>
   </properties>
 
@@ -64,21 +62,6 @@
             <artifactId>maven-scm-provider-svnexe</artifactId>
           </exclusion>
         </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>jline</groupId>
-        <artifactId>jline</artifactId>
-        <version>${jline-version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.github.ansell.jjtraveler</groupId>
-        <artifactId>jjtraveler</artifactId>
-        <version>0.6</version>
-      </dependency>
-      <dependency>
-        <groupId>com.github.ansell.aterms</groupId>
-        <artifactId>shared-objects</artifactId>
-        <version>1.4.9-p1</version>
       </dependency>
       <dependency>
         <groupId>com.netflix.rxjava</groupId>

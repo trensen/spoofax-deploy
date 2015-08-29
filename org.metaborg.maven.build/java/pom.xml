@@ -33,10 +33,6 @@
         <module>../../../spoofax/org.metaborg.spoofax.meta.core</module>
         <module>../../../spoofax/org.metaborg.spoofax.nativebundle</module>
         <module>../../../spoofax/org.metaborg.spoofax.generator</module>
-        <module>../../../spoofax/org.strategoxt.imp.generator</module>
-        <module>../../../spoofax/org.strategoxt.imp.generator/morepoms/aster-jar</module>
-        <module>../../../spoofax/org.strategoxt.imp.generator/morepoms/make-permissive-jar</module>
-        <module>../../../spoofax/org.strategoxt.imp.generator/morepoms/sdf2imp-jar</module>
 
         <!-- Parser -->
         <module>../../../jsglr/org.spoofax.jsglr</module>

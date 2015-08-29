@@ -86,6 +86,19 @@ def BuildPoms(basedir, deploy, qualifier, buildStratego, bootstrapStratego, stra
   return BuildResult([])
 
 
+def BuildPremadeJars(basedir, deploy, clean, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
+  phase = 'deploy:deploy-file' if deploy else 'install:install-file'
+
+  pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.parent', 'pom.xml')
+
+  # Install make-permissive
+  makePermissivePath = path.join(basedir, 'jsglr', 'make-permissive', 'jar')
+  makePermissivePom = path.join(makePermissivePath, 'pom.xml')
+  makePermissiveJar = path.join(makePermissivePath, 'make-permissive.jar')
+
+  Mvn(pomFile = pomFile, clean = False, phase = phase, extraArgs = '-DpomFile="{}" -Dfile="{}" -DrepositoryId=metaborg-nexus -Durl=http://artifacts.metaborg.org/content/repositories/core-snapshots/'.format(makePermissivePom, makePermissiveJar), **kwargs)
+
+
 def BuildOrDownloadStrategoXt(basedir, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):
   if buildStratego:
     return BuildStrategoXt(basedir = basedir, deploy = deploy, bootstrap = bootstrapStratego, runTests = strategoTest, **kwargs)
@@ -225,17 +238,19 @@ def BuildSpoofaxLibs(basedir, deploy, qualifier, buildStratego, bootstrapStrateg
 '''Build dependencies must be topologically ordered, otherwise the algorithm will not work'''
 _buildDependencies = OrderedDict([
   ('poms'         , []),
-  ('strategoxt'   , ['poms']),
-  ('java'         , ['poms', 'strategoxt']),
-  ('languagepoms' , ['poms', 'strategoxt', 'java']),
-  ('languages'    , ['poms', 'strategoxt', 'java', 'languagepoms']),
-  ('spt'          , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages']),
-  ('eclipsedeps'  , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages']),
-  ('eclipse'      , ['poms', 'strategoxt', 'java', 'languagepoms', 'languages', 'eclipsedeps']),
-  ('spoofax-libs' , ['poms', 'strategoxt', 'java']),
+  ('jars'         , ['poms']),
+  ('strategoxt'   , ['poms', 'jars']),
+  ('java'         , ['poms', 'jars', 'strategoxt']),
+  ('languagepoms' , ['poms', 'jars', 'strategoxt', 'java']),
+  ('languages'    , ['poms', 'jars', 'strategoxt', 'java', 'languagepoms']),
+  ('spt'          , ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages']),
+  ('eclipsedeps'  , ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages']),
+  ('eclipse'      , ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages', 'eclipsedeps']),
+  ('spoofax-libs' , ['poms', 'jars', 'strategoxt', 'java']),
 ])
 _buildCommands = {
   'poms'         : BuildPoms,
+  'jars'         : BuildPremadeJars,
   'strategoxt'   : BuildOrDownloadStrategoXt,
   'java'         : BuildJava,
   'languagepoms' : BuildLanguagePoms,

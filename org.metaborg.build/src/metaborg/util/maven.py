@@ -15,7 +15,8 @@ def Mvn(pomFile = 'pom.xml', settingsFile = None, globalSettingsFile = None, loc
     args.append('mvn')
   args.append('--batch-mode')
 
-  args.append('--file "{}"'.format(pomFile))
+  if pomFile:
+    args.append('--file "{}"'.format(pomFile))
   if settingsFile:
     args.append('--settings "{}"'.format(settingsFile))
   if globalSettingsFile:
