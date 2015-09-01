@@ -6,8 +6,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if command -v pip3 >/dev/null 2>&1; then
   pip3 install --user -q -r "$DIR/requirements.txt"
+elif command -v pip >/dev/null 2>&1; then
+  pip install --user -q -r "$DIR/requirements.txt"
 else
-  echo "Cannot find 'pip3' to install required libraries, it should be included with a recent python 3 installation"
+  echo "Cannot find 'pip3' or 'pip' to install required libraries, it should be included with a recent Python 3 installation"
 fi
 
 if command -v python3 >/dev/null 2>&1; then
@@ -15,5 +17,5 @@ if command -v python3 >/dev/null 2>&1; then
 elif command -v python >/dev/null 2>&1; then
   python "$DIR/src/main.py" $*
 else
-  echo "Cannot find 'python3' or 'python' interpreter, please install python 3"
+  echo "Cannot find 'python3' or 'python' interpreter, please install Python 3"
 fi
