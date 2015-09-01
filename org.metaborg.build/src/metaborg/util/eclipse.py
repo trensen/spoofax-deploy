@@ -286,7 +286,12 @@ class EclipseGenerator(object):
     elif self.config.os == 'linux':
       return 'jre/bin/java'
     elif self.config.os == 'win32':
-      return 'jre\\bin\\server\\jvm.dll'
+      if self.config.arch == 'x86':
+        return 'jre\\bin\\server\\jvm.dll'
+      elif self.config.os == 'x86_64':
+        return 'jre\\bin\\client\\jvm.dll'
+      else:
+        raise Exception('Unsupported Eclipse arch {}'.format(self.config.arch))
     else:
       raise Exception('Unsupported Eclipse OS {}'.format(self.config.os))
 
