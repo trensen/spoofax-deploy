@@ -517,7 +517,8 @@ class MetaborgRelengGenEclipse(cli.Application):
   def main(self):
     print('Generating plain Eclipse instance')
 
-    generator = MetaborgEclipseGenerator(self.destination, EclipseConfiguration(os = self.os, arch = self.arch),
+    generator = MetaborgEclipseGenerator(self.parent.repo.working_tree_dir, self.destination,
+                                         EclipseConfiguration(os = self.os, arch = self.arch),
                                          eclipseRepo = self.eclipseRepo, eclipseIU = self.eclipseIU,
                                          installSpoofax = False, moreRepos = self.moreRepos, moreIUs = self.moreIUs,
                                          archive = self.archive)
@@ -589,7 +590,8 @@ class MetaborgRelengGenSpoofax(cli.Application):
   def main(self):
     print('Generating Eclipse instance for Spoofax users')
 
-    generator = MetaborgEclipseGenerator(self.destination, EclipseConfiguration(os = self.os, arch = self.arch),
+    generator = MetaborgEclipseGenerator(self.parent.repo.working_tree_dir, self.destination,
+                                         EclipseConfiguration(os = self.os, arch = self.arch),
                                          eclipseRepo = self.eclipseRepo, eclipseIU = self.eclipseIU,
                                          installSpoofax = True, spoofaxRepo = self.spoofaxRepo,
                                          spoofaxRepoLocal = self.localSpoofax, spoofaxDevelop = not self.noMeta,

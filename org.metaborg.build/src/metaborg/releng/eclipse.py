@@ -25,7 +25,7 @@ class MetaborgEclipseGenerator(EclipseGenerator):
   modelwareIUs = []
   modelwareMetaIUs = []
 
-  def __init__(self, destination, config, eclipseRepo = None, eclipseIU = None, installSpoofax = True,
+  def __init__(self, workingDir, destination, config, eclipseRepo = None, eclipseIU = None, installSpoofax = True,
                spoofaxRepo = None, spoofaxRepoLocal = False, spoofaxDevelop = False, spoofaxModelware = False,
                moreRepos = None, moreIUs = None, archive = False):
     if not eclipseRepo:
@@ -59,4 +59,4 @@ class MetaborgEclipseGenerator(EclipseGenerator):
     repos.extend(moreRepos)
     ius.extend(moreIUs)
 
-    EclipseGenerator.__init__(self, destination, config, repos, ius, archive)
+    EclipseGenerator.__init__(self, workingDir, destination, config, repos, ius, archive)

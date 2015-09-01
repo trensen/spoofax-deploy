@@ -8,7 +8,6 @@ import tempfile
 import urllib.parse
 import urllib.request
 from zipfile import ZipFile
-
 import tarfile
 
 import requests
@@ -62,13 +61,14 @@ class EclipseConfiguration(object):
 
 
 class EclipseGenerator(object):
-  def __init__(self, destination, config = EclipseConfiguration(), repositories = None, installUnits = None,
+  def __init__(self, workingDir, destination, config = EclipseConfiguration(), repositories = None, installUnits = None,
                archive = False):
     if not installUnits:
       installUnits = []
     if not repositories:
       repositories = []
 
+    self.workingDir = workingDir
     self.requestedDestination = destination
     if archive:
       self.tempdir = tempfile.TemporaryDirectory()
@@ -154,11 +154,12 @@ class EclipseGenerator(object):
 
     return executable
 
-  @staticmethod
-  def __ToURI(location):
+  def __ToURI(self, location):
     if location.startswith('http'):
       return location
     else:
+      if not path.isabs(location):
+        location = path.normpath(path.join(self.workingDir, location))
       return urllib.parse.urljoin('file:', urllib.request.pathname2url(location))
 
   def FixIni(self, stackSize = '16M', heapSize = '1G', maxHeapSize = '1G', maxPermGen = '256M',
