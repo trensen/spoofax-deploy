@@ -26,14 +26,18 @@ class MetaborgEclipseGenerator(EclipseGenerator):
   modelwareMetaIUs = []
 
   def __init__(self, destination, config, eclipseRepo = None, eclipseIU = None, installSpoofax = True,
-               spoofaxRepo = None, spoofaxDevelop = False, spoofaxModelware = False, moreRepos = None, moreIUs = None,
-               archive = False):
+               spoofaxRepo = None, spoofaxRepoLocal = False, spoofaxDevelop = False, spoofaxModelware = False,
+               moreRepos = None, moreIUs = None, archive = False):
     if not eclipseRepo:
       eclipseRepo = MetaborgEclipseGenerator.eclipseRepo
     if not eclipseIU:
       eclipseIU = MetaborgEclipseGenerator.eclipseIU
-    if not spoofaxRepo:
+
+    if spoofaxRepoLocal:
+      spoofaxRepo = spoofaxRepoLocal
+    elif not spoofaxRepo:
       spoofaxRepo = MetaborgEclipseGenerator.spoofaxRepo
+
     if not moreRepos:
       moreRepos = []
     if not moreIUs:

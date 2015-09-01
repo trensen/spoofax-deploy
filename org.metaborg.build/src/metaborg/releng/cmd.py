@@ -589,13 +589,6 @@ class MetaborgRelengGenSpoofax(cli.Application):
   def main(self):
     print('Generating Eclipse instance for Spoofax users')
 
-    if self.localSpoofax:
-      repo = self.parent.repo
-      repoDir = repo.working_tree_dir
-      spoofaxRepo = '{}/{}'.format(repoDir, 'spoofax-deploy/org.strategoxt.imp.updatesite/target/site')
-    else:
-      spoofaxRepo = self.spoofaxRepo
-
     generator = MetaborgEclipseGenerator(self.destination, EclipseConfiguration(os = self.os, arch = self.arch),
                                          eclipseRepo = self.eclipseRepo, eclipseIU = self.eclipseIU,
                                          installSpoofax = True, spoofaxRepo = spoofaxRepo,
