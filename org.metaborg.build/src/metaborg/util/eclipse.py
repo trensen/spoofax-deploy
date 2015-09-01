@@ -288,7 +288,7 @@ class EclipseGenerator(object):
     elif self.config.os == 'win32':
       if self.config.arch == 'x86':
         return 'jre\\bin\\server\\jvm.dll'
-      elif self.config.os == 'x86_64':
+      elif self.config.arch == 'x86_64':
         return 'jre\\bin\\client\\jvm.dll'
       else:
         raise Exception('Unsupported Eclipse arch {}'.format(self.config.arch))
