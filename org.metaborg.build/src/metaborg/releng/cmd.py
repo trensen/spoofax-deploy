@@ -8,7 +8,7 @@ from metaborg.releng.build import (_centralMirror, _defaultLocalRepo,
                                    _mvnSettingsLocation, _qualifierLocation,
                                    _spoofaxUpdateSite, BuildAll,
                                    CreateQualifier, GenerateMavenSettings,
-                                   GetAllBuilds, RepoChanged)
+                                   GetAllBuilds, RepoChanged, CreateNowQualifier)
 from metaborg.releng.eclipse import MetaborgEclipseGenerator
 from metaborg.releng.release import Release
 from metaborg.releng.versions import SetVersions
@@ -310,8 +310,12 @@ class MetaborgRelengBuild(cli.Application):
              group = 'StrategoXT switches')
 
   qualifier = \
-    cli.SwitchAttr(names = ['-q', '--qualifier'], argtype = str, default = None, help = 'Qualifier to use',
-                   group = 'Build switches')
+    cli.SwitchAttr(names = ['-q', '--qualifier'], argtype = str, default = None, excludes = ['--now-qualifier'],
+                   help = 'Qualifier to use', group = 'Build switches')
+  nowQualifier = \
+    cli.Flag(names = ['-n', '--now-qualifier'], default = None, excludes = ['--qualifier'],
+             help = 'Use current time as qualifier instead of latest commit date', group = 'Build switches')
+
   cleanRepo = \
     cli.Flag(names = ['-c', '--clean-repo'], default = False,
              help = 'Clean MetaBorg artifacts from the local repository before building',
@@ -398,7 +402,7 @@ class MetaborgRelengBuild(cli.Application):
     try:
       BuildAll(repo = repo, components = components, buildDeps = not self.noDeps, resumeFrom = self.resumeFrom,
                buildStratego = self.buildStratego, bootstrapStratego = self.bootstrapStratego,
-               strategoTest = not self.noStrategoTest, qualifier = self.qualifier, cleanRepo = self.cleanRepo,
+               strategoTest = not self.noStrategoTest, qualifier = qualifier, cleanRepo = self.cleanRepo,
                deploy = self.deploy,
                release = self.release, skipExpensive = self.skipExpensive, skipComponents = self.skipComponents,
                copyArtifactsTo = self.copyArtifacts,
@@ -449,12 +453,12 @@ class MetaborgRelengRelease(cli.Application):
 
 @MetaborgReleng.subcommand("bootstrap")
 class MetaborgRelengBootstrap(cli.Application):
-  '''
+  """
   Performs an interactive bootstrap to deploy a new baseline
-  '''
+  """
 
   curVersion = cli.SwitchAttr(names = ['--cur-ver'], argtype = str, mandatory = True,
-                                     help = "Current Maven version")
+                              help = "Current Maven version")
   curBaselineVersion = cli.SwitchAttr(names = ['--cur-base-ver'], argtype = str, mandatory = True,
                                       help = "Next Maven baseline version")
 
