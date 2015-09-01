@@ -591,9 +591,10 @@ class MetaborgRelengGenSpoofax(cli.Application):
 
     generator = MetaborgEclipseGenerator(self.destination, EclipseConfiguration(os = self.os, arch = self.arch),
                                          eclipseRepo = self.eclipseRepo, eclipseIU = self.eclipseIU,
-                                         installSpoofax = True, spoofaxRepo = spoofaxRepo,
-                                         spoofaxDevelop = not self.noMeta, spoofaxModelware = not self.noModelware,
-                                         moreRepos = self.moreRepos, moreIUs = self.moreIUs, archive = self.archive)
+                                         installSpoofax = True, spoofaxRepo = self.spoofaxRepo,
+                                         spoofaxRepoLocal = self.localSpoofax, spoofaxDevelop = not self.noMeta,
+                                         spoofaxModelware = not self.noModelware, moreRepos = self.moreRepos,
+                                         moreIUs = self.moreIUs, archive = self.archive)
     generator.Facade(fixIni = True, addJre = self.addJre, archiveJreSeparately = self.archiveJreSeparately,
                      archivePrefix = 'spoofax')
 

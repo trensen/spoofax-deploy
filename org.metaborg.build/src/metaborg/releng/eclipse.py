@@ -34,7 +34,7 @@ class MetaborgEclipseGenerator(EclipseGenerator):
       eclipseIU = MetaborgEclipseGenerator.eclipseIU
 
     if spoofaxRepoLocal:
-      spoofaxRepo = spoofaxRepoLocal
+      spoofaxRepo = MetaborgEclipseGenerator.spoofaxRepoLocal
     elif not spoofaxRepo:
       spoofaxRepo = MetaborgEclipseGenerator.spoofaxRepo
 
