@@ -175,11 +175,8 @@ def BuildLanguagePoms(basedir, deploy, **kwargs):
   return BuildResult([])
 
 
-def BuildLanguages(basedir, deploy, **kwargs):
+def BuildLanguages(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, **kwargs):
   phase = 'deploy' if deploy else 'install'
-
-  bootstrapPomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'spoofax', 'languages', 'bootstrap', 'pom.xml')
-  Mvn(pomFile = bootstrapPomFile, phase = phase, **kwargs)
 
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'spoofax', 'languages', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, **kwargs)
