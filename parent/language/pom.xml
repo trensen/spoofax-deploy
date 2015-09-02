@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>parent.language</artifactId>
+  <packaging>pom</packaging>
+  <description>Maven parent POM for Spoofax language projects</description>
+  <url>https://github.com/metaborg/spoofax-deploy</url>
+
+  <parent>
+    <groupId>org.metaborg</groupId>
+    <artifactId>parent</artifactId>
+    <version>1.5.0-SNAPSHOT</version>
+    <relativePath>../parent</relativePath>
+  </parent>
+
+  <dependencies>
+    <!-- Depend on all Java projects, so that they are findable by Maven. -->
+    <!-- Representation -->
+    <dependency>
+      <groupId>org.metaborg</groupId>
+      <artifactId>org.spoofax.terms</artifactId>
+      <version>${metaborg-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.metaborg</groupId>
+      <artifactId>org.spoofax.interpreter.library.index</artifactId>
+      <version>${metaborg-version}</version>
+    </dependency>
+    <!-- Execution -->
+    <dependency>
+      <groupId>org.metaborg</groupId>
+      <artifactId>org.metaborg.util</artifactId>
+      <version>${metaborg-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.metaborg</groupId>
+      <artifactId>org.spoofax.interpreter.core</artifactId>
+      <version>${metaborg-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.metaborg</groupId>
+      <artifactId>org.spoofax.interpreter.library.java</artifactId>
+      <version>${metaborg-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.metaborg</groupId>
+      <artifactId>org.spoofax.interpreter.library.xml</artifactId>
+      <version>${metaborg-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.metaborg</groupId>
+      <artifactId>org.metaborg.runtime.task</artifactId>
+      <version>${metaborg-version}</version>
+    </dependency>
+    <!-- Spoofax -->
+    <dependency>
+      <groupId>org.metaborg</groupId>
+      <artifactId>org.metaborg.core</artifactId>
+      <version>${metaborg-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.metaborg</groupId>
+      <artifactId>org.metaborg.spoofax.core</artifactId>
+      <version>${metaborg-version}</version>
+    </dependency>
+    <!-- Parser -->
+    <dependency>
+      <groupId>org.metaborg</groupId>
+      <artifactId>org.spoofax.jsglr</artifactId>
+      <version>${metaborg-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.metaborg</groupId>
+      <artifactId>org.spoofax.interpreter.library.jsglr</artifactId>
+      <version>${metaborg-version}</version>
+    </dependency>
+    <!-- Strategoxt -->
+    <dependency>
+      <groupId>org.metaborg</groupId>
+      <artifactId>org.strategoxt.strj</artifactId>
+      <version>${metaborg-version}</version>
+    </dependency>
+    <!-- Interpretation -->
+    <dependency>
+      <groupId>org.metaborg</groupId>
+      <artifactId>org.metaborg.meta.interpreter.framework</artifactId>
+      <version>${metaborg-version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <sourceDirectory>editor/java</sourceDirectory>
+
+    <plugins>
+      <plugin>
+        <groupId>org.metaborg</groupId>
+        <artifactId>spoofax-maven-plugin</artifactId>
+        <version>${metaborg-version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <strategoArgs>
+            <arg>-la</arg>
+            <arg>stratego-lib</arg>
+            <arg>-la</arg>
+            <arg>stratego-sglr</arg>
+            <arg>-la</arg>
+            <arg>stratego-gpp</arg>
+            <arg>-la</arg>
+            <arg>stratego-xtc</arg>
+            <arg>-la</arg>
+            <arg>stratego-aterm</arg>
+          </strategoArgs>
+          <pardonedLanguages>
+            <pardonedLanguage>EditorService</pardonedLanguage>
+            <pardonedLanguage>SDF</pardonedLanguage>
+            <pardonedLanguage>Stratego-Sugar</pardonedLanguage>
+          </pardonedLanguages>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <developers>
+    <developer>
+      <name>Gabriël Konat</name>
+      <email>g.d.p.konat@tudelft.nl</email>
+      <organization>Delft University of Technology</organization>
+      <organizationUrl>http://www.ewi.tudelft.nl/en</organizationUrl>
+    </developer>
+    <developer>
+      <name>Hendrik van Antwerpen</name>
+      <email>h.vanantwerpen@tudelft.nl</email>
+      <organization>Delft University of Technology</organization>
+      <organizationUrl>http://www.ewi.tudelft.nl/en</organizationUrl>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git@github.com:metaborg/spoofax-deploy.git</connection>
+    <developerConnection>scm:git:git@github.com:metaborg/spoofax-deploy.git</developerConnection>
+    <url>https://github.com/metaborg/spoofax-deploy</url>
+  </scm>
+</project>
