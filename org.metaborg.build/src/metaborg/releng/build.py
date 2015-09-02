@@ -154,9 +154,6 @@ def BuildStrategoXt(basedir, deploy, bootstrap, runTests, skipTests, skipExpensi
 def BuildJava(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'install'
 
-  if skipExpensive:
-    kwargs.update({'skip-generator' : True})
-
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'java', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
 
@@ -175,8 +172,11 @@ def BuildLanguagePoms(basedir, deploy, **kwargs):
   return BuildResult([])
 
 
-def BuildLanguages(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, **kwargs):
+def BuildLanguages(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'install'
+
+  if skipExpensive:
+    kwargs.update({'spoofax.skip' : True})
 
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'spoofax', 'languages', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, **kwargs)
@@ -188,7 +188,7 @@ def BuildSPT(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strat
   phase = 'deploy' if deploy else 'install'
 
   if skipExpensive:
-    kwargs.update({'skip-language-build' : True})
+    kwargs.update({'spoofax.skip' : True})
 
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'spoofax', 'spt', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, **kwargs)
@@ -209,9 +209,6 @@ def BuildEclipseDeps(basedir, qualifier, deploy, buildStratego, bootstrapStrateg
 
 def BuildEclipse(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'install'
-
-  if skipExpensive:
-    kwargs.update({'skip-language-build' : True})
 
   pomFile = path.join(basedir, 'spoofax-deploy', 'org.metaborg.maven.build', 'spoofax', 'eclipse', 'pom.xml')
   Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
