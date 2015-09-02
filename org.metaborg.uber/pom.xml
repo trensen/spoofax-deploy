@@ -6,7 +6,7 @@
   <parent>
     <groupId>org.metaborg</groupId>
     <artifactId>org.metaborg.maven.parent</artifactId>
-    <version>1.4.0</version>
+    <version>1.4.1</version>
     <relativePath>../org.metaborg.maven.parent</relativePath>
   </parent>
 
