@@ -1,69 +1,62 @@
-from metaborg.util.eclipse import EclipseGen, EclipseIniFix, CurrentEclipseOS
+from metaborg.util.eclipse import EclipseGenerator
 
 
-_eclipseRepo = 'http://eclipse.mirror.triple-it.nl/releases/luna/'
-_eclipsePackage = 'epp.package.standard'
+class MetaborgEclipseGenerator(EclipseGenerator):
+  eclipseRepo = 'http://eclipse.mirror.triple-it.nl/releases/luna/'
+  eclipseIU = 'epp.package.standard'
 
+  m2eRepos = [
+    'http://download.eclipse.org/technology/m2e/milestones/1.6',
+    'http://repo1.maven.org/maven2/.m2e/connectors/m2eclipse-buildhelper/0.15.0/N/0.15.0.201405280027/',
+    'http://download.jboss.org/jbosstools/updates/m2e-extensions/m2e-jdt-compiler/',
+    'http://repo1.maven.org/maven2/.m2e/connectors/m2eclipse-tycho/0.9.0/N/LATEST/'
+  ]
+  m2eIUs = [
+    'org.eclipse.m2e.feature.feature.group',
+    'org.sonatype.m2e.buildhelper.feature.feature.group',
+    'org.jboss.tools.m2e.jdt.feature.feature.group',
+    'org.sonatype.tycho.m2e.feature.feature.group'
+  ]
 
-_spoofaxRepo = 'http://download.spoofax.org/update/nightly/'
-_spoofaxRuntime = ['org.strategoxt.imp.feature.group']
-_spoofaxMeta = ['org.strategoxt.imp.meta.feature.group']
-_modelwareRuntime = [
-  'org.metaborg.modelware.gmf.feature.group',
-  'org.metaborg.modelware.gmf.headless.feature.group',
-  'org.metaborg.modelware.emf.feature.group'
-]
-_modelwareMeta = ['org.metaborg.modelware.gmf.meta.feature.group', 'org.metaborg.modelware.emf.meta.feature.group']
+  spoofaxRepo = 'http://download.spoofax.org/update/nightly/'
+  spoofaxRepoLocal = 'spoofax-deploy/org.strategoxt.imp.updatesite/target/site'
+  spoofaxIU = 'org.strategoxt.imp.feature.group'
+  spoofaxMetaIU = 'org.strategoxt.imp.meta.feature.group'
+  modelwareIUs = [
+    'org.metaborg.modelware.gmf.feature.group',
+    'org.metaborg.modelware.gmf.headless.feature.group',
+    'org.metaborg.modelware.emf.feature.group'
+  ]
+  modelwareMetaIUs = ['org.metaborg.modelware.gmf.meta.feature.group', 'org.metaborg.modelware.emf.meta.feature.group']
 
+  def __init__(self, destination, config, eclipseRepo = None, eclipseIU = None, installSpoofax = True,
+               spoofaxRepo = None, spoofaxDevelop = False, spoofaxModelware = False, moreRepos = None, moreIUs = None,
+               archive = False):
+    if not eclipseRepo:
+      eclipseRepo = MetaborgEclipseGenerator.eclipseRepo
+    if not eclipseIU:
+      eclipseIU = MetaborgEclipseGenerator.eclipseIU
+    if not spoofaxRepo:
+      spoofaxRepo = MetaborgEclipseGenerator.spoofaxRepo
+    if not moreRepos:
+      moreRepos = []
+    if not moreIUs:
+      moreIUs = []
 
-_m2eRepos = [
-  'http://download.eclipse.org/technology/m2e/milestones/1.6',
-  'http://repo1.maven.org/maven2/.m2e/connectors/m2eclipse-buildhelper/0.15.0/N/0.15.0.201405280027/',
-  'http://download.jboss.org/jbosstools/updates/m2e-extensions/m2e-jdt-compiler/',
-  'http://repo1.maven.org/maven2/.m2e/connectors/m2eclipse-tycho/0.9.0/N/LATEST/'
-]
-_m2eFeatures = [
-  'org.eclipse.m2e.feature.feature.group',
-  'org.sonatype.m2e.buildhelper.feature.feature.group',
-  'org.jboss.tools.m2e.jdt.feature.feature.group',
-  'org.sonatype.tycho.m2e.feature.feature.group'
-]
+    repos = [eclipseRepo] + MetaborgEclipseGenerator.m2eRepos
+    ius = [eclipseIU] + MetaborgEclipseGenerator.m2eIUs
 
+    if installSpoofax:
+      repos.append(spoofaxRepo)
+      ius.append(MetaborgEclipseGenerator.spoofaxIU)
+      if spoofaxDevelop:
+        ius.append(MetaborgEclipseGenerator.spoofaxMetaIU)
+      if spoofaxModelware:
+        ius.extend(MetaborgEclipseGenerator.modelwareIUs)
+        if spoofaxDevelop:
+          ius.extend(MetaborgEclipseGenerator.modelwareIUs)
 
-def GeneratePlainEclipse(destination, eclipseOS = None, eclipseRepo = _eclipseRepo, eclipsePackage = _eclipsePackage, repositories = [], installUnits = [], **kwargs):
-  if not eclipseOS:
-    eclipseOS = CurrentEclipseOS()
+    repos.extend(moreRepos)
+    ius.extend(moreIUs)
 
-  repositories.append(eclipseRepo)
-  installUnits.append(eclipsePackage)
-
-  EclipseGen(destination = destination, eclipseOS = eclipseOS, repositories = repositories, installUnits = installUnits, **kwargs)
-  EclipseIniFix(destination = destination, eclipseOS = eclipseOS, requiredJavaVersion = None)
-
-def GenerateSpoofaxEclipse(destination, eclipseOS = None, eclipseRepo = _eclipseRepo, eclipsePackage = _eclipsePackage,
-    spoofaxRepo = _spoofaxRepo, repositories = [], installUnits = [], installMeta = True, installModelware = True, **kwargs):
-  if not eclipseOS:
-    eclipseOS = CurrentEclipseOS()
-
-  repositories.extend([eclipseRepo, spoofaxRepo]);
-  installUnits.extend([eclipsePackage] + _spoofaxRuntime)
-  if installMeta:
-    installUnits.extend(_spoofaxMeta)
-  if installModelware:
-    installUnits.extend(_modelwareRuntime)
-    if installMeta:
-      installUnits.extend(_modelwareMeta)
-
-  EclipseGen(destination = destination, eclipseOS = eclipseOS, repositories = repositories, installUnits = installUnits, **kwargs)
-  EclipseIniFix(destination = destination, eclipseOS = eclipseOS)
-
-def GenerateDevSpoofaxEclipse(destination, eclipseOS = None, eclipseRepo = _eclipseRepo, eclipsePackage = _eclipsePackage,
-    spoofaxRepo = _spoofaxRepo, repositories = [], installUnits = [], **kwargs):
-  if not eclipseOS:
-    eclipseOS = CurrentEclipseOS()
-
-  repositories.extend([eclipseRepo, spoofaxRepo] + _m2eRepos)
-  installUnits.extend([eclipsePackage] + _spoofaxRuntime + _spoofaxMeta + _modelwareRuntime + _modelwareMeta + _m2eFeatures)
-
-  EclipseGen(destination = destination, eclipseOS = eclipseOS, repositories = repositories, installUnits = installUnits, **kwargs)
-  EclipseIniFix(destination = destination, eclipseOS = eclipseOS)
+    EclipseGenerator.__init__(self, destination, config, repos, ius, archive)
