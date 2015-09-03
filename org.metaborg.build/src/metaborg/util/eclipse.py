@@ -1,263 +1,326 @@
-import os
-import sys
-import platform
-import subprocess
-import urllib.request
+from os import path, makedirs, listdir, chmod, rmdir, mkdir, remove
+from platform import system
+from re import sub, findall, MULTILINE
+from shutil import move, copytree, copyfileobj, rmtree, make_archive
+from subprocess import Popen
+from sys import maxsize
+import tempfile
 import urllib.parse
-import shutil
-import zipfile
-import re
-import requests
+import urllib.request
+from zipfile import ZipFile
+
 import tarfile
+
+import requests
+
 from metaborg.util.path import CommonPrefix
 
 
-def EclipseGen(destination, eclipseOS = None, eclipseWS = None, eclipseArch = None, repositories = [], installUnits = []):
-  if eclipseOS == None:
-    eclipseOS = CurrentEclipseOS()
-  if eclipseWS == None:
-    eclipseWS = EclipseWS(eclipseOS)
-  if eclipseArch == None:
-    eclipseArch = CurrentEclipseArch()
+class EclipseConfiguration(object):
+  def __init__(self, os = None, ws = None, arch = None):
+    if not os:
+      os = self.__os()
+    if not ws:
+      ws = self.__ws(os)
+    if not arch:
+      arch = self.__arch()
 
-  _DownloadP2Director()
+    self.os = os
+    self.ws = ws
+    self.arch = arch
 
-  args = []
-  args.append(_DirectorExecutable())
+  @staticmethod
+  def __os():
+    sys = system()
+    if sys == 'Darwin':
+      return 'macosx'
+    elif sys == 'Linux':
+      return 'linux'
+    elif sys == 'Windows':
+      return 'win32'
+    else:
+      raise Exception('Unsupported OS {}'.format(system))
 
-  if len(repositories) != 0:
-    repositories = map(_LocationToURI, repositories)
-    args.append('-repository {}'.format(','.join(repositories)))
-  if len(installUnits) != 0:
-    args.append('-installIU {}'.format(','.join(installUnits)))
+  @staticmethod
+  def __ws(os):
+    if os == 'macosx':
+      return 'cocoa'
+    elif os == 'linux':
+      return 'gtk'
+    elif os == 'win32':
+      return 'win32'
+    else:
+      raise Exception('Unsupported Eclipse OS {}'.format(os))
 
-  args.append('-tag InitialState')
-  args.append('-destination {}'.format(destination))
-  args.append('-profile SDKProfile')
-  args.append('-profileProperties org.eclipse.update.install.features=true')
-  args.append('-bundlepool {}'.format(destination))
-  args.append('-p2.os {}'.format(eclipseOS))
-  args.append('-p2.ws {}'.format(eclipseWS))
-  args.append('-p2.arch {}'.format(eclipseArch))
-  args.append('-roaming')
-
-  cmd = ' '.join(args)
-  print(cmd)
-  try:
-    process = subprocess.Popen(cmd, shell = True)
-    process.communicate()
-  except KeyboardInterrupt:
-    raise Exception("Eclipse generation interrupted")
-
-  if process.returncode != 0:
-    raise Exception("Eclipse generation failed")
-
-def EclipseIniFix(destination, eclipseOS, stackSize = '16M', heapSize = '1G', maxHeapSize = '1G', maxPermGen = '256M',
-    requiredJavaVersion = '1.7', server = True):
-  iniLocation = _EclipseIniLocation(destination, eclipseOS)
-
-  # Python converts all line endings to '\n' when reading a file in text mode like this.
-  with open(iniLocation, "r") as iniFile:
-    iniText = iniFile.read()
-
-  iniText = re.sub(r'--launcher\.XXMaxPermSize\n[0-9]+[g|G|m|M|k|K]', '', iniText, flags = re.MULTILINE)
-  iniText = re.sub(r'-install\n.+', '', iniText, flags = re.MULTILINE)
-  iniText = re.sub(r'-showsplash\norg.eclipse.platform', '', iniText, flags = re.MULTILINE)
-
-  launcherPattern = r'--launcher\.defaultAction\nopenFile'
-  launcherMatches = len(re.findall(launcherPattern, iniText, flags = re.MULTILINE))
-  if launcherMatches > 1:
-    iniText = re.sub(launcherPattern, '', iniText, count = launcherMatches - 1, flags = re.MULTILINE)
-
-  iniText = re.sub(r'-X(ms|ss|mx)[0-9]+[g|G|m|M|k|K]', '', iniText)
-  iniText = re.sub(r'-XX:MaxPermSize=[0-9]+[g|G|m|M|k|K]', '', iniText)
-  iniText = re.sub(r'-Dorg\.eclipse\.swt\.internal\.carbon\.smallFonts', '', iniText)
-  iniText = re.sub(r'-XstartOnFirstThread', '', iniText)
-  iniText = re.sub(r'-Dosgi.requiredJavaVersion=[0-9]\.[0-9]', '', iniText)
-  iniText = re.sub(r'-server', '', iniText)
-
-  iniText = '\n'.join([line for line in iniText.split('\n') if line.strip()]) + '\n'
-
-  if eclipseOS == 'macosx':
-    iniText += '-XstartOnFirstThread\n'
-
-  if stackSize:
-    iniText += '-Xss{}\n'.format(stackSize)
-  if heapSize:
-    iniText += '-Xms{}\n'.format(heapSize)
-  if maxHeapSize:
-    iniText += '-Xmx{}\n'.format(maxHeapSize)
-  if maxPermGen:
-    iniText += '-XX:MaxPermSize={}\n'.format(maxPermGen)
-
-  if requiredJavaVersion:
-    iniText += '-Dosgi.requiredJavaVersion={}\n'.format(requiredJavaVersion)
-
-  if server:
-    iniText += '-server\n'
-
-  print('Setting contents of {} to:\n{}'.format(iniLocation, iniText))
-  with open(iniLocation, "w") as iniFile:
-    iniFile.write(iniText)
-
-def EclipseAddJre(destination, eclipseOS = None, eclipseArch = None):
-  if eclipseOS == None:
-    eclipseOS = CurrentEclipseOS()
-  if eclipseArch == None:
-    eclipseArch = CurrentEclipseArch()
-
-  jrePath = _DownloadJRE(eclipseOS, eclipseArch)
-  targetJrePath = os.path.join(destination, 'jre')
-  if os.path.isdir(targetJrePath):
-    shutil.rmtree(targetJrePath, ignore_errors=True)
-  print('Copying JRE from {} to {}'.format(jrePath, targetJrePath))
-  shutil.copytree(jrePath, targetJrePath, symlinks = True)
-
-  relJreLocation = _EclipseJreLocation(eclipseOS)
-  iniLocation = _EclipseIniLocation(destination, eclipseOS)
-  with open(iniLocation, 'r') as iniFile:
-    iniText = iniFile.read()
-  with open(iniLocation, 'w') as iniFile:
-    print('Prepending VM location {} to eclipse.ini'.format(relJreLocation))
-    iniText = re.sub(r'-vm\n.+\n', '', iniText, flags = re.MULTILINE)
-    iniFile.write('-vm\n{}\n'.format(relJreLocation) + iniText)
+  @staticmethod
+  def __arch():
+    is64Bits = maxsize > 2 ** 32
+    if is64Bits:
+      return 'x86_64'
+    else:
+      return 'x86'
 
 
-def _EclipseIniLocation(destination, eclipseOS):
-  if eclipseOS == 'macosx':
-    return '{}/Eclipse.app/Contents/MacOS/eclipse.ini'.format(destination)
-  elif eclipseOS == 'linux':
-    return '{}/eclipse.ini'.format(destination)
-  elif eclipseOS == 'win32':
-    return '{}/eclipse.ini'.format(destination)
-  else:
-    raise Exception('Unsupported Eclipse OS {}'.format(eclipseOS))
+class EclipseGenerator(object):
+  def __init__(self, destination, config = EclipseConfiguration(), repositories = None, installUnits = None,
+               archive = False):
+    if not installUnits:
+      installUnits = []
+    if not repositories:
+      repositories = []
 
-def _EclipseJreLocation(eclipseOS):
-  if eclipseOS == 'macosx':
-    return '../../../jre/Contents/Home/bin/java'
-  elif eclipseOS == 'linux':
-    return 'jre/bin/java'
-  elif eclipseOS == 'win32':
-    return 'jre\\bin\\server\\jvm.dll'
-  else:
-    raise Exception('Unsupported Eclipse OS {}'.format(eclipseOS))
+    self.requestedDestination = destination
+    if archive:
+      self.tempdir = tempfile.TemporaryDirectory()
+      self.destination = self.tempdir.name
+    else:
+      self.destination = destination
+    self.config = config
+    self.repositories = repositories
+    self.installUnits = installUnits
+    self.archive = archive
 
+  def __enter__(self):
+    return self
 
-def CurrentEclipseOS():
-  system = platform.system()
-  if system == 'Darwin':
-    return 'macosx'
-  elif system == 'Linux':
-    return 'linux'
-  elif system == 'Windows':
-    return 'win32'
-  else:
-    raise Exception('Unsupported OS {}'.format(system))
+  def __exit__(self, exc_type, exc_val, exc_tb):
+    if self.archive:
+      self.tempdir.cleanup()
 
-def EclipseWS(eclipseOS):
-  if eclipseOS == 'macosx':
-    return 'cocoa'
-  elif eclipseOS == 'linux':
-    return 'gtk'
-  elif eclipseOS == 'win32':
-    return 'win32'
-  else:
-    raise Exception('Unsupported Eclipse OS {}'.format(eclipseOS))
+  def Facade(self, fixIni = True, addJre = False, archiveJreSeparately = False, archivePrefix = 'eclipse'):
+    self.Generate()
+    if fixIni:
+      self.FixIni()
+    if self.archive and archiveJreSeparately and addJre:
+      self.Archive(archivePrefix, '')
+    if addJre:
+      self.AddJre()
+    if self.archive:
+      if archiveJreSeparately and addJre:
+        self.Archive(archivePrefix, '-jre')
+      else:
+        self.Archive(archivePrefix, '')
 
-def CurrentEclipseArch():
-  is64Bits = sys.maxsize > 2**32
-  if is64Bits:
-    return 'x86_64'
-  else:
-    return 'x86'
+  def Generate(self):
+    director = self.__GetP2Director()
+    args = [director]
 
+    if len(self.repositories) != 0:
+      mappedRepositories = map(self.__ToURI, self.repositories)
+      args.append('-repository {}'.format(','.join(mappedRepositories)))
+    if len(self.installUnits) != 0:
+      args.append('-installIU {}'.format(','.join(self.installUnits)))
 
-def _DownloadP2Director():
-  if os.path.isfile(_DirectorExecutable()):
-    return
+    args.append('-tag InitialState')
+    args.append('-destination {}'.format(self.destination))
+    args.append('-profile SDKProfile')
+    args.append('-profileProperties org.eclipse.update.install.features=true')
+    args.append('-bundlepool {}'.format(self.destination))
+    args.append('-p2.os {}'.format(self.config.os))
+    args.append('-p2.ws {}'.format(self.config.ws))
+    args.append('-p2.arch {}'.format(self.config.arch))
+    args.append('-roaming')
 
-  url = 'http://eclipse.mirror.triple-it.nl/tools/buckminster/products/director_latest.zip'
-  directorZipLoc = _EclipsegenLocation('director.zip')
-  with urllib.request.urlopen(url) as response, open(directorZipLoc, 'wb') as outFile:
-    print('Downloading director from {} to {}'.format(url, directorZipLoc))
-    shutil.copyfileobj(response, outFile)
-  with zipfile.ZipFile(directorZipLoc) as zipFile:
-    unpackLoc = _EclipsegenLocation('director')
-    zipFile.extractall(path = unpackLoc)
-  os.chmod(_DirectorExecutable(), 0o744)
+    cmd = ' '.join(args)
+    print(cmd)
+    try:
+      process = Popen(cmd, shell = True)
+      process.communicate()
+    except KeyboardInterrupt:
+      raise Exception("Eclipse generation interrupted")
 
-def _DirectorExecutable():
-  if platform.system() == 'Windows':
-    return _EclipsegenLocation('director/director/director.bat')
-  else:
-    return _EclipsegenLocation('director/director/director')
+    if process.returncode != 0:
+      raise Exception("Eclipse generation failed")
 
+  @staticmethod
+  def __GetP2Director():
+    if system() == 'Windows':
+      executable = EclipseGenerator.__ToStorageLocation('director/director/director.bat')
+    else:
+      executable = EclipseGenerator.__ToStorageLocation('director/director/director')
 
-def _DownloadJRE(eclipseOS, eclipseArch):
-  version = '7u72'
-  urlPrefix = 'http://download.oracle.com/otn-pub/java/jdk/7u72-b14/jre-7u72-'
-  extension = 'tar.gz'
+    if path.isfile(executable):
+      return executable
 
-  if eclipseOS == 'macosx':
-    jreOS = 'macosx'
-  elif eclipseOS == 'linux':
-    jreOS = 'linux'
-  elif eclipseOS == 'win32':
-    jreOS = 'windows'
-  else:
-    raise Exception('Unsupported JRE OS {}'.format(eclipseOS))
+    url = 'http://eclipse.mirror.triple-it.nl/tools/buckminster/products/director_latest.zip'
+    directorZipLoc = EclipseGenerator.__ToStorageLocation('director.zip')
+    with urllib.request.urlopen(url) as response, open(directorZipLoc, 'wb') as outFile:
+      print('Downloading director from {} to {}'.format(url, directorZipLoc))
+      copyfileobj(response, outFile)
+    with ZipFile(directorZipLoc) as zipFile:
+      unpackLoc = EclipseGenerator.__ToStorageLocation('director')
+      zipFile.extractall(path = unpackLoc)
+    chmod(executable, 0o744)
 
-  if eclipseArch == 'x86_64':
-    jreArch = 'x64'
-  elif eclipseArch == 'x86':
-    jreArch = 'i586'
-  else:
-    raise Exception('Unsupported JRE architecture {}'.format(eclipseArch))
+    return executable
 
-  location = _EclipsegenLocation(os.path.join('jre', version))
-  os.makedirs(location, exist_ok=True)
+  @staticmethod
+  def __ToURI(location):
+    if location.startswith('http'):
+      return location
+    else:
+      return urllib.parse.urljoin('file:', urllib.request.pathname2url(location))
 
-  fileName = '{}-{}.{}'.format(jreOS, jreArch, extension)
-  filePath = os.path.join(location, fileName)
+  def FixIni(self, stackSize = '16M', heapSize = '1G', maxHeapSize = '1G', maxPermGen = '256M',
+             requiredJavaVersion = '1.7', server = True):
+    iniLocation = self.__IniLocation()
 
-  dirName = '{}-{}'.format(jreOS, jreArch)
-  dirPath = os.path.join(location, dirName)
+    # Python converts all line endings to '\n' when reading a file in text mode like this.
+    with open(iniLocation, "r") as iniFile:
+      iniText = iniFile.read()
 
-  if os.path.isdir(dirPath):
+    iniText = sub(r'--launcher\.XXMaxPermSize\n[0-9]+[gGmMkK]', '', iniText, flags = MULTILINE)
+    iniText = sub(r'-install\n.+', '', iniText, flags = MULTILINE)
+    iniText = sub(r'-showsplash\norg.eclipse.platform', '', iniText, flags = MULTILINE)
+
+    launcherPattern = r'--launcher\.defaultAction\nopenFile'
+    launcherMatches = len(findall(launcherPattern, iniText, flags = MULTILINE))
+    if launcherMatches > 1:
+      iniText = sub(launcherPattern, '', iniText, count = launcherMatches - 1, flags = MULTILINE)
+
+    iniText = sub(r'-X(ms|ss|mx)[0-9]+[gGmMkK]', '', iniText)
+    iniText = sub(r'-XX:MaxPermSize=[0-9]+[gGmMkK]', '', iniText)
+    iniText = sub(r'-Dorg\.eclipse\.swt\.internal\.carbon\.smallFonts', '', iniText)
+    iniText = sub(r'-XstartOnFirstThread', '', iniText)
+    iniText = sub(r'-Dosgi.requiredJavaVersion=[0-9]\.[0-9]', '', iniText)
+    iniText = sub(r'-server', '', iniText)
+
+    iniText = '\n'.join([line for line in iniText.split('\n') if line.strip()]) + '\n'
+
+    if self.config.os == 'macosx':
+      iniText += '-XstartOnFirstThread\n'
+
+    if stackSize:
+      iniText += '-Xss{}\n'.format(stackSize)
+    if heapSize:
+      iniText += '-Xms{}\n'.format(heapSize)
+    if maxHeapSize:
+      iniText += '-Xmx{}\n'.format(maxHeapSize)
+    if maxPermGen:
+      iniText += '-XX:MaxPermSize={}\n'.format(maxPermGen)
+
+    if requiredJavaVersion:
+      iniText += '-Dosgi.requiredJavaVersion={}\n'.format(requiredJavaVersion)
+
+    if server:
+      iniText += '-server\n'
+
+    print('Setting contents of {} to:\n{}'.format(iniLocation, iniText))
+    with open(iniLocation, "w") as iniFile:
+      iniFile.write(iniText)
+
+  def AddJre(self):
+    jrePath = self.__DownloadJre()
+    targetJrePath = path.join(self.destination, 'jre')
+    if path.isdir(targetJrePath):
+      rmtree(targetJrePath, ignore_errors = True)
+    print('Copying JRE from {} to {}'.format(jrePath, targetJrePath))
+    copytree(jrePath, targetJrePath, symlinks = True)
+
+    relJreLocation = self.__JreLocation()
+    iniLocation = self.__IniLocation()
+    with open(iniLocation, 'r') as iniFile:
+      iniText = iniFile.read()
+    with open(iniLocation, 'w') as iniFile:
+      print('Prepending VM location {} to eclipse.ini'.format(relJreLocation))
+      iniText = sub(r'-vm\n.+\n', '', iniText, flags = MULTILINE)
+      iniFile.write('-vm\n{}\n'.format(relJreLocation) + iniText)
+
+  def __DownloadJre(self):
+    version = '7u72'
+    urlPrefix = 'http://download.oracle.com/otn-pub/java/jdk/7u72-b14/jre-7u72-'
+    extension = 'tar.gz'
+
+    if self.config.os == 'macosx':
+      jreOS = 'macosx'
+    elif self.config.os == 'linux':
+      jreOS = 'linux'
+    elif self.config.os == 'win32':
+      jreOS = 'windows'
+    else:
+      raise Exception('Unsupported JRE OS {}'.format(self.config.os))
+
+    if self.config.arch == 'x86_64':
+      jreArch = 'x64'
+    elif self.config.arch == 'x86':
+      jreArch = 'i586'
+    else:
+      raise Exception('Unsupported JRE architecture {}'.format(self.config.arch))
+
+    location = self.__ToStorageLocation(path.join('jre', version))
+    makedirs(location, exist_ok = True)
+
+    fileName = '{}-{}.{}'.format(jreOS, jreArch, extension)
+    filePath = path.join(location, fileName)
+
+    dirName = '{}-{}'.format(jreOS, jreArch)
+    dirPath = path.join(location, dirName)
+
+    if path.isdir(dirPath):
+      return dirPath
+
+    url = '{}{}'.format(urlPrefix, fileName)
+    print('Downloading JRE from {}'.format(url))
+    cookies = dict(gpw_e24 = 'http%3A%2F%2Fwww.oracle.com%2F', oraclelicense = 'accept-securebackup-cookie')
+    request = requests.get(url, cookies = cookies)
+    with open(filePath, 'wb') as file:
+      for chunk in request.iter_content(1024):
+        file.write(chunk)
+
+    print('Extracting JRE to {}'.format(dirPath))
+    with tarfile.open(filePath, 'r') as tar:
+      tar.extractall(path = dirPath)
+      rootName = CommonPrefix(tar.getnames())
+      rootDir = path.join(dirPath, rootName)
+      for name in listdir(rootDir):
+        move(path.join(rootDir, name), path.join(dirPath, name))
+      rmdir(rootDir)
+
+    remove(filePath)
+
     return dirPath
 
-  url = '{}{}'.format(urlPrefix, fileName)
-  print('Downloading JRE from {}'.format(url))
-  cookies = dict(gpw_e24 = 'http%3A%2F%2Fwww.oracle.com%2F', oraclelicense = 'accept-securebackup-cookie')
-  request = requests.get(url, cookies = cookies)
-  with open(filePath, 'wb') as file:
-    for chunk in request.iter_content(1024):
-      file.write(chunk)
+  def __JreLocation(self):
+    if self.config.os == 'macosx':
+      return '../../../jre/Contents/Home/bin/java'
+    elif self.config.os == 'linux':
+      return 'jre/bin/java'
+    elif self.config.os == 'win32':
+      if self.config.arch == 'x86_64':
+        return 'jre\\bin\\server\\jvm.dll'
+      elif self.config.arch == 'x86':
+        return 'jre\\bin\\client\\jvm.dll'
+      else:
+        raise Exception('Unsupported Eclipse arch {}'.format(self.config.arch))
+    else:
+      raise Exception('Unsupported Eclipse OS {}'.format(self.config.os))
 
-  print('Extracting JRE to {}'.format(dirPath))
-  with tarfile.open(filePath, 'r') as file:
-    file.extractall(path = dirPath)
-    rootName = CommonPrefix(file.getnames())
-    rootDir = os.path.join(dirPath, rootName)
-    for name in os.listdir(rootDir):
-      shutil.move(os.path.join(rootDir, name), os.path.join(dirPath, name))
-    os.rmdir(rootDir)
+  def __IniLocation(self):
+    if self.config.os == 'macosx':
+      return '{}/Eclipse.app/Contents/MacOS/eclipse.ini'.format(self.destination)
+    elif self.config.os == 'linux':
+      return '{}/eclipse.ini'.format(self.destination)
+    elif self.config.os == 'win32':
+      return '{}/eclipse.ini'.format(self.destination)
+    else:
+      raise Exception('Unsupported Eclipse OS {}'.format(self.config.os))
 
-  os.remove(filePath)
+  def Archive(self, prefix, postfix = ''):
+    name = '{}-{}-{}{}'.format(prefix, self.config.os, self.config.arch, postfix)
+    print('Archiving Eclipse instance {}'.format(name))
+    filename = path.join(self.requestedDestination, name)
+    with tempfile.TemporaryDirectory() as tempdir:
+      copytree(self.destination, path.join(tempdir, name), symlinks = True)
+      if self.config.os == 'macosx' or self.config.os == 'linux':
+        return make_archive(filename, format = 'gztar', root_dir = tempdir, base_dir = name)
+      elif self.config.os == 'win32':
+        return make_archive(filename, format = 'zip', root_dir = tempdir, base_dir = name)
+      else:
+        raise Exception('Unsupported OS {}'.format(self.config.os))
 
-  return dirPath
-
-
-def _EclipsegenLocation(location):
-  eclipsegenLocation = os.path.join(os.path.expanduser('~'), '.spoofax-releng-eclipsegen')
-  if not os.path.isdir(eclipsegenLocation):
-    os.mkdir(eclipsegenLocation)
-  return '{}/{}'.format(eclipsegenLocation, location)
-
-
-def _LocationToURI(location):
-  if location.startswith('http'):
-    return location
-  else:
-    return urllib.parse.urljoin('file:', urllib.request.pathname2url(location))
+  @staticmethod
+  def __ToStorageLocation(location):
+    storageLocation = path.join(path.expanduser('~'), '.spoofax-releng-eclipsegen')
+    if not path.isdir(storageLocation):
+      mkdir(storageLocation)
+    return '{}/{}'.format(storageLocation, location)

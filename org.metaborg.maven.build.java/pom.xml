@@ -55,6 +55,7 @@
 		<module>../../mb-exec-deps/org.spoofax.interpreter.externaldeps</module>
 
 		<!-- Spoofax Sunshine -->
+		<module>../../spoofax-sunshine/org.spoofax.sunshine.api</module>
 		<module>../../spoofax-sunshine/org.spoofax.sunshine</module>
 
 		<!-- Spoofax benchmarker -->
