@@ -98,7 +98,7 @@ def Release(repo, releaseBranchName, developBranchName, curDevelopVersion, nextR
       print('Step 5: perform a test release build')
       try:
         BuildAll(repo = repo, components = ['all'], buildStratego = True, bootstrapStratego = True,
-                 strategoTest = True, release = True)
+                 strategoTest = True, skipTests = False, release = True)
       except Exception as detail:
         print('Test release build failed, not continuing to the next step')
         print(str(detail))
@@ -109,7 +109,7 @@ def Release(repo, releaseBranchName, developBranchName, curDevelopVersion, nextR
     def Step6():
       print('Step 6: perform release deployment')
       BuildAll(repo = repo, components = ['all'], buildStratego = True, bootstrapStratego = True,
-               strategoTest = True, release = True, deploy = True)
+               strategoTest = False, skipTests = True, release = True, deploy = True)
       db['state'] = 7
       print('Please check if deploying succeeded, and manually deploy extra artifacts, then continue')
 
