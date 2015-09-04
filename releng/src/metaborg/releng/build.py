@@ -57,7 +57,7 @@ def BuildAll(repo, components = ['all'], buildDeps = True, resumeFrom = None, bu
   for build in buildOrder:
     print('Building: {}'.format(build))
     cmd = GetBuildCommand(build)
-    result = cmd(basedir = basedir, deploy = deploy, qualifier = qualifier, noSnapshotUpdates = True, clean = clean,
+    result = cmd(basedir = basedir, deploy = deploy, release = release, qualifier = qualifier, noSnapshotUpdates = True, clean = clean,
       profiles = list(profiles), buildStratego = buildStratego, bootstrapStratego = bootstrapStratego,
       strategoTest = strategoTest, skipExpensive = skipExpensive, skipTests = skipTests, resumeFrom = resumeFrom, localRepo = localRepo, **mavenArgs)
     if result:
@@ -83,7 +83,7 @@ def BuildPoms(basedir, deploy, qualifier, buildStratego, bootstrapStratego, stra
   return BuildResult([])
 
 
-def BuildPremadeJars(basedir, deploy, clean, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
+def BuildPremadeJars(basedir, deploy, release, clean, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy:deploy-file' if deploy else 'install:install-file'
 
   pomFile = path.join(basedir, 'releng', 'parent', 'pom.xml')
@@ -93,7 +93,13 @@ def BuildPremadeJars(basedir, deploy, clean, qualifier, buildStratego, bootstrap
   makePermissivePom = path.join(makePermissivePath, 'pom.xml')
   makePermissiveJar = path.join(makePermissivePath, 'make-permissive.jar')
 
-  Mvn(pomFile = pomFile, clean = False, phase = phase, extraArgs = '-DpomFile="{}" -Dfile="{}" -DrepositoryId=metaborg-nexus -Durl=http://artifacts.metaborg.org/content/repositories/core-snapshots/'.format(makePermissivePom, makePermissiveJar), **kwargs)
+  repositoryId = "metaborg-nexus"
+  if release:
+    deployUrl = 'http://artifacts.metaborg.org/content/repositories/releases/'
+  else:
+    deployUrl = 'http://artifacts.metaborg.org/content/repositories/core-snapshots/'
+
+  Mvn(pomFile = pomFile, clean = False, phase = phase, extraArgs = '-DpomFile="{}" -Dfile="{}" -DrepositoryId={} -Durl={}'.format(makePermissivePom, makePermissiveJar, repositoryId, deployUrl), **kwargs)
 
 
 def BuildOrDownloadStrategoXt(basedir, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):

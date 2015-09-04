@@ -46,7 +46,7 @@ def Bootstrap(repo, curVersion, curBaselineVersion):
     def Step1():
       print('Step 2: perform a test release build')
       try:
-        BuildAll(repo = repo, components = ['languages'], buildStratego = False, bootstrapStratego = False,
+        BuildAll(repo = repo, components = ['languages'], buildStratego = True, bootstrapStratego = False,
                  strategoTest = False, cleanRepo = True, release = True)
       except Exception as detail:
         print('Test release build failed, not continuing to the next step')
@@ -57,7 +57,7 @@ def Bootstrap(repo, curVersion, curBaselineVersion):
 
     def Step2():
       print('Step 3: perform release deployment')
-      BuildAll(repo = repo, components = ['languages'], buildStratego = False, bootstrapStratego = False,
+      BuildAll(repo = repo, components = ['languages'], buildStratego = True, bootstrapStratego = False,
                strategoTest = False, skipTests = True, skipExpensive = True, clean = False, release = True, deploy = True)
       db['state'] = 3
       print('Please check if deploying succeeded, and manually deploy extra artifacts, then continue')
