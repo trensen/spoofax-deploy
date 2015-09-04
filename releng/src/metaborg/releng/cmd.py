@@ -460,7 +460,7 @@ class MetaborgRelengBootstrap(cli.Application):
   curVersion = cli.SwitchAttr(names = ['--cur-ver'], argtype = str, mandatory = True,
                               help = "Current Maven version")
   curBaselineVersion = cli.SwitchAttr(names = ['--cur-base-ver'], argtype = str, mandatory = True,
-                                      help = "Next Maven baseline version")
+                                      help = "Current Maven baseline version")
 
   def main(self):
     print('Performing interactive bootstrap')

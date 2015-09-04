@@ -30,9 +30,6 @@ def BuildAll(repo, components = ['all'], buildDeps = True, resumeFrom = None, bu
   basedir = repo.working_tree_dir
   if release:
     profiles.append('release')
-    buildStratego = True
-    bootstrapStratego = True
-    strategoTest = True
   if bootstrapStratego:
     buildStratego = True
 
