@@ -69,11 +69,6 @@ def SetVersions(repo, oldMavenVersion, newMavenVersion, setEclipseVersions = Tru
     if IsMavenPomFile(file):
       ReplaceInFile(file, oldMavenVersion, newMavenVersion)
 
-  print('Setting Maven versions in Spoofax generator files')
-  createMavenPomFile = path.join(baseDir, 'spoofax', 'org.strategoxt.imp.generator', 'src', 'sdf2imp', 'project', 'create-maven-pom.str')
-  ReplaceInFile(createMavenPomFile, oldMavenVersion, oldMavenVersion)
-
-
   if setEclipseVersions:
     print('Setting Eclipse versions in MANIFEST.MF files')
     for file in FindFiles(baseDir, 'MANIFEST.MF'):
