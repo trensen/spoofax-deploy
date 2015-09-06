@@ -15,7 +15,7 @@
 
   <properties>
     <metaborg-version>1.5.0-SNAPSHOT</metaborg-version>
-    <metaborg-baseline-version>1.5.0-baseline-20150904-135141</metaborg-baseline-version>
+    <metaborg-baseline-version>1.5.0-baseline-20150903-172321</metaborg-baseline-version>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
@@ -351,7 +351,7 @@
           <version>1.0-beta-5</version>
         </plugin>
 
-        <!-- Don't warn about missing m2e mapping for several goals. This plugin's configuration is used to store 
+        <!-- Don't warn about missing m2e mapping for several goals. This plugin's configuration is used to store
           Eclipse m2e settings only. It has no influence on the Maven build itself. -->
         <plugin>
           <groupId>org.eclipse.m2e</groupId>
