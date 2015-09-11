@@ -43,7 +43,7 @@
 
 		<!-- Meta languages -->
 		<module>../../mb-rep/org.strategoxt.imp.editors.aterm</module>
-		<module>../../aster/org.strategoxt.imp.editors.aster</module>
+		<!-- <module>../../aster/org.strategoxt.imp.editors.aster</module> -->
 		<module>../../box/org.strategoxt.imp.editors.pp</module>
 		<module>../../esv/org.strategoxt.imp.editors.editorservice</module>
 		<module>../../nabl/org.metaborg.meta.lang.nabl</module>
