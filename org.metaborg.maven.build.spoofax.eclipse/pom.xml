@@ -31,7 +31,8 @@
 		<module>../../spoofax-debug/org.strategoxt.imp.debug.core</module>
 		<module>../../spoofax-debug/org.strategoxt.imp.debug.stratego.core</module>
 		<module>../../spoofax-debug/org.strategoxt.imp.debug.stratego.runtime</module>
-		<module>../../spoofax-debug/org.strategoxt.imp.debug.stratego.test</module>
+		<!-- Moritz: Disabled, because cannot be adapted for separate compilation -->
+		<!-- <module>../../spoofax-debug/org.strategoxt.imp.debug.stratego.test</module> -->
 		<module>../../spoofax-debug/org.strategoxt.imp.debug.stratego.transformer</module>
 		<module>../../spoofax-debug/org.strategoxt.imp.debug.ui</module>
 
