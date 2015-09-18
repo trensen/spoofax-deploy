@@ -15,7 +15,7 @@
 
   <properties>
     <metaborg-version>1.5.0-SNAPSHOT</metaborg-version>
-    <metaborg-baseline-version>1.5.0-baseline-20150905-200051</metaborg-baseline-version>
+    <metaborg-baseline-version>1.5.0-baseline-20150917-172646</metaborg-baseline-version>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
