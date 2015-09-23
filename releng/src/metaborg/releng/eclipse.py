@@ -9,7 +9,7 @@ class MetaborgEclipseGenerator(EclipseGenerator):
     'http://download.eclipse.org/technology/m2e/milestones/1.6',
     'http://repo1.maven.org/maven2/.m2e/connectors/m2eclipse-buildhelper/0.15.0/N/0.15.0.201405280027/',
     'http://download.jboss.org/jbosstools/updates/m2e-extensions/m2e-jdt-compiler/',
-    'http://repo1.maven.org/maven2/.m2e/connectors/m2eclipse-tycho/0.9.0/N/LATEST/'
+    'http://repo1.maven.org/maven2/.m2e/connectors/m2eclipse-tycho/0.7.0/N/LATEST/'
   ]
   m2eIUs = [
     'org.eclipse.m2e.feature.feature.group',
