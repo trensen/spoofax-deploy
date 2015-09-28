@@ -42,9 +42,19 @@
               <goal>shade</goal>
             </goals>
             <configuration>
-              <createDependencyReducedPom>false</createDependencyReducedPom>
+              <!-- Only include artifacts with groupId org.metaborg -->
+              <artifactSet>
+                <includes>
+                  <include>org.metaborg</include>
+                </includes>
+              </artifactSet>
+              <!-- Create a dependency reduced POM file that only depends on non-included artifacts  -->
+              <createDependencyReducedPom>true</createDependencyReducedPom>
+              <!-- Promote transitive dependencies such that external libraries (artifacts not in org.metaborg)
+                   get included into the dependenct reduced POM file -->
+              <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
+              <!-- Replace artifact with shaded artifact -->
               <shadedArtifactAttached>false</shadedArtifactAttached>
-              <shadedGroupFilter>org.metaborg</shadedGroupFilter>
             </configuration>
           </execution>
         </executions>
