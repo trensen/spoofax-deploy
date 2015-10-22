@@ -8,7 +8,7 @@ from metaborg.releng.build import (_centralMirror, _defaultLocalRepo,
                                    _mvnSettingsLocation, _qualifierLocation,
                                    _spoofaxUpdateSite, BuildAll,
                                    CreateQualifier, GenerateMavenSettings,
-                                   GetAllBuilds, RepoChanged, CreateNowQualifier)
+                                   GetAllBuilds, RepoChanged, CreateNowQualifier, GenerateIcons)
 from metaborg.releng.eclipse import MetaborgEclipseGenerator
 from metaborg.releng.release import Release
 from metaborg.releng.versions import SetVersions
@@ -637,6 +637,27 @@ class MetaborgRelengGenMvnSettings(cli.Application):
     return 0
 
 
+
+@MetaborgReleng.subcommand("gen-icons")
+class MetaborgRelengGenIcons(cli.Application):
+  """
+  Generates the PNG, ICO and ICNS versions of the Spoofax icons
+  """
+
+
+  destination = cli.SwitchAttr(names = ['-d', '--destination'], argtype = str, mandatory = True,
+                   help = 'Path to generate the icons at')
+  text = cli.SwitchAttr(names = ['-t', '--text'], argtype = str, mandatory = False,
+                        default = '', help = 'Text to show on the icons')
+
+
+  def main(self):
+    repo = self.parent.repo
+    GenerateIcons(repo, self.destination, self.text)
+    print('Done!')
+
+
+
 @MetaborgReleng.subcommand("qualifier")
 class MetaborgRelengQualifier(cli.Application):
   """
@@ -664,3 +685,4 @@ class MetaborgRelengChanged(cli.Application):
       print(qualifier)
       return 0
     return 1
+
