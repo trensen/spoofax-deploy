@@ -6,7 +6,6 @@ import time
 from glob import glob
 
 from metaborg.util.git import LatestDate, Branch
-from metaborg.util.icons import IconGenerator, ensure_directory_exists
 from metaborg.util.maven import Mvn, MvnSetingsGen, MvnUserSettingsLocation
 
 
@@ -352,6 +351,8 @@ def GenerateMavenSettings(location = _mvnSettingsLocation, metaborgReleases = _m
   MvnSetingsGen(location = location, repositories = repositories, mirrors = mirrors)
 
 def GenerateIcons(repo, destination_dir, text = ''):
+  from metaborg.util.icons import IconGenerator, ensure_directory_exists
+  
   basedir = repo.working_tree_dir
   source_dir = '{}/spoofax/graphics/icons'.format(basedir)
   ensure_directory_exists(destination_dir)
