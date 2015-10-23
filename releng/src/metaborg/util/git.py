@@ -70,7 +70,7 @@ def Checkout(repo, submodule):
 
   subrepo = submodule.module()
   for submodule in subrepo.submodules:
-    Checkout(repo, submodule)
+    Checkout(subrepo, submodule)
 
 def CheckoutAll(repo):
   for submodule in repo.submodules:
