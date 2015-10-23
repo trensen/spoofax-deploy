@@ -1,13 +1,23 @@
 import os.path
 import subprocess
 import sys
-from wand.image import Image
-from wand.color import Color
-from wand.drawing import Drawing
+
+try:
+    from wand.image import Image
+    from wand.color import Color
+    from wand.drawing import Drawing
+    wand_available = True
+except ImportError:
+    wand_available = False
+
+
+def assert_wand_available():
+    if not wand_available:
+        raise ImportError('MagickWand shared library not found.\n'
+                          'You probably had not installed ImageMagick library.\n')
 
 
 class IconGenerator:
-
     __ALL_SIZES = [16, 32, 48, 64, 128, 256, 512, 1024]
     __ICO_SIZES = [16, 32, 48, 64, 128, 256]
     __ICNS_SIZES = [16, 32, 48, 128, 256, 512, 1024]
@@ -17,8 +27,10 @@ class IconGenerator:
         Initializes the IconGenerator class.
 
         :type font: basestring
-        :param font: Path of font to use.s
+        :param font: Path of font to use.
         """
+        assert_wand_available()
+
         self.font = font
 
     def generate_pngs(self, source_dir, source_name, destination_dir, destination_name, text=''):
@@ -122,8 +134,8 @@ class IconGenerator:
         drawn_files = [self.draw_icon(img, size, text) for (img, size) in source_files]
         # TODO: Write all drawn_files to temporary files
         # and provide them as args to the png2icns subprocess.
-        #input_files = [self.get_destination_sized_file(destination_dir, destination_name, x, '.png') for x in input_sizes]
-        #subprocess.call(['png2icns', destination_file] + input_files)
+        # input_files = [self.get_destination_sized_file(destination_dir, destination_name, x, '.png') for x in input_sizes]
+        # subprocess.call(['png2icns', destination_file] + input_files)
         raise Exception('Not implemented!')
 
     def load_icon_source(self, source_dir, source_name, size=sys.maxsize):
@@ -147,9 +159,10 @@ class IconGenerator:
         :rtype: Image
         :return: The loaded source image.
         """
-        sizes = [x for x in self.__ALL_SIZES if x == size]\
-              + [x for x in self.__ALL_SIZES if x > size]\
-              + [x for x in self.__ALL_SIZES if x < size]
+
+        sizes = [x for x in self.__ALL_SIZES if x == size] \
+                + [x for x in self.__ALL_SIZES if x > size] \
+                + [x for x in self.__ALL_SIZES if x < size]
         for x in sizes:
             path = '{}/{}_{}.svg'.format(source_dir, source_name, x)
             if os.path.isfile(path):
@@ -172,11 +185,11 @@ class IconGenerator:
         :rtype: Image
         :return: The resulting image.
         """
+
         img = source.clone()
         img.resize(size, size)
         self.__draw_text_bottom_left(img, text)
         return img
-
 
     __TEXT_PARAMS = {
         16: {'font_stroke': 0, 'font_size': 0, 'x': 0, 'y': 0},
@@ -198,6 +211,7 @@ class IconGenerator:
         :type text: basestring
         :param text: The text to draw.
         """
+
         size = image.width
         if not text or size not in self.__TEXT_PARAMS or self.__TEXT_PARAMS[size]['font_size'] == 0:
             return
@@ -219,6 +233,8 @@ class IconGenerator:
                 draw.text(x, 0, text)
                 draw(tmp)
             image.watermark(tmp)
+
+
 
 
 def ensure_directory_exists(directory):
