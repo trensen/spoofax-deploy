@@ -57,6 +57,8 @@
               org.codehaus.plexus*;provider=m2e;mandatory:=provider,
               *;provider=metaborg;mandatory:=provider
             </Import-Package>
+            <!-- Include transitive dependencies, so that classes of transitive dependencies are available. -->
+            <Embed-Transitive>true</Embed-Transitive>
             <!-- Allow buddy loading -->
             <Eclipse-BuddyPolicy>registered</Eclipse-BuddyPolicy>
             <!-- Don't generate uses declarations in exported packages. -->
