@@ -31,6 +31,20 @@
     <maven.version>3.2.5</maven.version>
   </properties>
 
+  <repositories>
+    <!-- TODO: Remove when `commons-configuration2` has been released. -->
+    <repository>
+      <id>apache-snapshots</id>
+      <url>https://repository.apache.org/content/repositories/snapshots/</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -43,6 +57,17 @@
         <artifactId>functionaljava</artifactId>
         <version>4.1</version>
       </dependency>
+    <dependency>
+      <groupId>com.virtlink.commons</groupId>
+      <artifactId>commons-configuration2-jackson</artifactId>
+      <version>0.1.4</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-configuration2</artifactId>
+      <!-- TODO: Change when `commons-configuration2` has been released. -->
+      <version>2.0-alpha1-SNAPSHOT</version>
+    </dependency>
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
