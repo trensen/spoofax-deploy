@@ -38,6 +38,7 @@
     <module>${repo.root}/spoofax/org.metaborg.core</module>
     <module>${repo.root}/spoofax/org.metaborg.core.test</module>
     <module>${repo.root}/spoofax/org.metaborg.spoofax.core</module>
+    <module>${repo.root}/spoofax/org.metaborg.meta.core</module>
     <module>${repo.root}/spoofax/org.metaborg.spoofax.meta.core</module>
     <module>${repo.root}/spoofax/org.metaborg.spoofax.nativebundle</module>
     <module>${repo.root}/spoofax/org.metaborg.spoofax.generator</module>
