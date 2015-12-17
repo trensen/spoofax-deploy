@@ -75,6 +75,10 @@ class EclipseGenerator(object):
       self.destination = self.tempdir.name
     else:
       self.destination = destination
+    if config.os == 'macosx':
+      self.finalDestination = path.join(self.destination, 'Eclipse.app')
+    else:
+      self.finalDestination = self.destination
     self.config = config
     self.repositories = repositories
     self.installUnits = installUnits
@@ -112,10 +116,10 @@ class EclipseGenerator(object):
       args.append('-installIU {}'.format(','.join(self.installUnits)))
 
     args.append('-tag InitialState')
-    args.append('-destination {}'.format(self.destination))
+    args.append('-destination {}'.format(self.finalDestination))
     args.append('-profile SDKProfile')
     args.append('-profileProperties org.eclipse.update.install.features=true')
-    args.append('-bundlepool {}'.format(self.destination))
+    # args.append('-bundlepool {}'.format(self.finalDestination))
     args.append('-p2.os {}'.format(self.config.os))
     args.append('-p2.ws {}'.format(self.config.ws))
     args.append('-p2.arch {}'.format(self.config.arch))
@@ -211,7 +215,7 @@ class EclipseGenerator(object):
 
   def AddJre(self):
     jrePath = self.__DownloadJre()
-    targetJrePath = path.join(self.destination, 'jre')
+    targetJrePath = path.join(self.finalDestination, 'jre')
     if path.isdir(targetJrePath):
       rmtree(targetJrePath, ignore_errors = True)
     print('Copying JRE from {} to {}'.format(jrePath, targetJrePath))
@@ -282,7 +286,7 @@ class EclipseGenerator(object):
 
   def __JreLocation(self):
     if self.config.os == 'macosx':
-      return '../../../jre/Contents/Home/bin/java'
+      return '../../jre/Contents/Home/bin/java'
     elif self.config.os == 'linux':
       return 'jre/bin/java'
     elif self.config.os == 'win32':
@@ -297,7 +301,7 @@ class EclipseGenerator(object):
 
   def __IniLocation(self):
     if self.config.os == 'macosx':
-      return '{}/Eclipse.app/Contents/MacOS/eclipse.ini'.format(self.destination)
+      return '{}/Contents/Eclipse/eclipse.ini'.format(self.finalDestination)
     elif self.config.os == 'linux':
       return '{}/eclipse.ini'.format(self.destination)
     elif self.config.os == 'win32':

@@ -2,14 +2,14 @@ from metaborg.util.eclipse import EclipseGenerator
 
 
 class MetaborgEclipseGenerator(EclipseGenerator):
-  eclipseRepo = 'http://eclipse.mirror.triple-it.nl/releases/luna/'
-  eclipseIU = 'epp.package.standard'
+  eclipseRepo = 'http://eclipse.mirror.triple-it.nl/releases/mars/'
+  eclipseIU = 'epp.package.committers'
 
   m2eRepos = [
-    'http://download.eclipse.org/technology/m2e/milestones/1.6',
+    'http://download.eclipse.org/technology/m2e/releases',
     'http://repo1.maven.org/maven2/.m2e/connectors/m2eclipse-buildhelper/0.15.0/N/0.15.0.201405280027/',
     'http://download.jboss.org/jbosstools/updates/m2e-extensions/m2e-jdt-compiler/',
-    'http://repo1.maven.org/maven2/.m2e/connectors/m2eclipse-tycho/0.9.0/N/LATEST/'
+    'http://repo1.maven.org/maven2/.m2e/connectors/m2eclipse-tycho/0.7.0/N/LATEST/'
   ]
   m2eIUs = [
     'org.eclipse.m2e.feature.feature.group',
