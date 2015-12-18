@@ -3,19 +3,19 @@
    <description name="Spoofax/IMP">
       Spoofax update site
    </description>
-   <feature url="features/org.strategoxt.imp.meta_1.5.0.qualifier.jar" id="org.strategoxt.imp.meta" version="1.5.0.qualifier">
+   <feature url="features/org.strategoxt.imp.meta_1.5.1.qualifier.jar" id="org.strategoxt.imp.meta" version="1.5.1.qualifier">
       <category name="Spoofax Core"/>
    </feature>
-   <feature url="features/org.strategoxt.imp_1.5.0.qualifier.jar" id="org.strategoxt.imp" version="1.5.0.qualifier">
+   <feature url="features/org.strategoxt.imp_1.5.1.qualifier.jar" id="org.strategoxt.imp" version="1.5.1.qualifier">
       <category name="Spoofax Core"/>
    </feature>
-   <feature url="features/org.metaborg.modelware.emf.meta_1.5.0.qualifier.jar" id="org.metaborg.modelware.emf.meta" version="1.5.0.qualifier">
+   <feature url="features/org.metaborg.modelware.emf.meta_1.5.1.qualifier.jar" id="org.metaborg.modelware.emf.meta" version="1.5.1.qualifier">
       <category name="Spoofax Modelware"/>
    </feature>
-   <feature url="features/org.metaborg.modelware.gmf.headless_1.5.0.qualifier.jar" id="org.metaborg.modelware.gmf.headless" version="1.5.0.qualifier">
+   <feature url="features/org.metaborg.modelware.gmf.headless_1.5.1.qualifier.jar" id="org.metaborg.modelware.gmf.headless" version="1.5.1.qualifier">
       <category name="Spoofax Modelware"/>
    </feature>
-   <feature url="features/org.metaborg.modelware.gmf.meta_1.5.0.qualifier.jar" id="org.metaborg.modelware.gmf.meta" version="1.5.0.qualifier">
+   <feature url="features/org.metaborg.modelware.gmf.meta_1.5.1.qualifier.jar" id="org.metaborg.modelware.gmf.meta" version="1.5.1.qualifier">
       <category name="Spoofax Modelware"/>
    </feature>
    <category-def name="Spoofax Core" label="Spoofax Core">

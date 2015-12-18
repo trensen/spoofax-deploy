@@ -2,7 +2,7 @@
 <feature
       id="org.strategoxt.imp"
       label="Spoofax Runtime"
-      version="1.5.0.qualifier"
+      version="1.5.1.qualifier"
       plugin="org.strategoxt.imp.runtime">
 
    <description url="http://metaborg.org/spoofax/">
@@ -68,76 +68,76 @@ Most Spoofax/IMP code is licensed under the GNU Lesser General Public License (L
          id="org.spoofax.terms"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"
+         version="1.5.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.spoofax.interpreter.library.index"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"
+         version="1.5.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.spoofax.interpreter.core"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"
+         version="1.5.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.spoofax.interpreter"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"
+         version="1.5.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.metaborg.util"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"
+         version="1.5.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.spoofax.interpreter.library.jline"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"/>
+         version="1.5.1.qualifier"/>
 
    <plugin
          id="org.spoofax.interpreter.library.eclipse"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"
+         version="1.5.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.spoofax.interpreter.adapter.ecj"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"
+         version="1.5.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.spoofax.interpreter.library.java"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"
+         version="1.5.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.spoofax.interpreter.library.xml"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"
+         version="1.5.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.spoofax.interpreter.library.interpreter"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"
+         version="1.5.1.qualifier"
          unpack="false"/>
 
   <!-- External deps have to be unpacked so that we can provide nested Jars on the classpath when building language plugins -->
@@ -145,124 +145,124 @@ Most Spoofax/IMP code is licensed under the GNU Lesser General Public License (L
          id="org.spoofax.interpreter.externaldeps"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"/>
+         version="1.5.1.qualifier"/>
 
    <plugin
          id="org.metaborg.runtime.task"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"
+         version="1.5.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.spoofax.interpreter.library.jsglr"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"
+         version="1.5.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.spoofax.jsglr"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"
+         version="1.5.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.strategoxt.strj"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"/>
+         version="1.5.1.qualifier"/>
 
    <plugin
          id="org.strategoxt.imp.runtime"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"
+         version="1.5.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.strategoxt.imp.generator"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"/>
+         version="1.5.1.qualifier"/>
 
    <plugin
          id="org.strategoxt.imp.nativebundle"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"/>
+         version="1.5.1.qualifier"/>
 
    <plugin
          id="org.strategoxt.imp.runtime.sidebyside.latest"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"
+         version="1.5.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.strategoxt.imp.runtime.sidebyside.main"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"
+         version="1.5.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.strategoxt.imp.debug.core"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"
+         version="1.5.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.strategoxt.imp.debug.stratego.core"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"/>
+         version="1.5.1.qualifier"/>
 
    <plugin
          id="org.strategoxt.imp.debug.stratego.runtime"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"/>
+         version="1.5.1.qualifier"/>
 
    <plugin
          id="org.strategoxt.imp.debug.stratego.transformer"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"/>
+         version="1.5.1.qualifier"/>
 
    <plugin
          id="lpg.runtime"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"/>
+         version="1.5.1.qualifier"/>
 
    <plugin
          id="org.eclipse.imp.runtime"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"
+         version="1.5.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.strategoxt.jarprovider"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"/>
+         version="1.5.1.qualifier"/>
 
    <plugin
          id="org.spoofax.interpreter.ui"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"
+         version="1.5.1.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.metaborg.meta.interpreter.framework"
          download-size="0"
          install-size="0"
-         version="1.5.0.qualifier"
+         version="1.5.1.qualifier"
          unpack="false"/>
 
 </feature>
