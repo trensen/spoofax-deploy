@@ -7,7 +7,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.metaborg</groupId>
   <artifactId>org.metaborg.maven.parent</artifactId>
-  <version>1.4.1</version>
+  <version>1.5.0-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>${project.groupId}:${project.artifactId}</name>
   <description>Maven parent POM for all projects</description>
@@ -23,7 +23,7 @@
 
     <java-version>1.7</java-version>
     <maven-eclipse-compiler-version>2.3</maven-eclipse-compiler-version>
-    <metaborg-version>1.4.1</metaborg-version>
+    <metaborg-version>1.5.0-SNAPSHOT</metaborg-version>
     <jline-version>0.9.94</jline-version>
   </properties>
 

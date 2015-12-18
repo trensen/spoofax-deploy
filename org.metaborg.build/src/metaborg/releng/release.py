@@ -4,7 +4,7 @@ import git
 import traceback
 
 from os import path
-from metaborg.util.git import CheckoutAll, UpdateAll
+from metaborg.util.git import CheckoutAll, UpdateAll, TagAll, PushAll
 from metaborg.util.prompt import YesNo
 from metaborg.releng.versions import SetVersions
 from metaborg.releng.build import BuildAll
@@ -89,6 +89,9 @@ def Release(repo, releaseBranchName, developBranchName, curDevelopVersion, nextR
           return
       print('Step 4: for each submodule: set version from the current development version to the next release version')
       SetVersions(repo, curDevelopVersion, nextReleaseVersion, False, True)
+      print('Updating submodule revisions')
+      repo.git.add('--all')
+      repo.index.commit('Update submodule revisions')
       db['state'] = 5
       print('Please check if versions have been set correctly, then continue')
 
@@ -96,7 +99,7 @@ def Release(repo, releaseBranchName, developBranchName, curDevelopVersion, nextR
       print('Step 5: perform a test release build')
       try:
         BuildAll(repo = repo, components = ['all'], buildStratego = True, bootstrapStratego = True,
-                 strategoTest = True, release = True)
+                 strategoTest = True, skipTests = False, release = True)
       except Exception as detail:
         print('Test release build failed, not continuing to the next step')
         print(str(detail))
@@ -107,15 +110,16 @@ def Release(repo, releaseBranchName, developBranchName, curDevelopVersion, nextR
     def Step6():
       print('Step 6: perform release deployment')
       BuildAll(repo = repo, components = ['all'], buildStratego = True, bootstrapStratego = True,
-               strategoTest = True, release = True, deploy = True)
+               strategoTest = False, skipTests = True, release = True, deploy = True)
       db['state'] = 7
       print('Please check if deploying succeeded, and manually deploy extra artifacts, then continue')
 
     def Step7():
       print('Step 7: tag release submodules and repository')
-      tagName = nextReleaseVersion
+      tagName = '{}/{}'.format(releaseBranchName, nextReleaseVersion);
       tagDescription = 'Tag for {} release'.format(nextReleaseVersion)
       TagAll(repo, tagName, tagDescription)
+      print('Creating tag {}'.format(tagName))
       repo.create_tag(path = tagName, message = tagDescription)
       db['state'] = 8
       Step8()
@@ -123,26 +127,34 @@ def Release(repo, releaseBranchName, developBranchName, curDevelopVersion, nextR
     def Step8():
       print('Step 8: push release submodules and repository')
       PushAll(repo)
+      PushAll(repo, tags = True)
+      print('Pushing')
       remote = repo.remote('origin')
       remote.push()
+      remote.push(tags = True)
       db['state'] = 9
-      Step8()
+      Step9()
 
     def Step9():
       print('Step 9: switch to development branch')
       developBranch.checkout()
+      CheckoutAll(repo)
       db['state'] = 10
-      Step9()
+      Step10()
 
     def Step10():
       print('Step 10: for each submodule: set version from the current development version to the next development version')
       SetVersions(repo, curDevelopVersion, nextDevelopVersion, False, True)
+      print('Updating submodule revisions')
+      repo.git.add('--all')
+      repo.index.commit('Update submodule revisions')
       db['state'] = 11
       print('Please check if versions have been set correctly, then continue')
 
     def Step11():
       print('Step 11: push development submodules and repository')
       PushAll(repo)
+      print('Pushing')
       remote = repo.remote('origin')
       remote.push()
       print('All done!')

@@ -4,7 +4,7 @@ from itertools import takewhile
 def CommonPrefix(paths, sep='/'):
   '''
   Finds the common path prefix in given list of paths.
-  The os.path.commonprefix function is broken, since finds prefixes on the character level.
+  The os.path.commonprefix function is broken, since it finds prefixes on the character level, not the path level.
   From: http://rosettacode.org/wiki/Find_Common_Directory_Path#Python
   '''
   byDirectoryLevels = zip(*[p.split(sep) for p in paths])
