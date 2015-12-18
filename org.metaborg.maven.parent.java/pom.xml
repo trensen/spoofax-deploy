@@ -35,9 +35,15 @@
 						<Export-Package>*</Export-Package>
 						<!-- Don't declare dependency on sun packages, they should be provided by the JVM. -->
 						<Import-Package>
-							!sun.misc,
-							!sun.nio.cs,
-							*
+              !sun.misc,
+              !sun.nio.cs,
+              !org.junit,
+              !javax*,
+              !org.xml*,
+              org.spoofax*,
+              org.metaborg*,
+              org.strategoxt.*,
+              *;provider=metaborg;mandatory:=provider
 						</Import-Package>
 						<!-- Don't generate uses declarations in exported packages. -->
 						<_nouses>true</_nouses>
