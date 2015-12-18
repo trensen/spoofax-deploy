@@ -3,7 +3,7 @@ from metaborg.util.eclipse import EclipseGenerator
 
 class MetaborgEclipseGenerator(EclipseGenerator):
   eclipseRepo = 'http://eclipse.mirror.triple-it.nl/releases/mars/'
-  eclipseIU = 'epp.package.committers'
+  eclipseIU = 'epp.package.java'
 
   m2eRepos = [
     'http://download.eclipse.org/technology/m2e/releases',
