@@ -99,12 +99,12 @@ Most Spoofax/IMP code is licensed under the GNU Lesser General Public License (L
          install-size="0"
          version="1.5.0.qualifier"/>
 
-   <plugin
+ <!--  <plugin
          id="org.strategoxt.imp.editors.aster"
          download-size="0"
          install-size="0"
          version="1.5.0.qualifier"
-         unpack="false"/>
+         unpack="false"/> -->
 
    <plugin
          id="org.strategoxt.imp.editors.pp"
