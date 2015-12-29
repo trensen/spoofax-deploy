@@ -52,6 +52,8 @@
               org.spoofax*,
               org.metaborg*,
               org.strategoxt.*,
+              build.pluto.*,
+              org.sugarj.common.*,
               org.apache.tools.ant,
               org.apache.maven*;provider=m2e;mandatory:=provider,
               org.codehaus.plexus*;provider=m2e;mandatory:=provider,
