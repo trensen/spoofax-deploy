@@ -113,6 +113,10 @@
             <arg>stratego-xtc</arg>
             <arg>-la</arg>
             <arg>stratego-aterm</arg>
+            <arg>-la</arg>
+            <arg>stratego-sdf</arg>
+            <arg>-la</arg>
+            <arg>strc</arg>
           </strategoArgs>
           <pardonedLanguages>
             <pardonedLanguage>EditorService</pardonedLanguage>
