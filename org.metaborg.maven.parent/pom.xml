@@ -48,6 +48,17 @@
         <enabled>true</enabled>
       </snapshots>
     </repository>
+    <repository>
+     <id>spoofax-nightly</id>
+      <url>http://download.spoofax.org/update/nightly/</url>
+      <layout>p2</layout>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
   </repositories>
 
   <dependencyManagement>
