@@ -585,8 +585,12 @@ class MetaborgRelengGenMvnSettings(cli.Application):
                                     default = _metaborgReleases, help = 'Maven repository for MetaBorg releases')
   metaborgSnapshots = cli.SwitchAttr(names = ['-s', '--metaborg-snapshots'], argtype = str, mandatory = False,
                                      default = _metaborgSnapshots, help = 'Maven repository for MetaBorg snapshots')
+  noMetaborgSnapshots = cli.Flag(names = ['-S', '--no-metaborg-snapshots'], default = False,
+                                 help = "Don't add a Maven repository for MetaBorg snapshots")
   spoofaxUpdateSite = cli.SwitchAttr(names = ['-u', '--spoofax-update-site'], argtype = str, mandatory = False,
                                      default = _spoofaxUpdateSite, help = 'Eclipse update site for Spoofax plugins')
+  noSpoofaxUpdateSite = cli.Flag(names = ['-U', '--no-spoofax-update-site'], default = False,
+                                 help = "Don't add an Eclipse update site for Spoofax plugins")
   centralMirror = cli.SwitchAttr(names = ['-m', '--central-mirror'], argtype = str, mandatory = False,
                                  default = _centralMirror, help = 'Maven repository for mirroring Maven central')
   confirmPrompt = cli.Flag(names = ['-y', '--yes'], default = False,
@@ -600,8 +604,18 @@ class MetaborgRelengGenMvnSettings(cli.Application):
       if not YesNo():
         return 1
 
+    if self.noMetaborgSnapshots:
+      metaborgSnapshots = None
+    else:
+      metaborgSnapshots = self.metaborgSnapshots
+
+    if self.noSpoofaxUpdateSite:
+      spoofaxUpdateSite = None
+    else:
+      spoofaxUpdateSite = self.spoofaxUpdateSite
+
     GenerateMavenSettings(location = self.destination, metaborgReleases = self.metaborgReleases,
-                          metaborgSnapshots = self.metaborgSnapshots, spoofaxUpdateSite = self.spoofaxUpdateSite,
+                          metaborgSnapshots = metaborgSnapshots, spoofaxUpdateSite = spoofaxUpdateSite,
                           centralMirror = self.centralMirror)
 
     return 0
