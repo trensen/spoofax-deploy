@@ -78,17 +78,17 @@
         <artifactId>functionaljava</artifactId>
         <version>4.1</version>
       </dependency>
-    <dependency>
-      <groupId>com.virtlink.commons</groupId>
-      <artifactId>commons-configuration2-jackson</artifactId>
-      <version>0.2.0</version>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-configuration2</artifactId>
-      <!-- TODO: Change when `commons-configuration2` has been released. -->
-      <version>2.0-alpha1-SNAPSHOT</version>
-    </dependency>
+      <dependency>
+        <groupId>com.virtlink.commons</groupId>
+        <artifactId>commons-configuration2-jackson</artifactId>
+        <version>0.2.0</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-configuration2</artifactId>
+        <!-- TODO: Change when `commons-configuration2` has been released. -->
+        <version>2.0-alpha1-SNAPSHOT</version>
+      </dependency>
       <dependency>
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
@@ -243,6 +243,16 @@
         <groupId>org.yaml</groupId>
         <artifactId>snakeyaml</artifactId>
         <version>1.15</version>
+      </dependency>
+      <dependency>
+        <groupId>build.pluto</groupId>
+        <artifactId>pluto</artifactId>
+        <version>1.7.0-SNAPSHOT</version>
+      </dependency>
+      <dependency>
+        <groupId>build.pluto</groupId>
+        <artifactId>build-java</artifactId>
+        <version>1.3.0-SNAPSHOT</version>
       </dependency>
       <dependency>
         <groupId>org.sugarj</groupId>
@@ -407,7 +417,7 @@
           <version>1.0-beta-5</version>
         </plugin>
 
-        <!-- Don't warn about missing m2e mapping for several goals. This plugin's configuration is used to store
+        <!-- Don't warn about missing m2e mapping for several goals. This plugin's configuration is used to store 
           Eclipse m2e settings only. It has no influence on the Maven build itself. -->
         <plugin>
           <groupId>org.eclipse.m2e</groupId>
