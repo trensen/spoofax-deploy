@@ -57,12 +57,7 @@
     <module>${repo.root}/spoofax-maven/spoofax-maven-plugin</module>
 
     <!-- Spoofax Sunshine -->
-    <module>${repo.root}/spoofax-sunshine/org.metaborg.sunshine</module>
     <module>${repo.root}/spoofax-sunshine/org.metaborg.sunshine2</module>
-
-    <!-- Spoofax benchmarker -->
-    <module>${repo.root}/spoofax-benchmark/org.metaborg.spoofax.benchmark.core</module>
-    <module>${repo.root}/spoofax-benchmark/org.metaborg.spoofax.benchmark.cmd</module>
   </modules>
 
   <developers>
