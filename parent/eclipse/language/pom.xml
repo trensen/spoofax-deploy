@@ -20,7 +20,7 @@
 
     <lang.unpack.skip>false</lang.unpack.skip>
     <lang.unpack.groupId>${project.groupId}</lang.unpack.groupId>
-    <lang.unpack.version>${metaborg-version}</lang.unpack.version>
+    <lang.unpack.version>${project.version}</lang.unpack.version>
     <lang.unpack.loc>${unpack.loc}/latest</lang.unpack.loc>
     <lang.unpack.markers.loc>${unpack.markers.loc}/latest</lang.unpack.markers.loc>
 
