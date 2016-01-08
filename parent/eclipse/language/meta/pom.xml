@@ -4,25 +4,23 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
 >
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>parent.eclipse.language</artifactId>
+  <artifactId>parent.eclipse.language.meta</artifactId>
   <packaging>pom</packaging>
 
   <parent>
     <groupId>org.metaborg</groupId>
-    <artifactId>parent.eclipse.plugin</artifactId>
+    <artifactId>parent.eclipse.language</artifactId>
     <version>1.5.0-SNAPSHOT</version>
-    <relativePath>../plugin</relativePath>
+    <relativePath>../</relativePath>
   </parent>
 
   <properties>
-    <unpack.loc>${project.build.directory}/unpacked</unpack.loc>
-    <unpack.markers.loc>${project.build.directory}/unpacked-markers</unpack.markers.loc>
-
-    <lang.unpack.skip>false</lang.unpack.skip>
-    <lang.unpack.groupId>${project.groupId}</lang.unpack.groupId>
-    <lang.unpack.version>${project.version}</lang.unpack.version>
-    <lang.unpack.loc>${unpack.loc}/latest</lang.unpack.loc>
-    <lang.unpack.markers.loc>${unpack.markers.loc}/latest</lang.unpack.markers.loc>
+    <lang.baseline.unpack.skip>falseth</lang.baseline.unpack.skip>
+    <lang.baseline.unpack.groupId>${lang.unpack.groupId}</lang.baseline.unpack.groupId>
+    <lang.baseline.unpack.artifactId>${lang.unpack.artifactId}</lang.baseline.unpack.artifactId>
+    <lang.baseline.unpack.version>${metaborg-baseline-version}</lang.baseline.unpack.version>
+    <lang.baseline.unpack.loc>${unpack.loc}/baseline</lang.baseline.unpack.loc>
+    <lang.baseline.unpack.markers.loc>${unpack.markers.loc}/baseline</lang.baseline.unpack.markers.loc>
   </properties>
 
   <build>
@@ -53,19 +51,19 @@
               <goals>
                 <goal>unpack</goal>
               </goals>
-              <id>unpack-language</id>
+              <id>unpack-language-baseline</id>
               <configuration>
                 <artifactItems>
                   <artifactItem>
-                    <groupId>${lang.unpack.groupId}</groupId>
-                    <artifactId>${lang.unpack.artifactId}</artifactId>
-                    <version>${lang.unpack.version}</version>
+                    <groupId>${lang.baseline.unpack.groupId}</groupId>
+                    <artifactId>${lang.baseline.unpack.artifactId}</artifactId>
+                    <version>${lang.baseline.unpack.version}</version>
                     <type>spoofax-language</type>
                   </artifactItem>
                 </artifactItems>
-                <outputDirectory>${lang.unpack.loc}</outputDirectory>
-                <markersDirectory>${lang.unpack.markers.loc}</markersDirectory>
-                <skip>${lang.unpack.skip}</skip>
+                <outputDirectory>${lang.baseline.unpack.loc}</outputDirectory>
+                <markersDirectory>${lang.baseline.unpack.markers.loc}</markersDirectory>
+                <skip>${lang.baseline.unpack.skip}</skip>
               </configuration>
             </execution>
           </executions>
