@@ -51,7 +51,7 @@
         <enabled>true</enabled>
       </releases>
       <snapshots>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
       </snapshots>
     </repository>
     <repository>
@@ -61,7 +61,7 @@
         <enabled>true</enabled>
       </releases>
       <snapshots>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
       </snapshots>
     </repository>
   </repositories>
@@ -247,22 +247,17 @@
       <dependency>
         <groupId>build.pluto</groupId>
         <artifactId>pluto</artifactId>
-        <version>1.7.0-SNAPSHOT</version>
+        <version>1.7.0</version>
       </dependency>
       <dependency>
         <groupId>build.pluto</groupId>
         <artifactId>build-java</artifactId>
-        <version>1.3.0-SNAPSHOT</version>
+        <version>1.3.0</version>
       </dependency>
       <dependency>
         <groupId>org.sugarj</groupId>
         <artifactId>common</artifactId>
-        <version>1.6.0-SNAPSHOT</version>
-      </dependency>
-      <dependency>
-        <groupId>com.cedarsoftware</groupId>
-        <artifactId>java-util-pluto-bugfix</artifactId>
-        <version>1.19.4-SNAPSHOT</version>
+        <version>1.6.0</version>
       </dependency>
       <dependency>
         <groupId>com.cedarsoftware</groupId>
