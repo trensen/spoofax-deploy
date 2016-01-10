@@ -26,6 +26,7 @@
     <!-- Spoofax Eclipse -->
     <module>${repo.root}/spoofax-eclipse/org.metaborg.spoofax.eclipse</module>
     <module>${repo.root}/spoofax-eclipse/org.metaborg.spoofax.eclipse.meta</module>
+    <module>${repo.root}/spoofax-eclipse/org.metaborg.spoofax.eclipse.meta.m2e</module>
     <module>${repo.root}/spoofax-eclipse/org.metaborg.spoofax.eclipse.util</module>
 
     <module>${repo.root}/spoofax-eclipse/org.metaborg.spoofax.eclipse.feature</module>

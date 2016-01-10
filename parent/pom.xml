@@ -479,12 +479,13 @@
                     <artifactId>spoofax-maven-plugin</artifactId>
                     <versionRange>[1.5.0-SNAPSHOT,)</versionRange>
                     <goals>
-                      <goal>generate-sources</goal>
                       <goal>initialize</goal>
+                      <goal>generate-sources</goal>
                       <goal>pre-compile</goal>
                       <goal>post-compile</goal>
                       <goal>run</goal>
                       <goal>package</goal>
+                      <goal>clean</goal>
                     </goals>
                   </pluginExecutionFilter>
                   <action>
