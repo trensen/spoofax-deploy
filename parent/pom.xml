@@ -370,6 +370,17 @@
             <createDependencyReducedPom>true</createDependencyReducedPom>
             <dependencyReducedPomLocation>${project.build.directory}/dependency-reduced-pom.xml</dependencyReducedPomLocation>
             <shadedArtifactAttached>false</shadedArtifactAttached>
+            <!-- Exclude manifest signature files -->
+            <filters>
+              <filter>
+                <artifact>*:*</artifact>
+                <excludes>
+                  <exclude>META-INF/*.SF</exclude>
+                  <exclude>META-INF/*.DSA</exclude>
+                  <exclude>META-INF/*.RSA</exclude>
+                </excludes>
+              </filter>
+            </filters>
           </configuration>
         </plugin>
         <plugin>
@@ -415,6 +426,11 @@
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>wagon-maven-plugin</artifactId>
           <version>1.0-beta-5</version>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>exec-maven-plugin</artifactId>
+          <version>1.4.0</version>
         </plugin>
 
         <!-- Don't warn about missing m2e mapping for several goals. This plugin's configuration is used to store 
