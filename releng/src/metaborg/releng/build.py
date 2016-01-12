@@ -161,7 +161,7 @@ def BuildJava(basedir, qualifier, deploy, buildStratego, bootstrapStratego, stra
   Mvn(pomFile = pomFile, phase = phase, forceContextQualifier = qualifier, **kwargs)
 
   return BuildResult([
-    BuildArtifact('Spoofax sunshine JAR', glob(path.join(basedir, 'spoofax-sunshine/org.metaborg.sunshine2/target/org.metaborg.sunshine2-*-shaded.jar'))[0], 'spoofax-sunshine.jar'),
+    BuildArtifact('Spoofax sunshine JAR', glob(path.join(basedir, 'spoofax-sunshine/org.metaborg.sunshine2/target/org.metaborg.sunshine2-*.jar'))[0], 'spoofax-sunshine.jar'),
   ])
 
 
