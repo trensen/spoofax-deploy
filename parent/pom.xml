@@ -439,6 +439,7 @@
           <artifactId>maven-javadoc-plugin</artifactId>
           <version>2.10.3</version>
           <configuration>
+            <failOnError>false</failOnError>
             <quiet>true</quiet>
           </configuration>
           <executions>
@@ -451,7 +452,7 @@
           </executions>
         </plugin>
 
-        <!-- Don't warn about missing m2e mapping for several goals. This plugin's configuration is used to store 
+        <!-- Don't warn about missing m2e mapping for several goals. This plugin's configuration is used to store
           Eclipse m2e settings only. It has no influence on the Maven build itself. -->
         <plugin>
           <groupId>org.eclipse.m2e</groupId>
