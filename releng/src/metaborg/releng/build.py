@@ -83,7 +83,7 @@ def BuildPoms(basedir, deploy, qualifier, buildStratego, bootstrapStratego, stra
   return BuildResult([])
 
 
-def BuildPremadeJars(basedir, deploy, release, clean, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
+def BuildPremadeJars(basedir, deploy, release, extraArgs, clean, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy:deploy-file' if deploy else 'install:install-file'
 
   pomFile = path.join(basedir, 'releng', 'parent', 'pom.xml')
@@ -99,7 +99,13 @@ def BuildPremadeJars(basedir, deploy, release, clean, qualifier, buildStratego, 
   else:
     deployUrl = 'http://artifacts.metaborg.org/content/repositories/core-snapshots/'
 
-  Mvn(pomFile = pomFile, clean = False, phase = phase, extraArgs = '-DpomFile="{}" -Dfile="{}" -DrepositoryId={} -Durl={}'.format(makePermissivePom, makePermissiveJar, repositoryId, deployUrl), **kwargs)
+  newExtraArgs = ' -DpomFile="{}" -Dfile="{}" -DrepositoryId={} -Durl={}'.format(makePermissivePom, makePermissiveJar, repositoryId, deployUrl)
+  if extraArgs:
+    extraArgs = extraArgs + newExtraArgs
+  else:
+    extraArgs = newExtraArgs
+
+  Mvn(pomFile = pomFile, clean = False, phase = phase, extraArgs = extraArgs, **kwargs)
 
 
 def BuildOrDownloadStrategoXt(basedir, deploy, buildStratego, bootstrapStratego, strategoTest, **kwargs):

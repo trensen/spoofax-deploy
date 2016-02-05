@@ -42,7 +42,7 @@ def Mvn(pomFile = 'pom.xml', settingsFile = None, globalSettingsFile = None, loc
   if quiet:
     args.append('--quiet')
 
-  if extraArgs != None:
+  if extraArgs:
     args.append(extraArgs)
   for name, value in kwargs.items():
     args.append('-D{}={}'.format(name, value))

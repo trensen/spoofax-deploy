@@ -341,6 +341,8 @@ class MetaborgRelengBuild(cli.Application):
   copyArtifacts = \
     cli.SwitchAttr(names = ['-a', '--copy-artifacts'], argtype = str, default = None,
                    help = 'Copy produced artifacts to given location', group = 'Build switches')
+  generateJavaDoc = \
+    cli.Flag(names = ['-j', '--generate-javadoc'], default = False, help = "Generate and attach JavaDoc for Java projects", group = 'Build switches')
 
   resumeFrom = \
     cli.SwitchAttr(names = ['-f', '--resume-from'], argtype = str, default = None,
@@ -399,6 +401,11 @@ class MetaborgRelengBuild(cli.Application):
     else:
       qualifier = None
 
+    if self.generateJavaDoc:
+      extraArgs = '-Dgenerate-javadoc=true'
+    else:
+      extraArgs = None
+
     try:
       BuildAll(repo = repo, components = components, buildDeps = not self.noDeps, resumeFrom = self.resumeFrom,
                buildStratego = self.buildStratego, bootstrapStratego = self.bootstrapStratego,
@@ -409,7 +416,7 @@ class MetaborgRelengBuild(cli.Application):
                clean = not self.noClean, skipTests = self.skipTests, settingsFile = self.settings,
                globalSettingsFile = self.globalSettings,
                localRepo = self.localRepo, mavenOpts = mavenOpts, offline = self.offline, debug = self.debug,
-               quiet = self.quiet)
+               quiet = self.quiet, extraArgs = extraArgs)
       print('All done!')
       return 0
     except RuntimeError as detail:
