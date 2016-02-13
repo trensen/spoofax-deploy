@@ -588,7 +588,7 @@
   <distributionManagement>
     <snapshotRepository>
       <id>${deployRepositoryId}</id>
-      <url>http://artifacts.metaborg.org/content/repositories/core-snapshots/</url>
+      <url>http://artifacts.metaborg.org/content/repositories/snapshots/</url>
     </snapshotRepository>
     <repository>
       <id>${deployRepositoryId}</id>
