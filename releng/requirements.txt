@@ -1,0 +1,5 @@
+GitPython>=0.3.6
+plumbum>=1.4.2
+pystache>=0.5.4
+requests>=2.7.0
+wand>=0.4.1
