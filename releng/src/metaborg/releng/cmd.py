@@ -278,7 +278,7 @@ class MetaborgRelengSetVersions(cli.Application):
                            help = 'Answer warning prompts with yes automatically')
 
   def main(self):
-    if not self.confirmPrompt and not self.dryRun:
+    if self.confirmPrompt and not self.dryRun:
       if self.commit:
         print(
           'WARNING: This will CHANGE and COMMIT pom.xml, MANIFEST.MF, and feature.xml files, do you want to continue?')
