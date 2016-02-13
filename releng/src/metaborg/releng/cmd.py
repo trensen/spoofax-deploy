@@ -286,7 +286,7 @@ class MetaborgRelengSetVersions(cli.Application):
         print('WARNING: This will CHANGE pom.xml, MANIFEST.MF, and feature.xml files, do you want to continue?')
         if not YesNo():
           return 1
-    SetVersions(self.parent.repo, self.fromVersion, self.toVersion, self.dryRun, self.commit)
+    SetVersions(self.parent.repo, self.fromVersion, self.toVersion, True, self.dryRun, self.commit)
     return 0
 
 
