@@ -37,30 +37,30 @@ def SetVersions(repo, oldMavenVersion, newMavenVersion, setEclipseVersions = Tru
           allFiles.append(os.path.join(rootDir, file))
     return allFiles
 
-  def ReplaceInFile(file, pattern, replacement):
-    with open(file) as fileHandle:
+  def ReplaceInFile(replaceFile, pattern, replacement):
+    with open(replaceFile) as fileHandle:
       text = fileHandle.read()
     if pattern in text:
-      print('Setting version in {}'.format(file))
+      print('Setting version in {}'.format(replaceFile))
       text = text.replace(pattern, replacement)
-      changedFiles.append(file)
+      changedFiles.append(replaceFile)
       if dryRun:
         return
-      with open(file, "w") as fileHandle:
+      with open(replaceFile, "w") as fileHandle:
         fileHandle.write(text)
 
-  def IsMavenPomFile(file):
+  def IsMavenPomFile(pomFile):
     try:
-      xmlRoot = ET.parse(file)
+      xmlRoot = ET.parse(pomFile)
     except ET.ParseError:
       return False
     project = xmlRoot.getroot()
-    if project == None or project.tag != '{http://maven.apache.org/POM/4.0.0}project':
+    if project is None or project.tag != '{http://maven.apache.org/POM/4.0.0}project':
       return False
     return True
 
-  def IsGeneratedManifestFile(file):
-    with open(file) as fileHandle:
+  def IsGeneratedManifestFile(manifestFile):
+    with open(manifestFile) as fileHandle:
       text = fileHandle.read()
     return 'Bnd-LastModified' in text
 
@@ -70,20 +70,20 @@ def SetVersions(repo, oldMavenVersion, newMavenVersion, setEclipseVersions = Tru
       ReplaceInFile(file, oldMavenVersion, newMavenVersion)
 
   if setEclipseVersions:
+    spoofaxEclipseDir = path.join(baseDir, 'spoofax-eclipse')
+
     print('Setting Eclipse versions in MANIFEST.MF files')
-    for file in FindFiles(baseDir, 'MANIFEST.MF'):
+    for file in FindFiles(spoofaxEclipseDir, 'MANIFEST.MF'):
       if not IsGeneratedManifestFile(file):
         ReplaceInFile(file, oldEclipseVersion, newEclipseVersion)
 
     print('Setting Eclipse versions in feature.xml files')
-    spoofaxDeployDir = path.join(baseDir, 'spoofax-deploy')
-    for file in FindFiles(spoofaxDeployDir, 'feature.xml'):
+    for file in FindFiles(spoofaxEclipseDir, 'feature.xml'):
       ReplaceInFile(file, oldEclipseVersion, newEclipseVersion)
 
     print('Setting Eclipse versions in site.xml files')
-    for file in FindFiles(spoofaxDeployDir, 'site.xml'):
+    for file in FindFiles(spoofaxEclipseDir, 'site.xml'):
       ReplaceInFile(file, oldEclipseVersion, newEclipseVersion)
-
 
   if commit:
     print('Committing changed files')
