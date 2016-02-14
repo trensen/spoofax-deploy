@@ -28,7 +28,7 @@
 
     <java-version>1.7</java-version>
     <maven-eclipse-compiler-version>2.5</maven-eclipse-compiler-version>
-    <maven.version>3.2.5</maven.version>
+    <maven.version>3.3.9</maven.version>
   </properties>
 
   <repositories>
@@ -46,6 +46,18 @@
     <repository>
       <id>sugar-lang</id>
       <url>http://sugar-lang.github.io/mvnrepository/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+
+    <!-- MetaBorg repository to activate resolution for Maven core extensions -->
+    <repository>
+      <id>metaborg-release-repo</id>
+      <url>http://artifacts.metaborg.org/content/repositories/releases/</url>
       <releases>
         <enabled>true</enabled>
       </releases>
@@ -452,7 +464,7 @@
           </executions>
         </plugin>
 
-        <!-- Don't warn about missing m2e mapping for several goals. This plugin's configuration is used to store
+        <!-- Don't warn about missing m2e mapping for several goals. This plugin's configuration is used to store 
           Eclipse m2e settings only. It has no influence on the Maven build itself. -->
         <plugin>
           <groupId>org.eclipse.m2e</groupId>
