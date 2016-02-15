@@ -97,7 +97,7 @@ def BuildPremadeJars(basedir, deploy, release, extraArgs, clean, qualifier, buil
   if release:
     deployUrl = 'http://artifacts.metaborg.org/content/repositories/releases/'
   else:
-    deployUrl = 'http://artifacts.metaborg.org/content/repositories/core-snapshots/'
+    deployUrl = 'http://artifacts.metaborg.org/content/repositories/snapshots/'
 
   newExtraArgs = ' -DpomFile="{}" -Dfile="{}" -DrepositoryId={} -Durl={}'.format(makePermissivePom, makePermissiveJar, repositoryId, deployUrl)
   if extraArgs:
