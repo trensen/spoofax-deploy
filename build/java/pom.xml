@@ -55,6 +55,7 @@
 
     <!-- Spoofax Maven Plugin -->
     <module>${repo.root}/spoofax-maven/spoofax-maven-plugin</module>
+    <module>${repo.root}/spoofax-maven/spoofax-maven-plugin-pomless</module>
 
     <!-- Spoofax Sunshine -->
     <module>${repo.root}/spoofax-sunshine/org.metaborg.sunshine2</module>
