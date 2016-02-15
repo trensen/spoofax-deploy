@@ -18,7 +18,7 @@ class MetaborgEclipseGenerator(EclipseGenerator):
     'org.sonatype.tycho.m2e.feature.feature.group'
   ]
 
-  spoofaxRepo = 'http://download.spoofax.org/update/newplugin-nightly/'
+  spoofaxRepo = 'http://download.spoofax.org/update/nightly/'
   spoofaxRepoLocal = 'spoofax-eclipse/org.metaborg.spoofax.eclipse.updatesite/target/site'
   spoofaxIU = 'org.metaborg.spoofax.eclipse.feature.feature.group'
   spoofaxMetaIU = 'org.metaborg.spoofax.eclipse.meta.feature.feature.group'

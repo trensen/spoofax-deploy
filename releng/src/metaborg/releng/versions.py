@@ -64,25 +64,31 @@ def SetVersions(repo, oldMavenVersion, newMavenVersion, setEclipseVersions = Tru
       text = fileHandle.read()
     return 'Bnd-LastModified' in text
 
-  print('Setting Maven versions in POM files')
-  for file in FindFiles(baseDir, '.xml'):
+  print('Setting versions in Maven POM files')
+  for file in FindFiles(baseDir, 'pom.xml'):
     if IsMavenPomFile(file):
       ReplaceInFile(file, oldMavenVersion, newMavenVersion)
 
-  if setEclipseVersions:
-    spoofaxEclipseDir = path.join(baseDir, 'spoofax-eclipse')
+  print('Setting versions in Maven extension files')
+  for file in FindFiles(baseDir, 'extensions.xml'):
+    ReplaceInFile(file, oldMavenVersion, newMavenVersion)
 
-    print('Setting Eclipse versions in MANIFEST.MF files')
-    for file in FindFiles(spoofaxEclipseDir, 'MANIFEST.MF'):
+  print('Setting versions in MetaBorg files')
+  for file in FindFiles(baseDir, 'metaborg.yaml'):
+    ReplaceInFile(file, oldMavenVersion, newMavenVersion)
+
+  if setEclipseVersions:
+    print('Setting versions in MANIFEST.MF files')
+    for file in FindFiles(baseDir, 'MANIFEST.MF'):
       if not IsGeneratedManifestFile(file):
         ReplaceInFile(file, oldEclipseVersion, newEclipseVersion)
 
-    print('Setting Eclipse versions in feature.xml files')
-    for file in FindFiles(spoofaxEclipseDir, 'feature.xml'):
+    print('Setting versions in feature.xml files')
+    for file in FindFiles(baseDir, 'feature.xml'):
       ReplaceInFile(file, oldEclipseVersion, newEclipseVersion)
 
-    print('Setting Eclipse versions in site.xml files')
-    for file in FindFiles(spoofaxEclipseDir, 'site.xml'):
+    print('Setting versions in site.xml files')
+    for file in FindFiles(baseDir, 'site.xml'):
       ReplaceInFile(file, oldEclipseVersion, newEclipseVersion)
 
   if commit:
