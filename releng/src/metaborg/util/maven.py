@@ -38,9 +38,10 @@ def Mvn(pomFile = 'pom.xml', settingsFile = None, globalSettingsFile = None, loc
 
   if debug:
     args.append('--debug')
-    args.append('--errors')
   if quiet:
     args.append('--quiet')
+  else:
+    args.append('--errors')
 
   if extraArgs:
     args.append(extraArgs)
