@@ -1,6 +1,6 @@
+import re
 from datetime import datetime
 from enum import Enum, unique
-import re
 
 
 def LatestDate(repo):
@@ -18,6 +18,7 @@ def LatestDate(repo):
 
   return datetime.fromtimestamp(date)
 
+
 def Branch(repo):
   head = repo.head
   if head.is_detached:
@@ -25,7 +26,7 @@ def Branch(repo):
   return head.reference.name
 
 
-def Update(repo, submodule, remote = True, recursive = True, depth = None):
+def Update(repo, submodule, remote=True, recursive=True, depth=None):
   args = ['update', '--init', '--recursive']
 
   if remote:
@@ -51,9 +52,10 @@ def Update(repo, submodule, remote = True, recursive = True, depth = None):
 
   repo.git.submodule(args)
 
-def UpdateAll(repo, depth = None):
+
+def UpdateAll(repo, depth=None):
   for submodule in repo.submodules:
-    Update(repo, submodule, depth = depth)
+    Update(repo, submodule, depth=depth)
 
 
 def Checkout(repo, submodule):
@@ -72,6 +74,7 @@ def Checkout(repo, submodule):
   for submodule in subrepo.submodules:
     Checkout(subrepo, submodule)
 
+
 def CheckoutAll(repo):
   for submodule in repo.submodules:
     Checkout(repo, submodule)
@@ -85,6 +88,7 @@ def Clean(submodule):
   subrepo = submodule.module()
   print('Cleaning {}'.format(submodule.name))
   subrepo.git.clean('-dfx', '-e', '.project', '-e', '.classpath', '-e', '.settings', '-e', 'META-INF')
+
 
 def CleanAll(repo):
   for submodule in repo.submodules:
@@ -110,6 +114,7 @@ def Reset(submodule, toRemote):
     print('Resetting {}'.format(submodule.name))
     subrepo.git.reset('--hard')
 
+
 def ResetAll(repo, toRemote):
   for submodule in repo.submodules:
     Reset(submodule, toRemote)
@@ -126,11 +131,12 @@ def Merge(submodule, branchName):
     print('Cannot merge, {} has a DETACHED HEAD.'.format(submodule.name))
     return
   branch = subrepo.heads[branchName]
-  if branch == None:
+  if branch is None:
     print('Cannot merge, branch {} does not exist'.format(branchName))
     return
   print('Merging branch {} into {} in {}'.format(branch, head.reference.name, submodule.name))
   subrepo.index.merge_tree(branch)
+
 
 def MergeAll(repo, branchName):
   for submodule in repo.submodules:
@@ -144,7 +150,8 @@ def Tag(submodule, tagName, tagDescription):
 
   print('Creating tag {} in {}'.format(tagName, submodule.name))
   subrepo = submodule.module()
-  subrepo.create_tag(path = tagName, message = tagDescription)
+  subrepo.create_tag(path=tagName, message=tagDescription)
+
 
 def TagAll(repo, tagName, tagDescription):
   for submodule in repo.submodules:
@@ -160,6 +167,7 @@ def Push(submodule, **kwargs):
   subrepo = submodule.module()
   remote = subrepo.remote()
   remote.push(**kwargs)
+
 
 def PushAll(repo, **kwargs):
   for submodule in repo.submodules:
@@ -179,6 +187,7 @@ def Track(submodule):
   print('Setting tracking branch for {} to {}'.format(localBranchName, remoteBranchName))
   subrepo.git.branch('-u', remoteBranchName, localBranchName)
 
+
 def TrackAll(repo):
   for submodule in repo.submodules:
     Track(submodule)
@@ -189,9 +198,11 @@ class RemoteType(Enum):
   SSH = 1
   HTTP = 2
 
-def SetRemoteAll(repo, toType = RemoteType.SSH):
+
+def SetRemoteAll(repo, toType=RemoteType.SSH):
   for submodule in repo.submodules:
     SetRemote(submodule, toType)
+
 
 def SetRemote(submodule, toType):
   if not submodule.module_exists():

@@ -3,10 +3,11 @@ import platform
 import subprocess
 import pystache
 
-def Mvn(pomFile = 'pom.xml', settingsFile = None, globalSettingsFile = None, localRepo = None,
- noSnapshotUpdates = False, forceSnapshotUpdate = False, offline = False, skipTests = False,
- profiles = [], debug = False, quiet = False, extraArgs = None, clean = True, phase = 'verify',
- resumeFrom = None, mavenOpts = '-Xms512m -Xmx2048m -Xss32m -XX:MaxPermSize=512m', **kwargs):
+
+def Mvn(cwd=None, pomFile='pom.xml', settingsFile=None, globalSettingsFile=None, localRepo=None,
+    noSnapshotUpdates=False, forceSnapshotUpdate=False, offline=False, skipTests=False,
+    profiles=[], debug=False, quiet=False, extraArgs=None, clean=True, phase='verify',
+    resumeFrom=None, mavenOpts='-Xms512m -Xmx2048m -Xss32m -XX:MaxPermSize=512m', **kwargs):
   args = []
   if platform.system() == 'Windows':
     args.append('mvn.bat')
@@ -62,7 +63,7 @@ def Mvn(pomFile = 'pom.xml', settingsFile = None, globalSettingsFile = None, loc
   cmd = ' '.join(args)
   print('MAVEN_OPTS={} {}'.format(mavenOpts, cmd))
   try:
-    process = subprocess.Popen(cmd, env = mvnEnv, shell = True)
+    process = subprocess.Popen(cmd, cwd=cwd, env=mvnEnv, shell=True)
     process.communicate()
   except KeyboardInterrupt:
     raise RuntimeError("Maven build interrupted")
@@ -71,32 +72,33 @@ def Mvn(pomFile = 'pom.xml', settingsFile = None, globalSettingsFile = None, loc
     raise RuntimeError("Maven build failed")
 
 
-def MvnSetingsGen(location, repositories = [], mirrors = []):
+def MvnSetingsGen(location, repositories=[], mirrors=[]):
   profileDict = {}
   for repo in repositories:
     profileId, repoId, url, layout, releases, snapshots, plugins = repo
     if profileId not in profileDict:
       profileDict[profileId] = []
     profileDict[profileId].append({
-      'id'        : repoId,
-      'url'       : url,
-      'layout'    : layout,
-      'releases'  : str(releases).lower(),
-      'snapshots' : str(snapshots).lower(),
-      'plugins'   : plugins
+      'id'       : repoId,
+      'url'      : url,
+      'layout'   : layout,
+      'releases' : str(releases).lower(),
+      'snapshots': str(snapshots).lower(),
+      'plugins'  : plugins
     })
 
   profileObjects = []
   for profileId, repos in profileDict.items():
-    profileObjects.append({'profileId' : profileId, 'repos' : repos})
+    profileObjects.append({'profileId': profileId, 'repos': repos})
 
   mirrorObjects = []
   for mirror in mirrors:
     mirrorId, url, mirrorOf = mirror
-    mirrorObjects.append({'id' : mirrorId, 'url' : url, 'mirrorOf' : mirrorOf})
+    mirrorObjects.append({'id': mirrorId, 'url': url, 'mirrorOf': mirrorOf})
 
   settingsTemplate = '''<?xml version="1.0" ?>
-<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
   <profiles>
     {{#profiles}}
     <profile>
@@ -147,10 +149,11 @@ def MvnSetingsGen(location, repositories = [], mirrors = []):
 </settings>
 '''
 
-  settingsXml = pystache.render(settingsTemplate, { 'profiles' : profileObjects, 'mirrors' : mirrorObjects})
+  settingsXml = pystache.render(settingsTemplate, {'profiles': profileObjects, 'mirrors': mirrorObjects})
   print('Setting contents of {} to:\n{}'.format(location, settingsXml))
   with open(location, "w") as settingsFile:
     settingsFile.write(settingsXml)
+
 
 def MvnUserSettingsLocation():
   return os.path.join(os.path.expanduser('~'), '.m2/settings.xml')

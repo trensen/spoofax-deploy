@@ -1,11 +1,11 @@
 import os
 import xml.etree.ElementTree as ET
-
 from os import path
+
 from metaborg.util.path import CommonPrefix
 
 
-def SetVersions(repo, oldMavenVersion, newMavenVersion, setEclipseVersions = True, dryRun = False, commit = False):
+def SetVersions(repo, oldMavenVersion, newMavenVersion, setEclipseVersions=True, dryRun=False, commit=False):
   baseDir = repo.working_tree_dir
   ignoreDirs = ['eclipse-installations', 'target', '_attic']
 
@@ -24,7 +24,6 @@ def SetVersions(repo, oldMavenVersion, newMavenVersion, setEclipseVersions = Tru
 
   print('Old version {}'.format(oldVersionString))
   print('New version {}'.format(newVersionString))
-
 
   def FindFiles(root, pattern):
     allFiles = []
