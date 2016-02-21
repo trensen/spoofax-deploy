@@ -47,7 +47,7 @@ def Bootstrap(repo, curVersion, curBaselineVersion):
       print('Step 2: perform a test release build')
       try:
         BuildAll(repo=repo, components=['languages', 'spt'], buildStratego=True, bootstrapStratego=False,
-          strategoTest=False, cleanRepo=True, release=True)
+          strategoTest=False, cleanRepo=False, release=True)
       except Exception as detail:
         print('Test release build failed, not continuing to the next step')
         print(str(detail))
