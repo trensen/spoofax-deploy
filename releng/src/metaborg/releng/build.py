@@ -85,8 +85,8 @@ def BuildPoms(basedir, deploy, qualifier, buildStratego, bootstrapStratego, stra
   return BuildResult([])
 
 
-def BuildPremadeJars(basedir, deploy, release, extraArgs, clean, qualifier, buildStratego, bootstrapStratego,
-    strategoTest, skipExpensive, **kwargs):
+def BuildPremadeJars(basedir, deploy, release, clean, qualifier, buildStratego, bootstrapStratego,
+    strategoTest, skipExpensive, extraArgs = None, **kwargs):
   phase = 'deploy:deploy-file' if deploy else 'install:install-file'
 
   cwd = path.join(basedir, 'releng', 'parent')

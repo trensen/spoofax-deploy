@@ -36,9 +36,6 @@ def Bootstrap(repo, curVersion, curBaselineVersion):
           return
       print('Step 1: for each submodule: set version from the current version to the next baseline version')
       SetVersions(repo, curVersion, nextBaselineVersion, setEclipseVersions=False, dryRun=False, commit=False)
-      print('Updating submodule revisions')
-      repo.git.add('--all')
-      repo.index.commit('Update submodule revisions')
       db['state'] = 1
       db['version'] = nextBaselineVersion
       print('Please check if versions have been set correctly, then continue')
@@ -47,7 +44,7 @@ def Bootstrap(repo, curVersion, curBaselineVersion):
       print('Step 2: perform a test release build')
       try:
         BuildAll(repo=repo, components=['languages', 'spt'], buildStratego=True, bootstrapStratego=False,
-          strategoTest=False, cleanRepo=False, release=True)
+          strategoTest=False, release=True)
       except Exception as detail:
         print('Test release build failed, not continuing to the next step')
         print(str(detail))
