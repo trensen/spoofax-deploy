@@ -25,6 +25,7 @@
   <modules>
     <module>${submodule.root}/parent/eclipse/plugin</module>
     <module>${submodule.root}/parent/eclipse/language</module>
+    <module>${submodule.root}/parent/eclipse/language/meta</module>
     <module>${repo.root}/spoofax-eclipse/org.metaborg.spoofax.eclipse.externaldeps</module>
   </modules>
 
