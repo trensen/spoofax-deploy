@@ -31,6 +31,7 @@
 
     <module>${repo.root}/spoofax-eclipse/org.metaborg.spoofax.eclipse.feature</module>
     <module>${repo.root}/spoofax-eclipse/org.metaborg.spoofax.eclipse.meta.feature</module>
+    <module>${repo.root}/spoofax-eclipse/org.metaborg.spoofax.eclipse.meta.m2e.feature</module>
     <module>${repo.root}/spoofax-eclipse/org.metaborg.spoofax.eclipse.updatesite</module>
 
     <!-- Meta language Eclipse plugins -->
