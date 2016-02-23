@@ -20,8 +20,11 @@ class MetaborgEclipseGenerator(EclipseGenerator):
 
   spoofaxRepo = 'http://download.spoofax.org/update/nightly/'
   spoofaxRepoLocal = 'spoofax-eclipse/org.metaborg.spoofax.eclipse.updatesite/target/site'
-  spoofaxIU = 'org.metaborg.spoofax.eclipse.feature.feature.group'
-  spoofaxMetaIU = 'org.metaborg.spoofax.eclipse.meta.feature.feature.group'
+  spoofaxIUs = ['org.metaborg.spoofax.eclipse.feature.feature.group']
+  spoofaxMetaIUs = [
+    'org.metaborg.spoofax.eclipse.meta.feature.feature.group',
+    'org.metaborg.spoofax.eclipse.meta.m2e.feature.feature.group'
+  ]
 
   def __init__(self, workingDir, destination, config, eclipseRepo=None, eclipseIU=None, installSpoofax=True,
       spoofaxRepo=None, spoofaxRepoLocal=False, spoofaxDevelop=False, moreRepos=None, moreIUs=None,
@@ -46,9 +49,9 @@ class MetaborgEclipseGenerator(EclipseGenerator):
 
     if installSpoofax:
       repos.append(spoofaxRepo)
-      ius.append(MetaborgEclipseGenerator.spoofaxIU)
+      ius.extend(MetaborgEclipseGenerator.spoofaxIUs)
       if spoofaxDevelop:
-        ius.append(MetaborgEclipseGenerator.spoofaxMetaIU)
+        ius.extend(MetaborgEclipseGenerator.spoofaxMetaIUs)
 
     repos.extend(moreRepos)
     ius.extend(moreIUs)
