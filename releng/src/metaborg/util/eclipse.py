@@ -1,14 +1,14 @@
+import tarfile
+import tempfile
+import urllib.parse
+import urllib.request
 from os import path, makedirs, listdir, chmod, rmdir, mkdir, remove
 from platform import system
 from re import sub, findall, MULTILINE
 from shutil import move, copytree, copyfileobj, rmtree, make_archive
 from subprocess import Popen
 from sys import maxsize
-import tempfile
-import urllib.parse
-import urllib.request
 from zipfile import ZipFile
-import tarfile
 
 import requests
 
@@ -16,7 +16,7 @@ from metaborg.util.path import CommonPrefix
 
 
 class EclipseConfiguration(object):
-  def __init__(self, os = None, ws = None, arch = None):
+  def __init__(self, os=None, ws=None, arch=None):
     if not os:
       os = self.__os()
     if not ws:
@@ -61,8 +61,8 @@ class EclipseConfiguration(object):
 
 
 class EclipseGenerator(object):
-  def __init__(self, workingDir, destination, config = EclipseConfiguration(), repositories = None, installUnits = None,
-               archive = False):
+  def __init__(self, workingDir, destination, config=EclipseConfiguration(), repositories=None, installUnits=None,
+      archive=False):
     if not installUnits:
       installUnits = []
     if not repositories:
@@ -91,7 +91,7 @@ class EclipseGenerator(object):
     if self.archive:
       self.tempdir.cleanup()
 
-  def Facade(self, fixIni = True, addJre = False, archiveJreSeparately = False, archivePrefix = 'eclipse'):
+  def Facade(self, fixIni=True, addJre=False, archiveJreSeparately=False, archivePrefix='eclipse'):
     self.Generate()
     if fixIni:
       self.FixIni()
@@ -119,7 +119,6 @@ class EclipseGenerator(object):
     args.append('-destination {}'.format(self.finalDestination))
     args.append('-profile SDKProfile')
     args.append('-profileProperties org.eclipse.update.install.features=true')
-    # args.append('-bundlepool {}'.format(self.finalDestination))
     args.append('-p2.os {}'.format(self.config.os))
     args.append('-p2.ws {}'.format(self.config.ws))
     args.append('-p2.arch {}'.format(self.config.arch))
@@ -128,7 +127,7 @@ class EclipseGenerator(object):
     cmd = ' '.join(args)
     print(cmd)
     try:
-      process = Popen(cmd, shell = True)
+      process = Popen(cmd, shell=True)
       process.communicate()
     except KeyboardInterrupt:
       raise Exception("Eclipse generation interrupted")
@@ -153,7 +152,7 @@ class EclipseGenerator(object):
       copyfileobj(response, outFile)
     with ZipFile(directorZipLoc) as zipFile:
       unpackLoc = EclipseGenerator.__ToStorageLocation('director')
-      zipFile.extractall(path = unpackLoc)
+      zipFile.extractall(path=unpackLoc)
     chmod(executable, 0o744)
 
     return executable
@@ -166,22 +165,22 @@ class EclipseGenerator(object):
         location = path.normpath(path.join(self.workingDir, location))
       return urllib.parse.urljoin('file:', urllib.request.pathname2url(location))
 
-  def FixIni(self, stackSize = '16M', heapSize = '1G', maxHeapSize = '1G', maxPermGen = '256M',
-             requiredJavaVersion = '1.7', server = True):
+  def FixIni(self, stackSize='16M', heapSize='1G', maxHeapSize='1G', maxPermGen='256M',
+      requiredJavaVersion='1.7', server=True):
     iniLocation = self.__IniLocation()
 
     # Python converts all line endings to '\n' when reading a file in text mode like this.
     with open(iniLocation, "r") as iniFile:
       iniText = iniFile.read()
 
-    iniText = sub(r'--launcher\.XXMaxPermSize\n[0-9]+[gGmMkK]', '', iniText, flags = MULTILINE)
-    iniText = sub(r'-install\n.+', '', iniText, flags = MULTILINE)
-    iniText = sub(r'-showsplash\norg.eclipse.platform', '', iniText, flags = MULTILINE)
+    iniText = sub(r'--launcher\.XXMaxPermSize\n[0-9]+[gGmMkK]', '', iniText, flags=MULTILINE)
+    iniText = sub(r'-install\n.+', '', iniText, flags=MULTILINE)
+    iniText = sub(r'-showsplash\norg.eclipse.platform', '', iniText, flags=MULTILINE)
 
     launcherPattern = r'--launcher\.defaultAction\nopenFile'
-    launcherMatches = len(findall(launcherPattern, iniText, flags = MULTILINE))
+    launcherMatches = len(findall(launcherPattern, iniText, flags=MULTILINE))
     if launcherMatches > 1:
-      iniText = sub(launcherPattern, '', iniText, count = launcherMatches - 1, flags = MULTILINE)
+      iniText = sub(launcherPattern, '', iniText, count=launcherMatches - 1, flags=MULTILINE)
 
     iniText = sub(r'-X(ms|ss|mx)[0-9]+[gGmMkK]', '', iniText)
     iniText = sub(r'-XX:MaxPermSize=[0-9]+[gGmMkK]', '', iniText)
@@ -218,9 +217,9 @@ class EclipseGenerator(object):
     jrePath = self.__DownloadJre()
     targetJrePath = path.join(self.finalDestination, 'jre')
     if path.isdir(targetJrePath):
-      rmtree(targetJrePath, ignore_errors = True)
+      rmtree(targetJrePath, ignore_errors=True)
     print('Copying JRE from {} to {}'.format(jrePath, targetJrePath))
-    copytree(jrePath, targetJrePath, symlinks = True)
+    copytree(jrePath, targetJrePath, symlinks=True)
 
     relJreLocation = self.__JreLocation()
     iniLocation = self.__IniLocation()
@@ -228,7 +227,7 @@ class EclipseGenerator(object):
       iniText = iniFile.read()
     with open(iniLocation, 'w') as iniFile:
       print('Prepending VM location {} to eclipse.ini'.format(relJreLocation))
-      iniText = sub(r'-vm\n.+\n', '', iniText, flags = MULTILINE)
+      iniText = sub(r'-vm\n.+\n', '', iniText, flags=MULTILINE)
       iniFile.write('-vm\n{}\n'.format(relJreLocation) + iniText)
 
   def __DownloadJre(self):
@@ -253,7 +252,7 @@ class EclipseGenerator(object):
       raise Exception('Unsupported JRE architecture {}'.format(self.config.arch))
 
     location = self.__ToStorageLocation(path.join('jre', version))
-    makedirs(location, exist_ok = True)
+    makedirs(location, exist_ok=True)
 
     fileName = '{}-{}.{}'.format(jreOS, jreArch, extension)
     filePath = path.join(location, fileName)
@@ -266,15 +265,15 @@ class EclipseGenerator(object):
 
     url = '{}{}'.format(urlPrefix, fileName)
     print('Downloading JRE from {}'.format(url))
-    cookies = dict(gpw_e24 = 'http%3A%2F%2Fwww.oracle.com%2F', oraclelicense = 'accept-securebackup-cookie')
-    request = requests.get(url, cookies = cookies)
+    cookies = dict(gpw_e24='http%3A%2F%2Fwww.oracle.com%2F', oraclelicense='accept-securebackup-cookie')
+    request = requests.get(url, cookies=cookies)
     with open(filePath, 'wb') as file:
       for chunk in request.iter_content(1024):
         file.write(chunk)
 
     print('Extracting JRE to {}'.format(dirPath))
     with tarfile.open(filePath, 'r') as tar:
-      tar.extractall(path = dirPath)
+      tar.extractall(path=dirPath)
       rootName = CommonPrefix(tar.getnames())
       rootDir = path.join(dirPath, rootName)
       for name in listdir(rootDir):
@@ -310,16 +309,16 @@ class EclipseGenerator(object):
     else:
       raise Exception('Unsupported Eclipse OS {}'.format(self.config.os))
 
-  def Archive(self, prefix, postfix = ''):
+  def Archive(self, prefix, postfix=''):
     name = '{}-{}-{}{}'.format(prefix, self.config.os, self.config.arch, postfix)
     print('Archiving Eclipse instance {}'.format(name))
     filename = path.join(self.requestedDestination, name)
     with tempfile.TemporaryDirectory() as tempdir:
-      copytree(self.destination, path.join(tempdir, name), symlinks = True)
+      copytree(self.destination, path.join(tempdir, name), symlinks=True)
       if self.config.os == 'macosx' or self.config.os == 'linux':
-        return make_archive(filename, format = 'gztar', root_dir = tempdir, base_dir = name)
+        return make_archive(filename, format='gztar', root_dir=tempdir, base_dir=name)
       elif self.config.os == 'win32':
-        return make_archive(filename, format = 'zip', root_dir = tempdir, base_dir = name)
+        return make_archive(filename, format='zip', root_dir=tempdir, base_dir=name)
       else:
         raise Exception('Unsupported OS {}'.format(self.config.os))
 

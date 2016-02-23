@@ -1,5 +1,5 @@
-def YesNo(message = None):
-  if message != None:
+def YesNo(message=None):
+  if message:
     print(message + ' [y/N]')
   else:
     print('[y/N]')
@@ -8,10 +8,12 @@ def YesNo(message = None):
     return False
   return True
 
+
 def YesNoTwice():
   if YesNo():
     return YesNo("Are you really really sure?")
   return False
+
 
 def YesNoTrice():
   if YesNo():

@@ -1,12 +1,13 @@
-import shelve
 import os
+import shelve
+from os import path
+
 import git
 
-from os import path
+from metaborg.releng.build import BuildAll
+from metaborg.releng.versions import SetVersions
 from metaborg.util.git import CheckoutAll, UpdateAll, TagAll, PushAll
 from metaborg.util.prompt import YesNo
-from metaborg.releng.versions import SetVersions
-from metaborg.releng.build import BuildAll
 
 
 def Release(repo, releaseBranchName, developBranchName, curDevelopVersion, nextReleaseVersion, nextDevelopVersion):
@@ -97,8 +98,8 @@ def Release(repo, releaseBranchName, developBranchName, curDevelopVersion, nextR
     def Step5():
       print('Step 5: perform a test release build')
       try:
-        BuildAll(repo = repo, components = ['all'], buildStratego = True, bootstrapStratego = True,
-                 strategoTest = True, skipTests = False, release = True)
+        BuildAll(repo=repo, components=['all'], buildStratego=True, bootstrapStratego=True,
+          strategoTest=True, skipTests=False, release=True)
       except Exception as detail:
         print('Test release build failed, not continuing to the next step')
         print(str(detail))
@@ -108,8 +109,8 @@ def Release(repo, releaseBranchName, developBranchName, curDevelopVersion, nextR
 
     def Step6():
       print('Step 6: perform release deployment')
-      BuildAll(repo = repo, components = ['all'], buildStratego = True, bootstrapStratego = True,
-               strategoTest = False, skipTests = True, release = True, deploy = True)
+      BuildAll(repo=repo, components=['all'], buildStratego=True, bootstrapStratego=True,
+        strategoTest=False, skipTests=True, release=True, deploy=True)
       db['state'] = 7
       print('Please check if deploying succeeded, and manually deploy extra artifacts, then continue')
 
@@ -119,18 +120,18 @@ def Release(repo, releaseBranchName, developBranchName, curDevelopVersion, nextR
       tagDescription = 'Tag for {} release'.format(nextReleaseVersion)
       TagAll(repo, tagName, tagDescription)
       print('Creating tag {}'.format(tagName))
-      repo.create_tag(path = tagName, message = tagDescription)
+      repo.create_tag(path=tagName, message=tagDescription)
       db['state'] = 8
       Step8()
 
     def Step8():
       print('Step 8: push release submodules and repository')
       PushAll(repo)
-      PushAll(repo, tags = True)
+      PushAll(repo, tags=True)
       print('Pushing')
       remote = repo.remote('origin')
       remote.push()
-      remote.push(tags = True)
+      remote.push(tags=True)
       db['state'] = 9
       Step9()
 
@@ -142,7 +143,8 @@ def Release(repo, releaseBranchName, developBranchName, curDevelopVersion, nextR
       Step10()
 
     def Step10():
-      print('Step 10: for each submodule: set version from the current development version to the next development version')
+      print(
+        'Step 10: for each submodule: set version from the current development version to the next development version')
       SetVersions(repo, curDevelopVersion, nextDevelopVersion, False, True)
       print('Updating submodule revisions')
       repo.git.add('--all')
@@ -160,24 +162,26 @@ def Release(repo, releaseBranchName, developBranchName, curDevelopVersion, nextR
       ResetRelease()
 
     steps = {
-       0 :  Step0,
-       1 :  Step1,
-       2 :  Step2,
-       3 :  Step3,
-       4 :  Step4,
-       5 :  Step5,
-       6 :  Step6,
-       7 :  Step7,
-       8 :  Step8,
-       9 :  Step9,
-      10 : Step10,
-      11 : Step11,
+      0 : Step0,
+      1 : Step1,
+      2 : Step2,
+      3 : Step3,
+      4 : Step4,
+      5 : Step5,
+      6 : Step6,
+      7 : Step7,
+      8 : Step8,
+      9 : Step9,
+      10: Step10,
+      11: Step11,
     }
 
     steps[state]()
 
+
 def ResetRelease():
   os.remove(_ShelveLocation())
+
 
 def _ShelveLocation():
   return path.join(path.expanduser('~'), '.spoofax-releng-release-state')

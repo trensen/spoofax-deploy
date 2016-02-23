@@ -22,12 +22,10 @@ class MetaborgEclipseGenerator(EclipseGenerator):
   spoofaxRepoLocal = 'spoofax-eclipse/org.metaborg.spoofax.eclipse.updatesite/target/site'
   spoofaxIU = 'org.metaborg.spoofax.eclipse.feature.feature.group'
   spoofaxMetaIU = 'org.metaborg.spoofax.eclipse.meta.feature.feature.group'
-  modelwareIUs = []
-  modelwareMetaIUs = []
 
-  def __init__(self, workingDir, destination, config, eclipseRepo = None, eclipseIU = None, installSpoofax = True,
-               spoofaxRepo = None, spoofaxRepoLocal = False, spoofaxDevelop = False, spoofaxModelware = False,
-               moreRepos = None, moreIUs = None, archive = False):
+  def __init__(self, workingDir, destination, config, eclipseRepo=None, eclipseIU=None, installSpoofax=True,
+      spoofaxRepo=None, spoofaxRepoLocal=False, spoofaxDevelop=False, moreRepos=None, moreIUs=None,
+      archive=False):
     if not eclipseRepo:
       eclipseRepo = MetaborgEclipseGenerator.eclipseRepo
     if not eclipseIU:
@@ -51,10 +49,6 @@ class MetaborgEclipseGenerator(EclipseGenerator):
       ius.append(MetaborgEclipseGenerator.spoofaxIU)
       if spoofaxDevelop:
         ius.append(MetaborgEclipseGenerator.spoofaxMetaIU)
-      if spoofaxModelware:
-        ius.extend(MetaborgEclipseGenerator.modelwareIUs)
-        if spoofaxDevelop:
-          ius.extend(MetaborgEclipseGenerator.modelwareIUs)
 
     repos.extend(moreRepos)
     ius.extend(moreIUs)
