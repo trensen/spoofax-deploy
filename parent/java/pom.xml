@@ -44,7 +44,6 @@
             <Export-Package>*</Export-Package>
             <!-- Don't declare dependency on Java library packages. -->
             <!-- Allow dependencies to Metaborg artifacts without a provider. -->
-            <!-- Use M2E provider for Maven, because M2E embeds Maven and we want to use it. -->
             <!-- Use Metaborg provider for rest of the packages, these are external dependencies that should not 
               conflict with other Eclipse plugins. -->
             <Import-Package>
@@ -57,8 +56,6 @@
               org.metaborg*,
               org.strategoxt.*,
               org.apache.tools.ant,
-              org.apache.maven*;provider=m2e;mandatory:=provider,
-              org.codehaus.plexus*;provider=m2e;mandatory:=provider,
               *;provider=metaborg;mandatory:=provider
             </Import-Package>
             <!-- Include transitive dependencies, so that classes of transitive dependencies are available. -->
@@ -87,7 +84,7 @@
         <artifactId>maven-jar-plugin</artifactId>
         <configuration>
           <archive>
-            <manifestFile>${manifest-location}/MANIFEST.MF</manifestFile>
+            <manifestFile>META-INF/MANIFEST.MF</manifestFile>
           </archive>
         </configuration>
       </plugin>

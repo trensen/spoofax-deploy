@@ -18,7 +18,7 @@
   </parent>
 
   <properties>
-    <tycho-version>0.23.1</tycho-version>
+    <tycho-version>0.24.0</tycho-version>
     <test-workspace-location>${project.build.directory}/work</test-workspace-location>
   </properties>
 
@@ -84,11 +84,6 @@
     </dependency>
     <dependency>
       <groupId>org.metaborg</groupId>
-      <artifactId>org.metaborg.spoofax.generator</artifactId>
-      <version>${metaborg-version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.metaborg</groupId>
       <artifactId>org.metaborg.spoofax.nativebundle</artifactId>
       <version>${metaborg-version}</version>
     </dependency>
@@ -119,6 +114,11 @@
     <dependency>
       <groupId>org.metaborg</groupId>
       <artifactId>org.metaborg.spoofax.eclipse.externaldeps</artifactId>
+      <version>${metaborg-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.metaborg</groupId>
+      <artifactId>org.metaborg.spoofax.eclipse.meta.externaldeps</artifactId>
       <version>${metaborg-version}</version>
     </dependency>
   </dependencies>
@@ -218,9 +218,9 @@
 
   <repositories>
     <repository>
-      <id>eclipse-luna</id>
+      <id>eclipse-mars</id>
       <layout>p2</layout>
-      <url>http://eclipse.mirror.triple-it.nl/releases/luna/</url>
+      <url>http://eclipse.mirror.triple-it.nl/releases/mars/</url>
     </repository>
   </repositories>
 
