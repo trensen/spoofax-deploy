@@ -337,6 +337,9 @@
           <version>2.19.1</version>
           <configuration>
             <argLine>-Xmx512m -XX:MaxPermSize=256m</argLine>
+            <systemProperties>
+              <java.awt.headless>true</java.awt.headless>
+            </systemProperties>
           </configuration>
         </plugin>
         <plugin>
