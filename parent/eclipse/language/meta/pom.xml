@@ -15,7 +15,7 @@
   </parent>
 
   <properties>
-    <lang.baseline.unpack.skip>falseth</lang.baseline.unpack.skip>
+    <lang.baseline.unpack.skip>false</lang.baseline.unpack.skip>
     <lang.baseline.unpack.groupId>${lang.unpack.groupId}</lang.baseline.unpack.groupId>
     <lang.baseline.unpack.artifactId>${lang.unpack.artifactId}</lang.baseline.unpack.artifactId>
     <lang.baseline.unpack.version>${metaborg-baseline-version}</lang.baseline.unpack.version>
