@@ -2,7 +2,7 @@
 <feature
       id="org.metaborg.modelware.emf.meta"
       label="Spoofax EMF Integration"
-      version="1.4.1">
+      version="1.4.2">
 
    <description url="http://metaborg.org/wiki/spoofax/">
       Spoofax EMF Integration provides integration between Spoofax and the Eclipse Modeling Framework (EMF).
@@ -21,7 +21,7 @@ Most Spoofax/IMP code is licensed under the GNU Lesser General Public License (L
 
    <includes
          id="org.strategoxt.imp.meta"
-         version="1.4.1"
+         version="1.4.2"
          search-location="both"/>
 
    <includes
