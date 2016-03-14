@@ -107,7 +107,7 @@
         <directory>.</directory>
         <includes>
           <include>${repo.root}/LICENSE</include>
-          <include>${repo.root}/NOTICE</include>
+          <include>NOTICE</include>
         </includes>
       </resource>
     </resources>
