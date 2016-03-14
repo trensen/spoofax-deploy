@@ -299,7 +299,7 @@
           <version>1.0-beta-5</version>
         </plugin>
 
-        <!-- Don't warn about missing m2e mapping for several goals. This plugin's configuration is used to store 
+        <!-- Don't warn about missing m2e mapping for several goals. This plugin's configuration is used to store
           Eclipse m2e settings only. It has no influence on the Maven build itself. -->
         <plugin>
           <groupId>org.eclipse.m2e</groupId>
@@ -424,8 +424,8 @@
 
   <licenses>
     <license>
-      <name>GNU Lesser General Public License v2.1</name>
-      <url>https://www.gnu.org/licenses/lgpl-2.1.html</url>
+      <name>Apache License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
     </license>
   </licenses>
 </project>

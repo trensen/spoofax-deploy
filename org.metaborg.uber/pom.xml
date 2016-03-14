@@ -13,6 +13,11 @@
     <relativePath>../org.metaborg.maven.parent</relativePath>
   </parent>
 
+  <properties>
+    <submodule.root>../../</submodule.root>
+    <repo.root>${submodule.root}/../</repo.root>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>org.metaborg</groupId>
@@ -101,7 +106,8 @@
       <resource>
         <directory>.</directory>
         <includes>
-          <include>COPYING</include>
+          <include>${repo.root}/LICENSE</include>
+          <include>${repo.root}/NOTICE</include>
         </includes>
       </resource>
     </resources>
