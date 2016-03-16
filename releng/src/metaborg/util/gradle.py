@@ -26,6 +26,11 @@ def Gradle(cwd=None, useWrapper=True, buildFile='build.gradle', gradleSettingsFi
   else:
     args.append('gradle')
 
+  # Must occur before --build-file, for some reason. Gradle bug?
+  if not native:
+	# Based on this: https://github.com/adammurdoch/native-platform/issues/6#issuecomment-41315984
+    args.append('-Dorg.gradle.native=false')
+
   if buildFile:
     args.append('--build-file "{}"'.format(buildFile))
   if gradleSettingsFile:
@@ -34,8 +39,8 @@ def Gradle(cwd=None, useWrapper=True, buildFile='build.gradle', gradleSettingsFi
   if offline:
     args.append('--offline')
 
-  #if stackTrace:
-  args.append('--stacktrace')
+  if stackTrace:
+    args.append('--stacktrace')
   if debug:
     args.append('--debug')
   elif quiet:
@@ -47,9 +52,6 @@ def Gradle(cwd=None, useWrapper=True, buildFile='build.gradle', gradleSettingsFi
     args.append(extraArgs)
   for name, value in kwargs.items():
     args.append('-D{}={}'.format(name, value))
-  if not native:
-	# Based on this: https://github.com/adammurdoch/native-platform/issues/6#issuecomment-41315984
-    args.append('-Dorg.gradle.native=false')
 
   if clean:
     args.append('clean')
