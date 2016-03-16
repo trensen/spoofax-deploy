@@ -4,18 +4,18 @@ import subprocess
 import pystache
 
 
-def Gradle(cwd=None, useWrapper=True, buildFile='build.gradle', settingsFile=None,
+def Gradle(cwd=None, useWrapper=True, buildFile='build.gradle', gradleSettingsFile=None,
     offline=False, debug=False, stackTrace=False, quiet=False, extraArgs=None, clean=True,
     phase='check', native=False,
     # Ignored:
-    pomFile=None, globalSettingsFile=None, localRepo=None, noSnapshotUpdates=False,
+    pomFile=None, settingsFile=None, globalSettingsFile=None, localRepo=None, noSnapshotUpdates=False,
     forceSnapshotUpdate=False, skipTests=False, profiles=[], resumeFrom=None, mavenOpts=None,
     # Remainder:
     **kwargs):
 
   # Ignored arguments.
-  del pomFile, globalSettingsFile, localRepo, noSnapshotUpdates, forceSnapshotUpdate, skipTests
-  del profiles, resumeFrom, mavenOpts
+  del pomFile, settingsFile, globalSettingsFile, localRepo, noSnapshotUpdates, forceSnapshotUpdate
+  del skipTests, profiles, resumeFrom, mavenOpts
 
   args = []
   if useWrapper:
@@ -28,17 +28,17 @@ def Gradle(cwd=None, useWrapper=True, buildFile='build.gradle', settingsFile=Non
 
   if buildFile:
     args.append('--build-file "{}"'.format(buildFile))
-  if settingsFile:
-    args.append('--settings-file "{}"'.format(settingsFile))
+  if gradleSettingsFile:
+    args.append('--settings-file "{}"'.format(gradleSettingsFile))
 
   if offline:
     args.append('--offline')
 
+  #if stackTrace:
+  args.append('--stacktrace')
   if debug:
     args.append('--debug')
-  if stackTrace:
-    args.append('--stacktrace')
-  if quiet:
+  elif quiet:
     args.append('--quiet')
   else:
     args.append('--info')
@@ -49,7 +49,7 @@ def Gradle(cwd=None, useWrapper=True, buildFile='build.gradle', settingsFile=Non
     args.append('-D{}={}'.format(name, value))
   if not native:
 	# Based on this: https://github.com/adammurdoch/native-platform/issues/6#issuecomment-41315984
-    args.append('-Dorg.gradle.native=true')
+    args.append('-Dorg.gradle.native=false')
 
   if clean:
     args.append('clean')
