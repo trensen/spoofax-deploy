@@ -7,6 +7,7 @@ from os import path, makedirs
 
 from metaborg.util.git import LatestDate, Branch
 from metaborg.util.maven import Mvn, MvnSetingsGen, MvnUserSettingsLocation
+from metaborg.util.gradle import Gradle
 
 
 class BuildResult:
@@ -242,11 +243,33 @@ def BuildEclipse(basedir, qualifier, deploy, buildStratego, bootstrapStratego, s
       'spoofax-eclipse/org.metaborg.spoofax.eclipse.updatesite/target/site_assembly.zip'),
       'spoofax-eclipse.zip'),
   ])
+  
+def BuildIntelliJDeps(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
+  phase = 'publishToMavenLocal'
 
+  cwd = path.join(basedir, 'spoofax-intellij', 'org.metaborg.intellij', 'deps')
+  
+  Gradle(cwd=cwd, phase=phase, **kwargs)
+  
+  return BuildResult([])
+
+def BuildIntelliJ(basedir, qualifier, deploy, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
+  # TODO: Deploy
+  phase = 'buildPlugin' if deploy else 'buildPlugin'
+
+  cwd = path.join(basedir, 'spoofax-intellij', 'org.metaborg.intellij')
+  
+  Gradle(cwd=cwd, phase=phase, **kwargs)
+  
+  return BuildResult([
+    BuildArtifact('Spoofax for IntelliJ IDEA plugin',
+	  glob(path.join(basedir, 'spoofax-intellij/org.metaborg.intellij/build/distributions/org.metaborg.intellij-*.zip'))[0],
+      'spoofax-intellij.zip'),
+  ])
 
 def BuildSpoofaxLibs(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive,
     **kwargs):
-  phase = 'deploy' if deploy else 'verify'
+  phase = 'deploy' if deploy else 'install'
 
   cwd = path.join(basedir, 'releng', 'build', 'libs')
   Mvn(cwd=cwd, phase=phase, **kwargs)
@@ -259,15 +282,17 @@ def BuildSpoofaxLibs(basedir, deploy, qualifier, buildStratego, bootstrapStrateg
 
 '''Build dependencies must be topologically ordered, otherwise the algorithm will not work'''
 _buildDependencies = OrderedDict([
-  ('poms', []),
-  ('jars', ['poms']),
-  ('strategoxt', ['poms', 'jars']),
-  ('java', ['poms', 'jars', 'strategoxt']),
+  ('poms',         []),
+  ('jars',         ['poms']),
+  ('strategoxt',   ['poms', 'jars']),
+  ('java',         ['poms', 'jars', 'strategoxt']),
   ('languagepoms', ['poms', 'jars', 'strategoxt', 'java']),
-  ('languages', ['poms', 'jars', 'strategoxt', 'java', 'languagepoms']),
-  ('spt', ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages']),
-  ('eclipsedeps', ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages']),
-  ('eclipse', ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages', 'eclipsedeps']),
+  ('languages',    ['poms', 'jars', 'strategoxt', 'java', 'languagepoms']),
+  ('spt',          ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages']),
+  ('eclipsedeps',  ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages']),
+  ('eclipse',      ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages', 'eclipsedeps']),
+  ('intellijdeps', ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages']),
+  ('intellij',     ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages', 'intellijdeps']),
   ('spoofax-libs', ['poms', 'jars', 'strategoxt', 'java']),
 ])
 _buildCommands = {
@@ -280,6 +305,8 @@ _buildCommands = {
   'spt'         : BuildSPT,
   'eclipsedeps' : BuildEclipseDeps,
   'eclipse'     : BuildEclipse,
+  'intellijdeps': BuildIntelliJDeps,
+  'intellij'    : BuildIntelliJ,
   'spoofax-libs': BuildSpoofaxLibs,
 }
 
