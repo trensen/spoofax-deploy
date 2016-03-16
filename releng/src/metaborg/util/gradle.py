@@ -6,7 +6,7 @@ import pystache
 
 def Gradle(cwd=None, useWrapper=True, buildFile='build.gradle', settingsFile=None,
     offline=False, debug=False, stackTrace=False, quiet=False, extraArgs=None, clean=True,
-    phase='check',
+    phase='check', native=False,
     # Ignored:
     pomFile=None, globalSettingsFile=None, localRepo=None, noSnapshotUpdates=False,
     forceSnapshotUpdate=False, skipTests=False, profiles=[], resumeFrom=None, mavenOpts=None,
@@ -45,6 +45,9 @@ def Gradle(cwd=None, useWrapper=True, buildFile='build.gradle', settingsFile=Non
     args.append(extraArgs)
   for name, value in kwargs.items():
     args.append('-D{}={}'.format(name, value))
+  if not native:
+	# Based on this: https://github.com/adammurdoch/native-platform/issues/6#issuecomment-41315984
+    args.append('-D{}={}'.format('org.gradle.native', 'false'))
 
   if clean:
     args.append('clean')
