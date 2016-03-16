@@ -40,6 +40,8 @@ def Gradle(cwd=None, useWrapper=True, buildFile='build.gradle', settingsFile=Non
     args.append('--stacktrace')
   if quiet:
     args.append('--quiet')
+  else:
+    args.append('--info')
   
   if extraArgs:
     args.append(extraArgs)
@@ -47,7 +49,7 @@ def Gradle(cwd=None, useWrapper=True, buildFile='build.gradle', settingsFile=Non
     args.append('-D{}={}'.format(name, value))
   if not native:
 	# Based on this: https://github.com/adammurdoch/native-platform/issues/6#issuecomment-41315984
-    args.append('-D{}={}'.format('org.gradle.native', 'false'))
+    args.append('-Dorg.gradle.native=true')
 
   if clean:
     args.append('clean')
