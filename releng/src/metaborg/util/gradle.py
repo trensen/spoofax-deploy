@@ -6,7 +6,7 @@ import pystache
 
 def Gradle(cwd=None, useWrapper=True, buildFile='build.gradle', gradleSettingsFile=None,
     offline=False, debug=False, stackTrace=False, quiet=False, extraArgs=None, clean=True,
-    phase='check', native=False,
+    phase='check', noNative=False,
     # Ignored:
     pomFile=None, settingsFile=None, globalSettingsFile=None, localRepo=None, noSnapshotUpdates=False,
     forceSnapshotUpdate=False, skipTests=False, profiles=[], resumeFrom=None, mavenOpts=None,
@@ -27,7 +27,7 @@ def Gradle(cwd=None, useWrapper=True, buildFile='build.gradle', gradleSettingsFi
     args.append('gradle')
 
   # Must occur before --build-file, for some reason. Gradle bug?
-  if not native:
+  if noNative:
 	# Based on this: https://github.com/adammurdoch/native-platform/issues/6#issuecomment-41315984
     args.append('-Dorg.gradle.native=false')
 

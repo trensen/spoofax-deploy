@@ -353,6 +353,9 @@ class MetaborgRelengBuild(cli.Application):
     help="Pass --debug and --errors flag to Maven", group='Maven switches')
   quiet = cli.Flag(names=['-Q', '--quiet'], default=False, excludes=['--debug'],
     help="Pass --quiet flag to Maven", group='Maven switches')
+    
+  noNative = cli.Flag(names=['-N', '--no-native'], default=False, mandatory=False,
+    help="Gradle won't use native services", group='Gradle switches')
 
   stack = cli.SwitchAttr(names=['--stack'], default="16M", help="JVM stack size", group='JVM switches')
   minHeap = cli.SwitchAttr(names=['--min-heap'], default="512M", help="JVM minimum heap size",
@@ -392,7 +395,7 @@ class MetaborgRelengBuild(cli.Application):
         copyArtifactsTo=self.copyArtifacts, clean=not self.noClean, skipTests=self.skipTests,
         settingsFile=self.settings, globalSettingsFile=self.globalSettings, localRepo=self.localRepo,
         mavenOpts=mavenOpts, offline=self.offline, debug=self.debug,
-        quiet=self.quiet, extraArgs=extraArgs)
+        quiet=self.quiet, noNative=self.noNative, extraArgs=extraArgs)
       print('All done!')
       return 0
     except RuntimeError as detail:
