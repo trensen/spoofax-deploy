@@ -179,12 +179,12 @@
       <dependency>
         <groupId>build.pluto</groupId>
         <artifactId>pluto</artifactId>
-        <version>1.8.0</version>
+        <version>1.9.0</version>
       </dependency>
       <dependency>
         <groupId>build.pluto</groupId>
         <artifactId>build-java</artifactId>
-        <version>1.4.0</version>
+        <version>1.5.0</version>
       </dependency>
       <dependency>
         <groupId>org.sugarj</groupId>
@@ -453,7 +453,7 @@
           </configuration>
         </plugin>
 
-        <!-- Don't warn about missing m2e mapping for several goals. This plugin's configuration is used to store
+        <!-- Don't warn about missing m2e mapping for several goals. This plugin's configuration is used to store 
           Eclipse m2e settings only. It has no influence on the Maven build itself. -->
         <plugin>
           <groupId>org.eclipse.m2e</groupId>
