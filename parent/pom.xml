@@ -175,7 +175,7 @@
         <version>1.15</version>
       </dependency>
 
-      <!-- Pluto build -->
+      <!-- Pluto build and dependencies -->
       <dependency>
         <groupId>build.pluto</groupId>
         <artifactId>pluto</artifactId>
@@ -195,6 +195,12 @@
         <groupId>com.cedarsoftware</groupId>
         <artifactId>java-util-pluto-fixes</artifactId>
         <version>1.19.4</version>
+      </dependency>
+      <dependency>
+        <groupId>org.objenesis</groupId>
+        <artifactId>objenesis</artifactId>
+        <version>2.2</version>
+        <!-- Version 2.2 for build.pluto:pluto -->
       </dependency>
 
       <!-- Support libraries -->
