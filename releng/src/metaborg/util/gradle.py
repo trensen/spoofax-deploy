@@ -6,15 +6,15 @@ import pystache
 
 def Gradle(cwd=None, useWrapper=True, buildFile='build.gradle', gradleSettingsFile=None,
     offline=False, debug=False, stackTrace=False, quiet=False, extraArgs=None, clean=True,
-    phase='check', noNative=False,
+    phase='check', noNative=False, localRepo=None,
     # Ignored:
-    pomFile=None, settingsFile=None, globalSettingsFile=None, localRepo=None, noSnapshotUpdates=False,
+    pomFile=None, settingsFile=None, globalSettingsFile=None, noSnapshotUpdates=False,
     forceSnapshotUpdate=False, skipTests=False, profiles=[], resumeFrom=None, mavenOpts=None,
     # Remainder:
     **kwargs):
 
   # Ignored arguments.
-  del pomFile, settingsFile, globalSettingsFile, localRepo, noSnapshotUpdates, forceSnapshotUpdate
+  del pomFile, settingsFile, globalSettingsFile, noSnapshotUpdates, forceSnapshotUpdate
   del skipTests, profiles, resumeFrom, mavenOpts
 
   args = []
@@ -30,6 +30,9 @@ def Gradle(cwd=None, useWrapper=True, buildFile='build.gradle', gradleSettingsFi
   if noNative:
 	# Based on this: https://github.com/adammurdoch/native-platform/issues/6#issuecomment-41315984
     args.append('-Dorg.gradle.native=false')
+    
+  if localRepo:
+    args.append('-Dmaven.repo.local={}'.format(localRepo))
 
   if buildFile:
     args.append('--build-file "{}"'.format(buildFile))
