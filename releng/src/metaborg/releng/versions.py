@@ -63,6 +63,7 @@ def SetVersions(repo, oldMavenVersion, newMavenVersion, setEclipseVersions=True,
       text = fileHandle.read()
     return 'Bnd-LastModified' in text
 
+
   print('Setting versions in Maven POM files')
   for file in FindFiles(baseDir, 'pom.xml'):
     if IsMavenPomFile(file):
@@ -70,6 +71,14 @@ def SetVersions(repo, oldMavenVersion, newMavenVersion, setEclipseVersions=True,
 
   print('Setting versions in Maven extension files')
   for file in FindFiles(baseDir, 'extensions.xml'):
+    ReplaceInFile(file, oldMavenVersion, newMavenVersion)
+
+  print('Setting versions in Gradle build files')
+  for file in FindFiles(baseDir, 'build.gradle'):
+    ReplaceInFile(file, oldMavenVersion, newMavenVersion)
+
+  print('Setting versions in Gradle settings files')
+  for file in FindFiles(baseDir, 'settings.gradle'):
     ReplaceInFile(file, oldMavenVersion, newMavenVersion)
 
   print('Setting versions in MetaBorg files')
