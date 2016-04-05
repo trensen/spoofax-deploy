@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>build.java</artifactId>
+  <packaging>pom</packaging>
+  <description>Maven build for MetaBorg Java components</description>
+  <url>https://github.com/metaborg/spoofax-deploy</url>
+
+  <parent>
+    <groupId>org.metaborg</groupId>
+    <artifactId>parent</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+    <relativePath>../../parent</relativePath>
+  </parent>
+
+  <properties>
+    <submodule.root>../../</submodule.root>
+    <repo.root>${submodule.root}/../</repo.root>
+  </properties>
+
+  <modules>
+    <!-- Representation -->
+    <module>${repo.root}/mb-rep/org.spoofax.terms</module>
+    <module>${repo.root}/mb-rep/org.spoofax.interpreter.library.index</module>
+    <module>${repo.root}/mb-rep/org.metaborg.scopegraph</module>
+
+    <!-- Execution -->
+    <module>${repo.root}/mb-exec/org.metaborg.util</module>
+    <module>${repo.root}/mb-exec/org.spoofax.interpreter.core</module>
+    <module>${repo.root}/mb-exec/org.spoofax.interpreter.library.java</module>
+    <module>${repo.root}/mb-exec/org.spoofax.interpreter.library.xml</module>
+    <module>${repo.root}/runtime-libraries/org.metaborg.runtime.task</module>
+
+    <!-- Spoofax -->
+    <module>${repo.root}/spoofax/org.metaborg.core</module>
+    <module>${repo.root}/spoofax/org.metaborg.meta.core</module>
+    <module>${repo.root}/spoofax/org.metaborg.core.test</module>
+    <module>${repo.root}/spoofax/org.metaborg.spoofax.core</module>
+    <module>${repo.root}/spoofax/org.metaborg.spoofax.meta.core</module>
+    <module>${repo.root}/spoofax/org.metaborg.spoofax.nativebundle</module>
+
+    <!-- Parser -->
+    <module>${repo.root}/jsglr/org.spoofax.jsglr</module>
+    <module>${repo.root}/jsglr/org.spoofax.interpreter.library.jsglr</module>
+
+    <!-- StrategoXT -->
+    <module>${repo.root}/strategoxt/strategoxt/stratego-libraries/java-backend</module>
+
+    <!-- Interpretation -->
+    <module>${repo.root}/dynsem/org.metaborg.meta.interpreter.framework</module>
+
+    <!-- Spoofax Maven Plugin -->
+    <module>${repo.root}/spoofax-maven/spoofax-maven-plugin</module>
+    <module>${repo.root}/spoofax-maven/spoofax-maven-plugin-pomless</module>
+
+    <!-- Spoofax Sunshine -->
+    <module>${repo.root}/spoofax-sunshine/org.metaborg.sunshine2</module>
+  </modules>
+
+  <developers>
+    <developer>
+      <name>Gabriël Konat</name>
+      <email>g.d.p.konat@tudelft.nl</email>
+      <organization>Delft University of Technology</organization>
+      <organizationUrl>http://www.ewi.tudelft.nl/en</organizationUrl>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git@github.com:metaborg/spoofax-deploy.git</connection>
+    <developerConnection>scm:git:git@github.com:metaborg/spoofax-deploy.git</developerConnection>
+    <url>https://github.com/metaborg/spoofax-deploy</url>
+  </scm>
+</project>

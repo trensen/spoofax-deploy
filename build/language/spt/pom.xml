@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>build.spt</artifactId>
+  <packaging>pom</packaging>
+  <description>Maven build for SPT</description>
+  <url>https://github.com/metaborg/spt</url>
+
+  <parent>
+    <groupId>org.metaborg</groupId>
+    <artifactId>parent</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+    <relativePath>../../../parent</relativePath>
+  </parent>
+
+  <properties>
+    <submodule.root>../../../</submodule.root>
+    <repo.root>${submodule.root}/../</repo.root>
+  </properties>
+
+  <modules>
+    <module>${repo.root}/spt/org.metaborg.meta.lang.spt</module>
+    <module>${repo.root}/spt/org.metaborg.meta.lang.spt.listener</module>
+    <module>${repo.root}/spt/org.metaborg.meta.lang.spt.testrunner.core</module>
+    <module>${repo.root}/spt/org.metaborg.meta.lang.spt.testrunner.cmd</module>
+  </modules>
+
+  <developers>
+    <developer>
+      <name>Gabriël Konat</name>
+      <email>g.d.p.konat@tudelft.nl</email>
+      <organization>Delft University of Technology</organization>
+      <organizationUrl>http://www.ewi.tudelft.nl/en</organizationUrl>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git@github.com:metaborg/spoofax-deploy.git</connection>
+    <developerConnection>scm:git:git@github.com:metaborg/spoofax-deploy.git</developerConnection>
+    <url>https://github.com/metaborg/spoofax-deploy</url>
+  </scm>
+</project>
