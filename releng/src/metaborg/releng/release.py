@@ -88,7 +88,7 @@ def Release(repo, releaseBranchName, developBranchName, curDevelopVersion, nextR
         if not YesNo():
           return
       print('Step 4: for each submodule: set version from the current development version to the next release version')
-      SetVersions(repo, curDevelopVersion, nextReleaseVersion, False, True)
+      SetVersions(repo, curDevelopVersion, nextReleaseVersion, setEclipseVersions=True, dryRun=False, commit=True)
       print('Updating submodule revisions')
       repo.git.add('--all')
       repo.index.commit('Update submodule revisions')
@@ -145,7 +145,7 @@ def Release(repo, releaseBranchName, developBranchName, curDevelopVersion, nextR
     def Step10():
       print(
         'Step 10: for each submodule: set version from the current development version to the next development version')
-      SetVersions(repo, curDevelopVersion, nextDevelopVersion, False, True)
+      SetVersions(repo, curDevelopVersion, nextDevelopVersion, setEclipseVersions=True, dryRun=False, commit=True)
       print('Updating submodule revisions')
       repo.git.add('--all')
       repo.index.commit('Update submodule revisions')
