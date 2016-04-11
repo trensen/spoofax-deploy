@@ -217,7 +217,7 @@ def BuildSPT(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strat
 
   return BuildResult([
     BuildArtifact('SPT testrunner JAR', glob(path.join(basedir,
-      'spt/org.metaborg.meta.lang.spt.testrunner.cmd/target/org.metaborg.meta.lang.spt.testrunner.cmd-*.jar'))[
+      'spt/org.metaborg.spt.cmd/target/org.metaborg.spt.cmd-*.jar'))[
       0], 'spoofax-testrunner.jar'),
   ])
 
