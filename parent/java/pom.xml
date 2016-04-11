@@ -64,6 +64,8 @@
             <Eclipse-BuddyPolicy>registered</Eclipse-BuddyPolicy>
             <!-- Don't generate uses declarations in exported packages. -->
             <_nouses>true</_nouses>
+            <!-- Don't use version of this package if no version can be determined. -->
+            <_nodefaultversion>true</_nodefaultversion>
           </instructions>
         </configuration>
         <!-- Hook manifest generation into the process-classes phase, because this is not automatically done for 
