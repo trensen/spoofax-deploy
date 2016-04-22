@@ -107,7 +107,7 @@
     <!-- Interpretation -->
     <dependency>
       <groupId>org.metaborg</groupId>
-      <artifactId>org.metaborg.meta.interpreter.framework</artifactId>
+      <artifactId>org.metaborg.meta.lang.dynsem.interpreter</artifactId>
       <version>${metaborg-version}</version>
     </dependency>
     <!-- External dependencies -->
