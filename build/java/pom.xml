@@ -51,7 +51,6 @@
     <module>${repo.root}/strategoxt/strategoxt/stratego-libraries/java-backend</module>
 
     <!-- Interpretation -->
-    <module>${repo.root}/dynsem/org.metaborg.meta.interpreter.framework</module>
     <module>${repo.root}/dynsem/org.metaborg.meta.lang.dynsem.interpreter</module>
 
     <!-- Spoofax Maven Plugin -->
