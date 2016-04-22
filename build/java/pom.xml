@@ -52,6 +52,7 @@
 
     <!-- Interpretation -->
     <module>${repo.root}/dynsem/org.metaborg.meta.interpreter.framework</module>
+    <module>${repo.root}/dynsem/org.metaborg.meta.lang.dynsem.interpreter</module>
 
     <!-- Spoofax Maven Plugin -->
     <module>${repo.root}/spoofax-maven/spoofax-maven-plugin</module>
