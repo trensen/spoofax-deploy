@@ -206,6 +206,18 @@ def BuildLanguages(basedir, deploy, qualifier, buildStratego, bootstrapStratego,
   return BuildResult([])
 
 
+def BuildDynSem(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
+  phase = 'deploy' if deploy else 'install'
+
+  if skipExpensive:
+    kwargs.update({'spoofax.skip': True})
+
+  cwd = path.join(basedir, 'releng', 'build', 'language', 'dynsem')
+  Mvn(cwd=cwd, phase=phase, **kwargs)
+
+  return BuildResult([])
+
+
 def BuildSPT(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'install'
 
@@ -288,11 +300,12 @@ _buildDependencies = OrderedDict([
   ('java',         ['poms', 'jars', 'strategoxt']),
   ('languagepoms', ['poms', 'jars', 'strategoxt', 'java']),
   ('languages',    ['poms', 'jars', 'strategoxt', 'java', 'languagepoms']),
+  ('dynsem',       ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages']),
   ('spt',          ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages']),
-  ('eclipsedeps',  ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages']),
-  ('eclipse',      ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages', 'eclipsedeps']),
-  ('intellijdeps', ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages']),
-  ('intellij',     ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages', 'intellijdeps']),
+  ('eclipsedeps',  ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages', 'spt', 'dynsem']),
+  ('eclipse',      ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages', 'spt', 'dynsem', 'eclipsedeps']),
+  ('intellijdeps', ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages', 'spt', 'dynsem']),
+  ('intellij',     ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages', 'spt', 'dynsem', 'intellijdeps']),
   ('spoofax-libs', ['poms', 'jars', 'strategoxt', 'java']),
 ])
 _buildCommands = {
@@ -302,6 +315,7 @@ _buildCommands = {
   'java'        : BuildJava,
   'languagepoms': BuildLanguagePoms,
   'languages'   : BuildLanguages,
+  'dynsem'      : BuildDynSem,
   'spt'         : BuildSPT,
   'eclipsedeps' : BuildEclipseDeps,
   'eclipse'     : BuildEclipse,
