@@ -10,7 +10,7 @@ def Mvn(cwd=None, pomFile='pom.xml', settingsFile=None, globalSettingsFile=None,
     resumeFrom=None, mavenOpts='-Xms512m -Xmx2048m -Xss32m -XX:MaxPermSize=512m', **kwargs):
   args = []
   if platform.system() == 'Windows':
-    args.append('mvn.bat')
+    args.append('mvn')
   else:
     args.append('mvn')
   args.append('--batch-mode')
