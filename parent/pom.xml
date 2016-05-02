@@ -221,11 +221,6 @@
         <version>3.3.2</version>
       </dependency>
       <dependency>
-        <groupId>org.functionaljava</groupId>
-        <artifactId>functionaljava</artifactId>
-        <version>4.1</version>
-      </dependency>
-      <dependency>
         <groupId>com.netflix.rxjava</groupId>
         <artifactId>rxjava-core</artifactId>
         <version>0.19.6</version>
@@ -245,7 +240,6 @@
         <artifactId>fastutil</artifactId>
         <version>7.0.12</version>
       </dependency>
-
 
       <!-- Annotations -->
       <dependency>
