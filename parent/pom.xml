@@ -241,15 +241,11 @@
         <version>0.8.17</version>
       </dependency>
       <dependency>
-        <groupId>org.javabits.jgrapht</groupId>
-        <artifactId>jgrapht-core</artifactId>
-        <version>0.9.3</version>
+        <groupId>it.unimi.dsi</groupId>
+        <artifactId>fastutil</artifactId>
+        <version>7.0.12</version>
       </dependency>
-      <dependency>
-        <groupId>com.carrotsearch</groupId>
-        <artifactId>hppc</artifactId>
-        <version>0.7.1</version>
-      </dependency>
+
 
       <!-- Annotations -->
       <dependency>
