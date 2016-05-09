@@ -209,11 +209,8 @@ def BuildLanguages(basedir, deploy, qualifier, buildStratego, bootstrapStratego,
 def BuildDynSem(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
   phase = 'deploy' if deploy else 'install'
 
-  if skipExpensive:
-    kwargs.update({'spoofax.skip': True})
-
   cwd = path.join(basedir, 'releng', 'build', 'language', 'dynsem')
-  Mvn(cwd=cwd, phase=phase, **kwargs)
+  Mvn(cwd=cwd, clean=True, phase=phase, **kwargs)
 
   return BuildResult([])
 
