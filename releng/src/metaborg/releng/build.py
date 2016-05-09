@@ -206,7 +206,7 @@ def BuildLanguages(basedir, deploy, qualifier, buildStratego, bootstrapStratego,
   return BuildResult([])
 
 
-def BuildDynSem(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, **kwargs):
+def BuildDynSem(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strategoTest, skipExpensive, clean, **kwargs):
   phase = 'deploy' if deploy else 'install'
 
   cwd = path.join(basedir, 'releng', 'build', 'language', 'dynsem')
