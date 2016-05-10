@@ -111,6 +111,11 @@
 		<!-- SPT -->
 		<dependency>
 			<groupId>org.metaborg</groupId>
+			<artifactId>org.metaborg.mbt.core</artifactId>
+			<version>${metaborg-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.metaborg</groupId>
 			<artifactId>org.metaborg.spt.core</artifactId>
 			<version>${metaborg-version}</version>
 		</dependency>
