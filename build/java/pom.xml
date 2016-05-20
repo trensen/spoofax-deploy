@@ -25,6 +25,7 @@
   <modules>
     <!-- Representation -->
     <module>${repo.root}/mb-rep/org.spoofax.terms</module>
+    <module>${repo.root}/mb-rep/org.spoofax.terms.typesmart</module>
     <module>${repo.root}/mb-rep/org.spoofax.interpreter.library.index</module>
     <module>${repo.root}/mb-rep/org.metaborg.scopegraph</module>
 
