@@ -110,6 +110,11 @@
         <version>3.0</version>
       </dependency>
       <dependency>
+        <groupId>com.google.inject.extensions</groupId>
+        <artifactId>guice-assistedinject</artifactId>
+        <version>3.0</version>
+      </dependency>
+      <dependency>
         <groupId>aopalliance</groupId>
         <artifactId>aopalliance</artifactId>
         <version>1.0</version>
@@ -506,13 +511,12 @@
                     <artifactId>spoofax-maven-plugin</artifactId>
                     <versionRange>[2.0.0-SNAPSHOT,)</versionRange>
                     <goals>
+                      <goal>clean</goal>
                       <goal>initialize</goal>
                       <goal>generate-sources</goal>
-                      <goal>pre-compile</goal>
-                      <goal>post-compile</goal>
-                      <goal>run</goal>
+                      <goal>compile</goal>
                       <goal>package</goal>
-                      <goal>clean</goal>
+                      <goal>run</goal>
                     </goals>
                   </pluginExecutionFilter>
                   <action>
