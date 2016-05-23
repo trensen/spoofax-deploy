@@ -226,7 +226,7 @@ def BuildSPT(basedir, deploy, qualifier, buildStratego, bootstrapStratego, strat
 
   return BuildResult([
     BuildArtifact('SPT testrunner JAR', glob(path.join(basedir,
-      'spt/org.metaborg.meta.lang.spt.testrunner.cmd/target/org.metaborg.meta.lang.spt.testrunner.cmd-*.jar'))[
+      'spt/org.metaborg.spt.cmd/target/org.metaborg.spt.cmd-*.jar'))[
       0], 'spoofax-testrunner.jar'),
   ])
 
@@ -301,8 +301,8 @@ _buildDependencies = OrderedDict([
   ('spt',          ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages']),
   ('eclipsedeps',  ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages', 'spt', 'dynsem']),
   ('eclipse',      ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages', 'spt', 'dynsem', 'eclipsedeps']),
-  ('intellijdeps', ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages', 'spt', 'dynsem']),
-  ('intellij',     ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages', 'spt', 'dynsem', 'intellijdeps']),
+  ('intellijdeps', ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages', 'dynsem']),
+  ('intellij',     ['poms', 'jars', 'strategoxt', 'java', 'languagepoms', 'languages', 'dynsem', 'intellijdeps']),
   ('spoofax-libs', ['poms', 'jars', 'strategoxt', 'java']),
 ])
 _buildCommands = {
