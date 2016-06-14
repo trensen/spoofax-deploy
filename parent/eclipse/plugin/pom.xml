@@ -95,6 +95,11 @@
     <!-- Parser -->
     <dependency>
       <groupId>org.metaborg</groupId>
+      <artifactId>sdf2table.core</artifactId>
+      <version>${metaborg-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.metaborg</groupId>
       <artifactId>org.spoofax.jsglr</artifactId>
       <version>${metaborg-version}</version>
     </dependency>
